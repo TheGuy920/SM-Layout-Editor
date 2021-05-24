@@ -1,0 +1,163 @@
+﻿<Window x:Class="SM_Layout_Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SM_Layout_Editor"
+        mc:Ignorable="d"
+        Title="Scrap Mechanic Layout Editor"
+        d:DesignHeight="450" d:DesignWidth="800"
+        Height="450" Width="800"
+        MinHeight="450" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        SizeChanged="Window_SizeChanged"
+        SizeToContent="WidthAndHeight"
+        PreviewMouseMove="Window_MouseMove">
+    <Window.Resources>
+        <Style x:Key="InvisibleButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Transparent" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ContentControl x:Key="ControlButtonTemplate">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="90*"/>
+                    <RowDefinition Height="5"/>
+                </Grid.RowDefinitions>
+
+                <Button MouseDoubleClick="B_MouseDoubleClick">
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Grid.Column" Value="1"/>
+                        <Setter Property="Grid.Row" Value="1"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button>
+
+                <Button Grid.Column="0" Grid.Row="0" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Green" BorderThickness="0" Cursor="SizeNWSE" Tag="0"/>
+                <Button VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                        Grid.Column="1" Grid.Row="0" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Red" BorderThickness="0" Cursor="SizeNS" Tag="1"/>
+                <Button Grid.Column="2" Grid.Row="0" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Green" BorderThickness="0" Cursor="SizeNESW" Tag="2"/>
+                <Button VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                        Grid.Column="2" Grid.Row="1" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Red" BorderThickness="0" Cursor="SizeWE" Tag="3"/>
+                <Button Grid.Column="2" Grid.Row="2" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Green" BorderThickness="0" Cursor="SizeNWSE" Tag="4"/>
+                <Button VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                        Grid.Column="1" Grid.Row="2" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Red" BorderThickness="0" Cursor="SizeNS" Tag="5"/>
+                <Button Grid.Column="0" Grid.Row="2" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Green" BorderThickness="0" Cursor="SizeNESW" Tag="6"/>
+                <Button VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                        Grid.Column="0" Grid.Row="1" PreviewMouseDown="SubItemControl_PreviewMouseDown"
+                        Background="Red" BorderThickness="0" Cursor="SizeWE" Tag="7"/>
+            </Grid>
+        </ContentControl>
+    </Window.Resources>
+    <Grid Background="#242222" PreviewMouseUp="Grid_PreviewMouseUp" PreviewKeyDown="Grid_PreviewKeyDown">
+        <Grid x:Name="ViewBox" Margin="10,25,120,10" Background="Transparent"
+              PreviewMouseWheel="Grid_PreviewMouseWheel" PreviewMouseDown="Grid_PreviewMouseDown"
+              MouseLeave="ViewBox_MouseLeave"
+              ClipToBounds="True">
+            <Rectangle Canvas.Left="10" Canvas.Top="10">
+                <Rectangle.Fill>
+                    <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute">
+                        <!-- a drawing of 4 checkerboard tiles -->
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <!-- checkerboard background -->
+                                <GeometryDrawing Brush="Transparent">
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,15,15" />
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                                <!-- two checkerboard foreground tiles -->
+                                <GeometryDrawing Brush="#4f4a4a">
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <RectangleGeometry Rect="0,0,5,5" />
+                                            <RectangleGeometry Rect="4,4,0,0" />
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Grid x:Name="Workspace"
+                  PreviewMouseMove="BorderContentArea_PreviewMouseMove"
+                  ClipToBounds="True" Background="Transparent" Width="600" Height="350"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Margin="35,15,-1000,-1000">
+                <Rectangle Stroke="Gray" StrokeThickness="3"/>
+            </Grid>
+        </Grid>
+        <Button x:Name="ReSizeLiveSplit" Margin="0,25,115,10"
+                Background="Transparent" BorderThickness="0"
+                HorizontalAlignment="Right" Cursor="SizeWE" Width="5"
+                PreviewMouseDown="ReSizeLiveSplit_MouseDown"
+                PreviewMouseUp="ReSizeLiveSplit_MouseUp">
+        </Button>
+        <Grid x:Name="PropertiesBox" Background="#241f1f" HorizontalAlignment="Right" Margin="0,25,10,10" Width="105">
+            <TextBlock Height="19" VerticalAlignment="Top" Background="#362e2e" Padding="3,0" Foreground="LightGray" Text="Properties"/>
+            <Grid Margin="0,24,0,0">
+                <Border BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Foreground="White" Margin="5,2">Text</TextBlock>
+                        <TextBox HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Foreground="White" Background="Transparent" BorderBrush="Gray">Button Text Here</TextBox>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid Background="#1f1c1c" Height="20" VerticalAlignment="Top">
+            <Button Content="Settings" BorderThickness="0" Background="Transparent" Foreground="LightGray"
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="10,0,0,0" Width="55"
+                    PreviewMouseDown="MenuButton_Click" Tag="1"/>
+            <Button Content="File" BorderThickness="0" Background="Transparent" Foreground="LightGray"
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="65,0,0,0" Width="55"
+                    PreviewMouseDown="MenuButton_Click" Tag="2"/>
+            <Button Content="View" BorderThickness="0" Background="Transparent" Foreground="LightGray"
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="120,0,0,0" Width="55"
+                    PreviewMouseDown="MenuButton_Click" Tag="3"/>
+            <Button Content="Toolbox" BorderThickness="0" Background="Transparent" Foreground="LightGray"
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="175,0,0,0" Width="55"
+                    PreviewMouseDown="MenuButton_Click" Tag="4"/>
+        </Grid>
+        <Button x:Name="OffClickDetection" Visibility="Hidden" PreviewMouseDown="Menu_PreviewMouseDown"
+                Background="Transparent" BorderThickness="0" Style="{StaticResource InvisibleButton}" Margin="0,25,0,0"/>
+        <Grid x:Name="Menu" Visibility="Hidden"  Margin="10,25,10,10" Width="200" HorizontalAlignment="Left">
+            <ListBox x:Name="MenuList" SelectionChanged="MenuList_SelectionChanged" Background="White" Tag="0"
+                        BorderThickness="2" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" Height="120">
+            </ListBox>
+        </Grid>
+    </Grid>
+</Window>

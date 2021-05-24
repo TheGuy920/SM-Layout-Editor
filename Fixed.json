@@ -1,0 +1,36 @@
+{
+  "Settings": [
+    {
+      "Display": "Exit",
+      "Tag": "Application.Shutdown"
+    }
+  ],
+  "File": [
+    {
+      "Display": "Save",
+      "Tag": "SaveCurrentProject"
+    },
+    {
+      "Display": "Save Project",
+      "Tag": "SaveProject"
+    },
+    {
+      "Display": "Export Project",
+      "Tag": "ExportProject"
+    },
+    {
+      "Display": "Export as ZIP",
+      "Tag": "ExportZIP"
+    }
+  ],
+  "View": [
+    {
+      "Display": "Resolution",
+      "Tag": "ChangeReslution"
+    },
+    {
+      "Display": "Edit",
+      "Tag": "EditFunction"
+    }
+  ]
+}
