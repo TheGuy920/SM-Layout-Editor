@@ -6,6 +6,9 @@ namespace CustomExtensions
     // Extension methods must be defined in a static class.
     public static class MarginExtensions
     {
+
+// ==================================== BUTTONS ====================================
+
         /// <summary>
         /// This adds the existing margin for the button to a new margin
         /// </summary>
@@ -18,6 +21,19 @@ namespace CustomExtensions
         {
             button.Margin = new Thickness(button.Margin.Left + left, button.Margin.Top + top, button.Margin.Right + right, button.Margin.Bottom + bottom);
         }
+
+        /// <summary>
+        /// This sets the existing margin right to the new margin right
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="right"></param>
+        public static void SetMarginR(this Button grid, double right)
+        {
+            grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top, right, grid.Margin.Bottom);
+        }
+
+// ==================================== GRIDS ====================================
+
         /// <summary>
         /// This adds the existing margin for the grid to a new margin
         /// </summary>
@@ -79,8 +95,8 @@ namespace CustomExtensions
         /// <summary>
         /// This sets the existing margin right to the new margin right
         /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="bottom"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public static void SetWidthAndHeight(this Grid grid, double width, double height)
         {
             grid.Width = width;

@@ -114,7 +114,6 @@
                 </Rectangle.Fill>
             </Rectangle>
             <Grid x:Name="Workspace"
-                  PreviewMouseMove="BorderContentArea_PreviewMouseMove"
                   ClipToBounds="True" Background="Transparent" Width="600" Height="350"
                   HorizontalAlignment="Left" VerticalAlignment="Top"
                   Margin="35,15,-1000,-1000">

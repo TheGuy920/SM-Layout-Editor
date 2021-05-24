@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -18,14 +19,9 @@ namespace SM_Layout_Editor
     }
     class Utility
     {
-        static MainWindow w;
-        public Utility(MainWindow m)
-        {
-            w = m;
-        }
         public static ContentControl FindContentControl(string s)
         {
-            return (ContentControl)w.FindResource(s);
+            return (ContentControl)MainWindow.Get.FindResource(s);
         }
         public static string ReadLocalResource(string path)
         {
@@ -51,7 +47,7 @@ namespace SM_Layout_Editor
             GetCursorPos(ref w32Mouse);
             return new Point(w32Mouse.X, w32Mouse.Y);
         }
-        public static Vector GetMouseMovement(bool MoveSensitivity = false, bool Scale = false, bool GridSize = false)
+        public static Vector GetMouseMovement(bool resetPosition = false, bool MoveSensitivity = false, bool Scale = false, bool GridSize = false)
         {
             Vector returnVec = GetMousePosition() - MainWindow.MouseStart;
             if (MoveSensitivity)
@@ -60,8 +56,13 @@ namespace SM_Layout_Editor
                 returnVec /= MainWindow.Scale;
             if (GridSize)
                 returnVec /= MainWindow.GridSize;
-            MainWindow.MouseStart = GetMousePosition();
+            if(resetPosition)
+                MainWindow.MouseStart = GetMousePosition();
             return returnVec;
+        }
+        public static void ResetMousePos()
+        {
+            MainWindow.MouseStart = GetMousePosition();
         }
     }
 }

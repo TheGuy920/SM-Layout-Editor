@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
 using CustomExtensions;
+using System.Diagnostics;
 
 namespace SM_Layout_Editor
 {
@@ -15,6 +16,8 @@ namespace SM_Layout_Editor
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Get;
+
         public static Point MouseStart;
         public static double Scale = 1;
         public static int MoveSensitivity = 1;
@@ -42,6 +45,9 @@ namespace SM_Layout_Editor
         private Grid ActiveElement = null;
         private Rectangle WorkspaceRec;
         private Grid Properites;
+        /// <summary>
+        /// Initializaer for the thing and stuff
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -56,6 +62,8 @@ namespace SM_Layout_Editor
             MenuJson = Default;
             WorkspaceRec = (Rectangle)Workspace.Children[0];
             Properites = (Grid)PropertiesBox.Children[1];
+
+            Get = this;
         }
         /// <summary>
         /// Event handler for window resize
@@ -73,7 +81,7 @@ namespace SM_Layout_Editor
         /// <param name="e"></param>
         private void ReSizeLiveSplit_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MouseStart = MouseUtil.GetMousePosition();
+            MouseUtil.ResetMousePos();
             ResizingProperties = true;
         }
         /// <summary>
@@ -98,23 +106,23 @@ namespace SM_Layout_Editor
             {
                 // Clamp the the workspace and properties tab min/max size
                 var size = Math.Clamp(
-                    ViewBox.Margin.Right - MouseUtil.GetMouseMovement().X,
+                    ViewBox.Margin.Right - e.GetPosition(ReSizeLiveSplit).X,
                     50,
                     ActualWidth - 50);
                 // Move the viewbox
-                ViewBox.AddMargin(0,0,size,0);
+                ViewBox.SetMarginR(size);
                 // Move the properties window
                 PropertiesBox.Width = size-15;
                 // Move the actual drag button/bar
                 // ( the button in between the windows that controls this )
-                ReSizeLiveSplit.AddMargin(0,0,size-5, 0);
+                ReSizeLiveSplit.SetMarginR(size - 5);
                 // Clamp the workspace
                 ClampWorkspace();
             }
             if (MovingWorkspace)
             {
                 // calcualte the mouse movement and factor in the mouse sensitivity
-                var diff = MouseUtil.GetMouseMovement(true);
+                var diff = MouseUtil.GetMouseMovement(true, true);
                 // Adjust Position and clamp
                 Workspace.SetMarginLT(
                     Math.Clamp(Workspace.Margin.Left + diff.X, -(Workspace.ActualWidth * Scale - 90), ViewBox.ActualWidth - 90),
@@ -123,18 +131,22 @@ namespace SM_Layout_Editor
             if (DraggingSubMenuItem)
             {
                 // calcualte the mouse movement and factor in the mouse sensitivity, the scale, and the grid size
-                var diff = MouseUtil.GetMouseMovement(true, true, true);
+                var diff = MouseUtil.GetMouseMovement(false, true, true, true);
                 // adjust position and clamp
                 if ((int)diff.X != 0 || (int)diff.Y != 0)
+                {
                     ActiveElement.SetMarginLT(
                         Math.Clamp(ActiveElement.Margin.Left + (diff.X * GridSize), 0, Workspace.ActualWidth - ActiveElement.ActualWidth),
                         Math.Clamp(ActiveElement.Margin.Top + (diff.Y * GridSize), 0, Workspace.ActualHeight - ActiveElement.ActualHeight));
+                    MouseUtil.ResetMousePos();
+                }
             }
             // if the item scale mode is zero or greater, then we are scaling
             if (ItemScaleMode > -1)
             {
                 // calcualte the mouse movement and factor in the mouse sensitivity, the scale, and the grid size
-                var diff = MouseUtil.GetMouseMovement(true, true, true);
+                var diff = MouseUtil.GetMouseMovement(false, true, true, true);
+                Debug.WriteLine(diff);
                 // make sure the change in mouse movement is greater than the grid size
                 // the difference will allways be less than zero, if the grid size is greater
                 // than the difference
@@ -169,11 +181,13 @@ namespace SM_Layout_Editor
                             }
                         else
                             ActiveElement.Height = Math.Clamp(ActiveElement.ActualHeight + (diff.Y * GridSize), GridSize, Workspace.ActualHeight);
-                    // Update the scaling overlay size
-                    UpdateItemControlSize();
-                    // Clamp the workspace position
-                    ClampWorkspace();
+                    // Update the mouse pos
+                    MouseUtil.ResetMousePos();
                 }
+                // Update the scaling overlay size
+                UpdateItemControlSize();
+                // Clamp the workspace position
+                ClampWorkspace();
             }
         }
         /// <summary>
@@ -269,7 +283,7 @@ namespace SM_Layout_Editor
                     ActiveElement.Tag.ToString(),
                     Tb_TextChanged));
             // reset starting mouse position
-            MouseStart = MouseUtil.GetMousePosition();
+            MouseUtil.ResetMousePos();
             // reset workspace state to "not moving"
             Grid_PreviewMouseUp(sender, e);
         }
@@ -349,7 +363,7 @@ namespace SM_Layout_Editor
                 if (ActiveElement != null)
                     ActiveElement.Children.Remove(ActiveElement.Children[^1]);
                 Menu_PreviewMouseDown(sender, e);
-                MouseStart = MouseUtil.GetMousePosition();
+                MouseUtil.ResetMousePos();
                 WorkspaceRec.Stroke = Brushes.White;
                 MovingWorkspace = true;
             }
@@ -367,6 +381,7 @@ namespace SM_Layout_Editor
             MovingWorkspace = false;
             // reset scaling mode
             ItemScaleMode = -1;
+            Debug.WriteLine(ItemScaleMode);
         }
         /// <summary>
         /// This event is for when the mouse leaves the viewbox 
@@ -399,7 +414,7 @@ namespace SM_Layout_Editor
         /// </summary>
         private void UpdateItemControlSize()
         {
-            ((Grid)Utility.FindContentControl("ControlButtonTemplate").Content).SetWidthAndHeight(ActiveElement.ActualHeight, ActiveElement.ActualWidth);
+            ((Grid)Utility.FindContentControl("ControlButtonTemplate").Content).SetWidthAndHeight(ActiveElement.ActualWidth, ActiveElement.ActualHeight);
         }
         /// <summary>
         /// Double click event for workspace items
@@ -421,9 +436,9 @@ namespace SM_Layout_Editor
             DraggingSubMenuItem = false;
             // Fetch the scale mode
             var button = (Button)sender;
-            ItemScaleMode = Int32.Parse(button.Tag.ToString());
+            ItemScaleMode = int.Parse(button.Tag.ToString());
             // Update the mouse starting position
-            MouseStart = MouseUtil.GetMousePosition();
+            MouseUtil.ResetMousePos();
         }
         /// <summary>
         /// Simple event handler for any key down, ONLY inside the viewbox
