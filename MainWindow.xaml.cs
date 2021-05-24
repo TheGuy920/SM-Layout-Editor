@@ -146,7 +146,6 @@ namespace SM_Layout_Editor
             {
                 // calcualte the mouse movement and factor in the mouse sensitivity, the scale, and the grid size
                 var diff = MouseUtil.GetMouseMovement(false, true, true, true);
-                Debug.WriteLine(diff);
                 // make sure the change in mouse movement is greater than the grid size
                 // the difference will allways be less than zero, if the grid size is greater
                 // than the difference
@@ -381,7 +380,6 @@ namespace SM_Layout_Editor
             MovingWorkspace = false;
             // reset scaling mode
             ItemScaleMode = -1;
-            Debug.WriteLine(ItemScaleMode);
         }
         /// <summary>
         /// This event is for when the mouse leaves the viewbox 
