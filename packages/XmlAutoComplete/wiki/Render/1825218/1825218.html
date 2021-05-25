@@ -1,0 +1,24 @@
+<div class="wikidoc"><h1>Let&#39;s start!</h1>
+Using of <b>XmlAutoComplete</b> control is super simple! For a quick start I recommend you to have a look into a testing project where are 2 demo XSD files provided (one simple, one complex) so you can see immediately how <b>XmlAutoComplete</b> works. Just download <i>\Bin</i> and <i>\DemoFiles</i> folder and run <i>Testing.exe</i>. <br /><br />If you don&#39;t want to play with a demo and use it straight away, just follow these steps:<br />
+<ul><li>In your project, add a reference to the XmlAutoComplete.dll </li>
+<li>Open a XAML file where you want to add <b>XmlAutoComplete</b> and append this namespace so you can access it from the XAML later:</li></ul>
+<div style="color:Black;background-color:White;"><pre>
+xmlns:auto=&quot;clr-namespace:XmlAutoComplete;assembly=XmlAutoComplete&quot;
+</pre></div><ul><li>Once you set this namespace use it later in the same XAML as:</li></ul>
+<div style="color:Black;background-color:White;"><pre>
+<span style="color:Blue;">&lt;</span><span style="color:#A31515;">auto</span><span style="color:Blue;">:</span><span style="color:#A31515;">SuggestionTextBox</span> <span style="color:Red;">x:Name</span><span style="color:Blue;">=</span><span style="color:Black;">&quot;</span><span style="color:Blue;">suggestion</span><span style="color:Black;">&quot;</span> <span style="color:Blue;">/&gt;</span>
+</pre></div><ul><li>or you can provide an options as well:</li></ul>
+<div style="color:Black;background-color:White;"><pre>
+<span style="color:Blue;">&lt;</span><span style="color:#A31515;">auto</span><span style="color:Blue;">:</span><span style="color:#A31515;">SuggestionTextBox</span> <span style="color:Red;">x:Name</span><span style="color:Blue;">=</span><span style="color:Black;">&quot;</span><span style="color:Blue;">suggestion</span><span style="color:Black;">&quot;</span> <span style="color:Red;">ElementAutoComplete</span><span style="color:Blue;">=</span><span style="color:Black;">&quot;</span><span style="color:Blue;">True</span><span style="color:Black;">&quot;</span> <span style="color:Red;">AppendNamespace</span><span style="color:Blue;">=</span><span style="color:Black;">&quot;</span><span style="color:Blue;">False</span><span style="color:Black;">&quot;</span><span style="color:Blue;">/&gt;</span>
+</pre></div><ul><li>after you defined <b>XmlAutoComplete</b> in a XAML, go to the code and attach an XSD file by using <i>XsdParser</i> class:</li></ul>
+<div style="color:Black;background-color:White;"><pre>
+<span style="color:Blue;">using</span> XmlAutoComplete;
+...
+suggestion.Parser = <span style="color:Blue;">new</span> XsdParser(<span style="color:#A31515;">&quot;yourSchema.xsd&quot;</span>);
+</pre></div><ul><li>To clear all text use:</li></ul>
+<div style="color:Black;background-color:White;"><pre>
+suggestion.Clear();
+</pre></div><ul><li>To get a text that is already written in the control, use property <i>Text</i>:</li></ul>
+<div style="color:Black;background-color:White;"><pre>
+suggestion.Text
+</pre></div></div><div class="ClearBoth"></div>

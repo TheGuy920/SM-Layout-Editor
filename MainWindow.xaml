@@ -8,16 +8,17 @@
         xmlns:models="clr-namespace:SM_Layout_Editor.Models"
         xmlns:viewModels="clr-namespace:SM_Layout_Editor.ViewModels"
         xmlns:converters="clr-namespace:MyToolkit.Converters;assembly=MyToolkit.Extended"
-        mc:Ignorable="d"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        mc:Ignorable="d" 
         Title="Scrap Mechanic Layout Editor"
-        d:DesignHeight="450" d:DesignWidth="800"
-        Height="450" Width="800"
-        MinHeight="450" MinWidth="800"
+        d:DesignHeight="750" d:DesignWidth="1000"
+        Height="750" Width="1000"
+        MinHeight="750" MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         SizeChanged="Window_SizeChanged"
-        SizeToContent="WidthAndHeight"
-        PreviewMouseMove="Window_MouseMove">
+        PreviewMouseMove="Window_MouseMove"
+        ContentRendered="Window_ContentRendered">
     <Window.Resources>
         <viewModels:MainWindowModel x:Key="ViewModel" />
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
@@ -90,115 +91,132 @@
         </ContentControl>
     </Window.Resources>
     <Grid Background="#242222" PreviewMouseUp="Grid_PreviewMouseUp" PreviewKeyDown="Grid_PreviewKeyDown">
-        <Grid x:Name="ViewBox" Margin="10,25,120,10" Background="Transparent"
+        <Grid x:Name="UpperWorkspace" Margin="0,0,0,320">
+            <Grid x:Name="ViewBox" Margin="10,25,320,0" Background="Transparent"
               PreviewMouseWheel="Grid_PreviewMouseWheel" PreviewMouseDown="Grid_PreviewMouseDown"
               MouseLeave="ViewBox_MouseLeave"
               ClipToBounds="True">
-            <Rectangle Canvas.Left="10" Canvas.Top="10">
-                <Rectangle.Fill>
-                    <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute">
-                        <!-- a drawing of 4 checkerboard tiles -->
-                        <DrawingBrush.Drawing>
-                            <DrawingGroup>
-                                <!-- checkerboard background -->
-                                <GeometryDrawing Brush="Transparent">
-                                    <GeometryDrawing.Geometry>
-                                        <RectangleGeometry Rect="0,0,15,15" />
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                                <!-- two checkerboard foreground tiles -->
-                                <GeometryDrawing Brush="#4f4a4a">
-                                    <GeometryDrawing.Geometry>
-                                        <GeometryGroup>
-                                            <RectangleGeometry Rect="0,0,5,5" />
-                                            <RectangleGeometry Rect="4,4,0,0" />
-                                        </GeometryGroup>
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                            </DrawingGroup>
-                        </DrawingBrush.Drawing>
-                    </DrawingBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Grid x:Name="Workspace"
+                <Rectangle Canvas.Left="10" Canvas.Top="10">
+                    <Rectangle.Fill>
+                        <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute">
+                            <!-- a drawing of 4 checkerboard tiles -->
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <!-- checkerboard background -->
+                                    <GeometryDrawing Brush="Transparent">
+                                        <GeometryDrawing.Geometry>
+                                            <RectangleGeometry Rect="0,0,15,15" />
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                    <!-- two checkerboard foreground tiles -->
+                                    <GeometryDrawing Brush="#4f4a4a">
+                                        <GeometryDrawing.Geometry>
+                                            <GeometryGroup>
+                                                <RectangleGeometry Rect="0,0,5,5" />
+                                                <RectangleGeometry Rect="4,4,0,0" />
+                                            </GeometryGroup>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Grid x:Name="Workspace"
                   ClipToBounds="True" Background="Transparent" Width="600" Height="350"
                   HorizontalAlignment="Left" VerticalAlignment="Top"
                   Margin="35,15,-1000,-1000">
-                <Rectangle Stroke="Gray" StrokeThickness="3"/>
+                    <Rectangle Stroke="Gray" StrokeThickness="3"/>
+                </Grid>
             </Grid>
-        </Grid>
-        <Button x:Name="ReSizeLiveSplit" Margin="0,25,115,10"
-                Background="Transparent" BorderThickness="0"
+            <Button x:Name="ResizeProp" Margin="0,25,315,0"
+                Background="DarkGray" BorderThickness="0"
                 HorizontalAlignment="Right" Cursor="SizeWE" Width="5"
-                PreviewMouseDown="ReSizeLiveSplit_MouseDown"
-                PreviewMouseUp="ReSizeLiveSplit_MouseUp">
-        </Button>
-        <Grid x:Name="PropertiesBox" Background="#241f1f" HorizontalAlignment="Right" Margin="0,25,10,10" Width="105">
-            <TextBlock Height="19" VerticalAlignment="Top" Background="#362e2e" Padding="3,0" Foreground="LightGray" Text="Properties"/>
-            <Grid Margin="0,24,0,0" DataContext="{StaticResource ViewModel}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <xcad:DockingManager DocumentsSource="{Binding Documents}" Grid.Row="1" Margin="0,8,0,0"
-                             ActiveContent="{Binding SelectedDocument, Mode=TwoWay}"
-                             x:Name="DockingManager" DocumentClosing="OnDocumentClosing">
-                    <!-- document template -->
-                    <xcad:DockingManager.LayoutItemTemplate>
-                        <DataTemplate>
-                            <ScrollViewer Margin="-1" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}" Focusable="False">
-                                <Border IsEnabled="{Binding IsLoading, Source={StaticResource ViewModel}, Converter={StaticResource NotConverter}}">
-                                    <controls:JsonEditor Margin="8" Data="{Binding Data}" 
+                PreviewMouseDown="ResizeProp_MouseDown"
+                PreviewMouseUp="ResizeProp_MouseUp">
+            </Button>
+            <Grid x:Name="PropertiesBox" Background="#241f1f" HorizontalAlignment="Right" Margin="0,25,10,0" Width="305">
+                <TextBlock Height="19" VerticalAlignment="Top" Background="#362e2e" Padding="3,0" Foreground="LightGray" Text="Properties"/>
+                <Grid Margin="0,24,0,0" DataContext="{StaticResource ViewModel}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="67*" />
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <xcad:DockingManager DocumentsSource="{Binding Documents}" Grid.Row="1" Margin="0,8,0,0"
+                             ActiveContent="{Binding SelectedDocument, Mode=TwoWay}" Background="Transparent"
+                             x:Name="DockingManager_0" DocumentClosing="OnDocumentClosing" BorderThickness="0" Grid.RowSpan="2">
+                        <!-- document template -->
+                        <xcad:DockingManager.LayoutItemTemplate>
+                            <DataTemplate>
+                                <ScrollViewer Initialized="ScrollViewer_Initialized" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderThickness="0" Margin="-1" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}" Focusable="False">
+                                    <Border IsEnabled="{Binding IsLoading, Source={StaticResource ViewModel}, Converter={StaticResource NotConverter}}">
+                                        <controls:JsonEditor Margin="8" Data="{Binding Data}" 
                                                  IsEnabled="{Binding IsReadOnly, Converter={StaticResource NotConverter}}" />
-                                </Border>
-                            </ScrollViewer>
-                        </DataTemplate>
-                    </xcad:DockingManager.LayoutItemTemplate>
-                    <!-- header on floating windows -->
-                    <xcad:DockingManager.DocumentTitleTemplate>
-                        <DataTemplate>
-                            <Border d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,0,0,0">
-                                <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
+                                    </Border>
+                                </ScrollViewer>
+                            </DataTemplate>
+                        </xcad:DockingManager.LayoutItemTemplate>
+                        <!-- header on floating windows -->
+                        <xcad:DockingManager.DocumentTitleTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="0" d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,0,0,0">
+                                    <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
                                     d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
-                                    <TextBlock Text="{Binding DisplayTitle}" />
-                                    <TextBlock Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
+                                        <TextBlock Foreground="Black" Text="{Binding DisplayTitle}" />
+                                        <TextBlock Foreground="Black" Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
                                        Visibility="{Binding IsReadOnly, Converter={StaticResource VisibilityConverter}}" />
-                                    <TextBlock Text=" *" Width="8" 
+                                        <TextBlock Text=" *" Width="8" 
                                        Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </xcad:DockingManager.DocumentTitleTemplate>
-                    <!-- header on tabs -->
-                    <xcad:DockingManager.DocumentHeaderTemplate>
-                        <DataTemplate>
-                            <Border d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,2,0,0">
-                                <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
-                                    ToolTip="{Binding FilePath}" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
-                                    <TextBlock Text="{Binding DisplayTitle}" />
-                                    <TextBlock Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </xcad:DockingManager.DocumentTitleTemplate>
+                        <!-- header on tabs -->
+                        <xcad:DockingManager.DocumentHeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="0" d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,2,0,0">
+                                    <StackPanel Orientation="Horizontal" DataContext="{Binding Content}"
+                                    ToolTip="{Binding DisplayTitle}" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
+                                        <TextBlock Foreground="Black" Text="{Binding DisplayTitle}"/>
+                                        <TextBlock Foreground="Black" Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
                                        Visibility="{Binding IsReadOnly, Converter={StaticResource VisibilityConverter}}" />
-                                    <TextBlock Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </xcad:DockingManager.DocumentHeaderTemplate>
-                    <!-- header in pane menu -->
-                    <xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
-                        <DataTemplate>
-                            <Border d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}">
-                                <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
+                                        <TextBlock Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </xcad:DockingManager.DocumentHeaderTemplate>
+                        <!-- header in pane menu -->
+                        <xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="0" d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}">
+                                    <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
                                     d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
-                                    <TextBlock Text="{Binding DisplayTitle}" />
-                                    <TextBlock Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
-                                    <TextBlock Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource NotConverter}}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
-                </xcad:DockingManager>
+                                        <TextBlock Foreground="Black" Text="{Binding DisplayTitle}" />
+                                        <TextBlock Foreground="Black" Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
+                                        <TextBlock Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource NotConverter}}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
+                    </xcad:DockingManager>
+                </Grid>
             </Grid>
+            <Button x:Name="ResizeEditor" Margin="10,0,10,-5"
+                Background="DarkGray" BorderThickness="0"
+                VerticalAlignment="Bottom" Cursor="SizeNS" Height="5"
+                PreviewMouseDown="ResizeEditor_MouseDown"
+                PreviewMouseUp="ResizeEditor_MouseUp">
+            </Button>
+        </Grid>
+        <Grid VerticalAlignment="Bottom" x:Name="LowwerWorkspace" Margin="10,10,10,10" Height="305">
+            <avalonEdit:TextEditor HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                Name="XML_Viewer"
+                FontFamily="Consolas"
+                SyntaxHighlighting="XML"
+                FontSize="10pt" Background="Transparent"/>
         </Grid>
         <Grid Background="#1f1c1c" Height="20" VerticalAlignment="Top">
             <Button Content="Settings" BorderThickness="0" Background="Transparent" Foreground="LightGray"

@@ -186,7 +186,6 @@ namespace SM_Layout_Editor.ViewModels
                     var defaultSchemaPath = JsonDocumentModel.GetDefaultSchemaPath(fileName);
                     if (File.Exists(defaultSchemaPath))
                         document = await JsonDocumentModel.LoadAsync(fileName, defaultSchemaPath, ServiceLocator.Default.Resolve<IDispatcher>());
-                    
                     // If no schema was found, check for a "_schema" property on the document
                     if (document == null)
                     {
@@ -194,9 +193,8 @@ namespace SM_Layout_Editor.ViewModels
                         if (!String.IsNullOrWhiteSpace(schemaPropertyPath) && File.Exists(schemaPropertyPath))
                             document = await JsonDocumentModel.LoadAsync(fileName, schemaPropertyPath, ServiceLocator.Default.Resolve<IDispatcher>());
                     }
-
                     // If no default schema or no schema property, prompt.
-                    if(document == null)
+                    if (document == null)
                     {
                         var result = await Messenger.Default.SendAsync(new OpenJsonDocumentMessage(Strings.OpenJsonSchemaDocumentDialog));
                         if (!result.Success)
@@ -204,9 +202,7 @@ namespace SM_Layout_Editor.ViewModels
 
                         document = await JsonDocumentModel.LoadAsync(fileName, result.Result, ServiceLocator.Default.Resolve<IDispatcher>());
                     }
-
                     document.IsReadOnly = isReadOnly;
-
                     AddDocument(document);
                     AddRecentFile(fileName);
                 });
@@ -231,7 +227,6 @@ namespace SM_Layout_Editor.ViewModels
         {
             Documents.Add(document);
             SelectedDocument = document;
-
             document.UndoRedoManager.PropertyChanged += UndoRedoManagerOnPropertyChanged;
         }
 
@@ -280,7 +275,6 @@ namespace SM_Layout_Editor.ViewModels
                 Configuration.RecentFiles.Remove(entry);
 
             Configuration.RecentFiles.Insert(0, new RecentFile { FilePath = fileName });
-
             if (Configuration.RecentFiles.Count > 10)
                 Configuration.RecentFiles.Remove(Configuration.RecentFiles.Last());
         }
@@ -300,8 +294,8 @@ namespace SM_Layout_Editor.ViewModels
             if (!document.HasFileLocation || saveAs)
             {
                 var fileName = document.HasFileLocation ?
-                    Path.GetFileNameWithoutExtension(document.FilePath) + ".json" :
-                    Strings.DefaultFileName + ".json";
+                    Path.GetFileNameWithoutExtension(document.FilePath) :
+                    Strings.DefaultFileName;
 
                 var result = await Messenger.Default.SendAsync(new SaveJsonDocumentMessage(fileName));
                 if (result.Success)
@@ -321,7 +315,7 @@ namespace SM_Layout_Editor.ViewModels
 
         private async Task SaveDocumentSchemaAsAsync(JsonDocumentModel document)
         {
-            var fileName = Path.GetFileNameWithoutExtension(document.FilePath) + ".schema.json";
+            var fileName = Path.GetFileNameWithoutExtension(document.FilePath) + ".schema";
             var result = await Messenger.Default.SendAsync(new SaveJsonDocumentMessage(fileName));
             if (result.Success)
             {

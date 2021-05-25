@@ -2,35 +2,35 @@
   "Settings": [
     {
       "Display": "Exit",
-      "Tag": "Application.Shutdown"
+      "Tag": "MENU-Application.Shutdown"
     }
   ],
   "File": [
     {
       "Display": "Save",
-      "Tag": "SaveCurrentProject"
+      "Tag": "MENU-SaveCurrentProject"
     },
     {
       "Display": "Save Project",
-      "Tag": "SaveProject"
+      "Tag": "MENU-SaveProject"
     },
     {
       "Display": "Export Project",
-      "Tag": "ExportProject"
+      "Tag": "MENU-ExportProject"
     },
     {
       "Display": "Export as ZIP",
-      "Tag": "ExportZIP"
+      "Tag": "MENU-ExportZIP"
     }
   ],
   "View": [
     {
       "Display": "Resolution",
-      "Tag": "ChangeReslution"
+      "Tag": "MENU-ChangeReslution"
     },
     {
       "Display": "Edit",
-      "Tag": "EditFunction"
+      "Tag": "MENU-EditFunction"
     }
   ]
 }

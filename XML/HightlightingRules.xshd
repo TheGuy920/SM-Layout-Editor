@@ -1,0 +1,72 @@
+﻿<SyntaxDefinition name="XML"
+                  extensions=".layout;.xml;.xsl;.xslt;.xsd;.manifest;.config;.addin;.xshd;.wxs;.wxi;.wxl;.proj;.csproj;.vbproj;.ilproj;.booproj;.build;.xfrm;.targets;.xaml;.xpt;.xft;.map;.wsdl;.disco;.ps1xml;.nuspec"
+                  xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  
+<Color foreground="Teal" name="Entity" exampleText="index.aspx?a=1&amp;amp;b=2" />
+<Color foreground="Olive" name="BrokenEntity" exampleText="index.aspx?a=1&amp;b=2" />
+  
+<Color foreground="Green" name="Comment" exampleText="&lt;!-- comment --&gt;" />
+<Color foreground="#79a1fc" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
+<Color foreground="#79a1fc" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
+  
+<Color foreground="#8c8c8c" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
+<Color foreground="#872cb8" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
+  
+<Color foreground="#32779c" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+<Color foreground="#c7c7c7" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
+
+<Color foreground="#454242" name="XmlIrrelevant" exampleText='&lt;?xml version="1.0"?&gt;' />
+  
+<Color foreground="#9bc282" name="NumberType" exampleText="&lt;!-- comment --&gt;" />
+<Color foreground="#a32a2a" name="BooleanType" exampleText="&lt;!-- comment --&gt;" />
+  
+<Color foreground="#b0b828" name="Quotes" exampleText="&lt;!-- comment --&gt;" />
+
+<RuleSet>
+    <Span color="Comment" multiline="true">
+        <Begin>&lt;!--</Begin>
+        <End>--&gt;</End>
+    </Span>
+    <Span color="CData" multiline="true">
+        <Begin>&lt;!\[CDATA\[</Begin>
+        <End>]]&gt;</End>
+    </Span>
+    <Span color="DocType" multiline="true">
+        <Begin>&lt;!DOCTYPE</Begin>
+        <End>&gt;</End>
+    </Span>
+    <Span color="XmlDeclaration" multiline="true">
+        <Begin>&lt;\?</Begin>
+        <End>\?&gt;</End>
+    </Span>
+    <Span color="XmlIrrelevant" multiline="false">
+        <Begin>&lt;</Begin>
+        <End>&gt;</End>
+        <RuleSet>
+            <Rule color="NumberType">[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)</Rule>
+            <Rule color="AttributeName">[\d\w_\-\.]+(?=(\s*=))</Rule>
+            <Rule color="BooleanType">(true|false)</Rule>
+            <Rule color="XmlIrrelevant">=</Rule>
+            <Rule color="Quotes">"</Rule>
+            <Rule color="XmlIrrelevant">[^ ]*\/</Rule>
+            <Rule color="AttributeValue">((?&lt;==")(?![\s])[\w])(?!true|false|([\s]*-?[0-9]+(\.[0-9]+)?)+)[^"]*(?=")</Rule>
+            <Rule color="XmlTag">^[^ ]+</Rule>
+        </RuleSet>
+    </Span>
+    <Import ruleSet="EntitySet"/>
+</RuleSet>
+
+<RuleSet name="EntitySet">
+    <Rule color="Entity">
+        &amp;
+        [\w\d\#]+
+        ;
+    </Rule>
+
+    <Rule color="BrokenEntity">
+        &amp;
+        [\w\d\#]*
+        #missing ;
+    </Rule>
+</RuleSet>
+</SyntaxDefinition>

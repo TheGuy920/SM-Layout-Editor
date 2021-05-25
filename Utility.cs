@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -6,6 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace SM_Layout_Editor
 {
@@ -27,6 +31,33 @@ namespace SM_Layout_Editor
         {
             string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(path));
             return new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName)).ReadToEnd();
+        }
+        public static T GetRegVal<T>(string path, string value)
+        {
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
+                if (key != null)
+                    if (typeof(T) == typeof(bool))
+                        return (T)(object)Convert.ToBoolean((int)key.GetValue(value));
+                    else
+                        return (T)key.GetValue(value);
+                else
+                    throw new();
+            }
+            catch (Exception ex)
+            {
+                return default(T);
+            }
+        }
+        public static IHighlightingDefinition LoadHighlightingDefinition(
+    string resourceName)
+        {
+            string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
+            var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName));
+            Debug.WriteLine(stream);
+            using var reader = new XmlTextReader(stream);
+            return HighlightingLoader.Load(reader, HighlightingManager.Instance);
         }
     }
     public class MouseUtil

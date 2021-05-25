@@ -1,0 +1,53 @@
+[
+  {
+    "Id": "0",
+    "Name": "XmlAutoComplete 0.1.1",
+    "DevelopmentStatus": "Alpha",
+    "Description": "Fixes:\n\n* suggestion listbox selected item background fix for Win8 and Win10\n* autocomplete is not adding closing element if there is already\n* case insensitive search in a suggestion list\n* other smaller exception fixes",
+    "ReleasedDatge": "0001-01-01T00:00:00",
+    "ModifiedDate": "2015-08-06T12:04:43.76-07:00",
+    "Files": [
+      {
+        "Id": "86f46c29-aa88-4c63-a2d7-5f001d8fe292",
+        "FileName": "XmlAutoComplete.dll",
+        "Url": "./0/86f46c29-aa88-4c63-a2d7-5f001d8fe292",
+        "Type": "Application",
+        "UploadDate": "2015-08-06T12:04:42.747-07:00"
+      }
+    ]
+  },
+  {
+    "Id": "1",
+    "Name": "XmlAutoComplete 0.1",
+    "DevelopmentStatus": "Alpha",
+    "Description": "First version",
+    "ReleasedDatge": "0001-01-01T00:00:00",
+    "ModifiedDate": "2015-07-20T11:31:01.113-07:00",
+    "Files": [
+      {
+        "Id": "2970ab1a-daf5-4645-a044-50116bc1e47b",
+        "FileName": "XmlAutoComplete.dll",
+        "Url": "./1/2970ab1a-daf5-4645-a044-50116bc1e47b",
+        "Type": "Application",
+        "UploadDate": "2015-07-20T11:30:58.99-07:00"
+      }
+    ]
+  },
+  {
+    "Id": "2",
+    "Name": "XmlAutoComplete 0.1.2",
+    "DevelopmentStatus": "Alpha",
+    "Description": "- fixed attribute name regex - more robust now\n- fixed element autocomplete not working in some scenarios\n- fixed scroll jumping while having long xml",
+    "ReleasedDatge": "0001-01-01T00:00:00",
+    "ModifiedDate": "2015-08-07T13:52:16.32-07:00",
+    "Files": [
+      {
+        "Id": "023b69f1-0da7-4542-abe0-474663201c1e",
+        "FileName": "XmlAutoComplete.dll",
+        "Url": "./2/023b69f1-0da7-4542-abe0-474663201c1e",
+        "Type": "Application",
+        "UploadDate": "2015-08-07T13:52:14.917-07:00"
+      }
+    ]
+  }
+]

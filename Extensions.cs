@@ -25,14 +25,23 @@ namespace CustomExtensions
         /// <summary>
         /// This sets the existing margin right to the new margin right
         /// </summary>
-        /// <param name="grid"></param>
+        /// <param name="button"></param>
         /// <param name="right"></param>
-        public static void SetMarginR(this Button grid, double right)
+        public static void SetMarginR(this Button button, double right)
         {
-            grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top, right, grid.Margin.Bottom);
+            button.Margin = new Thickness(button.Margin.Left, button.Margin.Top, right, button.Margin.Bottom);
+        }
+        /// <summary>
+        /// This sets the existing margin top to the new margin top
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="bottom"></param>
+        public static void SetMarginB(this Button button, double bottom)
+        {
+            button.Margin = new Thickness(button.Margin.Left, button.Margin.Top, button.Margin.Right, bottom);
         }
 
-// ==================================== GRIDS ====================================
+        // ==================================== GRIDS ====================================
 
         /// <summary>
         /// This adds the existing margin for the grid to a new margin
@@ -93,7 +102,7 @@ namespace CustomExtensions
             grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top, grid.Margin.Right, bottom);
         }
         /// <summary>
-        /// This sets the existing margin right to the new margin right
+        /// This sets the existing width and height to the new width and heigh
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -101,6 +110,30 @@ namespace CustomExtensions
         {
             grid.Width = width;
             grid.Height = height;
+        }
+
+// ==================================== SCROLLVIEWER ==================================== 
+
+        /// <summary>
+        /// This sets the existing width and height to the new width and heigh
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public static void SetWidthAndHeight(this ScrollViewer scrollViewer, double width, double height)
+        {
+            scrollViewer.Width = width;
+            scrollViewer.Height = height;
+        }
+
+// ==================================== STRING ====================================
+
+        public static string CapitilzeFirst(this string s)
+        {
+            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s);
+        }
+        public static string ToValidPath(this string s)
+        {
+            return System.IO.Path.GetFullPath(CapitilzeFirst(s).Replace("/", "\\"));
         }
     }
 }

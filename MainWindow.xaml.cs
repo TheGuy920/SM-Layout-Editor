@@ -17,13 +17,15 @@ using MyToolkit.UI;
 using MyToolkit.Utilities;
 using SM_Layout_Editor.Models;
 using SM_Layout_Editor.Utilities;
+using SM_Layout_Editor.Windows;
+using Microsoft.Win32;
 
 namespace SM_Layout_Editor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public static MainWindow Get;
 
@@ -34,6 +36,7 @@ namespace SM_Layout_Editor
         public static int GridSize = 10;
 
         private bool ResizingProperties;
+        private bool ResizingEditor;
         private bool MovingWorkspace;
         private bool DraggingSubMenuItem;
         private bool SelectedItemDoubleClick;
@@ -54,6 +57,13 @@ namespace SM_Layout_Editor
         private Grid ActiveElement = null;
         private Rectangle WorkspaceRec;
         private Grid Properites;
+        private string SteamPath;
+        private bool Installed;
+        private bool Running;
+        private bool Updating;
+        private bool Firewall;
+        private string SteamDisplayName;
+        private string Language;
 
         public MainWindowModel Model { get { return (MainWindowModel)Resources["ViewModel"]; } }
         /// <summary>
@@ -62,23 +72,45 @@ namespace SM_Layout_Editor
         public MainWindow()
         {
             InitializeComponent();
+
             ViewModelHelper.RegisterViewModel(Model, this);
+
+            RegisterFileOpenHandler();
+            RegisterShortcuts();
+
+
             JObject Default = JObject.Parse(Utility.ReadLocalResource("Fixed.json"));
             JObject Library = JObject.Parse(Utility.ReadLocalResource("Library.json"));
+
             JObject ExtendedLibrary = null;
             if (File.Exists("Library.json"))
                 ExtendedLibrary = JObject.Parse(File.ReadAllText("Library.json"));
             Default.Merge(Library);
             if(ExtendedLibrary != null)
                 Default.Merge(ExtendedLibrary);
+
             MenuJson = Default;
             WorkspaceRec = (Rectangle)Workspace.Children[0];
             Properites = (Grid)PropertiesBox.Children[1];
             Get = this;
 
-            // halp
-            //LoadConfiguration();
-            //Dispatcher.InvokeAsync(delegate { Model.OpenDocumentAsync(@"Samples/Sample.json"); });
+            Closing += OnWindowClosing;
+
+            SteamPath = Utility.GetRegVal<string>("Software\\Valve\\Steam", "SteamPath").ToValidPath();
+            Installed = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Installed");
+            Updating = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Updating");
+            Running = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Running");
+            Firewall = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Firewall");
+            SteamDisplayName = Utility.GetRegVal<string>("Software\\Valve\\Steam", "LastGameNameUsed");
+            Language = Utility.GetRegVal<string>("Software\\Valve\\Steam", "Language").CapitilzeFirst();
+            Debug.WriteLine(
+                $"SteamPath: {SteamPath},\n" +
+                $"Installed: {Installed},\n" +
+                $"Updating: {Updating},\n" +
+                $"Running: {Running},\n" +
+                $"Firewall: {Firewall},\n" +
+                $"SteamDisplayName: {SteamDisplayName},\n" +
+                $"Language: {Language}");
         }
         /// <summary>
         /// Event handler for window resize
@@ -88,13 +120,16 @@ namespace SM_Layout_Editor
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ClampWorkspace();
+            //if (WindowSizeCanChange)
+            //    WindowSize = new Vector(ActualWidth, ActualHeight);
+            //DockingManager.Height = WindowSize.Y - 100;
         }
         /// <summary>
         /// Event handler for when the resizing of the properties window has started
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ReSizeLiveSplit_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ResizeProp_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MouseUtil.ResetMousePos();
             ResizingProperties = true;
@@ -104,9 +139,28 @@ namespace SM_Layout_Editor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ReSizeLiveSplit_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ResizeProp_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ResizingProperties = false;
+        }
+        /// <summary>
+        /// Event handler for when the resizing of the editor window has started
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ResizeEditor_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MouseUtil.ResetMousePos();
+            ResizingEditor = true;
+        }
+        /// <summary>
+        /// Event handler for when the resizing of the editor window has stopped
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ResizeEditor_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ResizingEditor = false;
         }
         /// <summary>
         /// this is the huge (it does a lot of stuff) MouseMove event handler,
@@ -121,7 +175,7 @@ namespace SM_Layout_Editor
             {
                 // Clamp the the workspace and properties tab min/max size
                 var size = Math.Clamp(
-                    ViewBox.Margin.Right - e.GetPosition(ReSizeLiveSplit).X,
+                    ViewBox.Margin.Right - e.GetPosition(ResizeProp).X,
                     50,
                     ActualWidth - 50);
                 // Move the viewbox
@@ -130,7 +184,21 @@ namespace SM_Layout_Editor
                 PropertiesBox.Width = size-15;
                 // Move the actual drag button/bar
                 // ( the button in between the windows that controls this )
-                ReSizeLiveSplit.SetMarginR(size - 5);
+                ResizeProp.SetMarginR(size - 5);
+                // Clamp the workspace
+                ClampWorkspace();
+            }
+            if (ResizingEditor)
+            {
+                // Clamp the the workspace and properties tab min/max size
+                var size = Math.Clamp(
+                    UpperWorkspace.Margin.Bottom - e.GetPosition(ResizeEditor).Y,
+                    50,
+                    ActualHeight - 100);
+                // Change the upperworkspace height
+                UpperWorkspace.SetMarginB(size);
+                // Change the lowwerworkspace height
+                LowwerWorkspace.Height = UpperWorkspace.Margin.Bottom - 15;
                 // Clamp the workspace
                 ClampWorkspace();
             }
@@ -267,6 +335,11 @@ namespace SM_Layout_Editor
                     box.SelectedIndex = -1;
                 }
             }
+            else
+            {
+                var settings = new SettingsWindow();
+                settings.ShowDialog();
+            }
             Menu_PreviewMouseDown(sender, null);
         }
         /// <summary>
@@ -297,7 +370,7 @@ namespace SM_Layout_Editor
                     ActiveElement.Tag.ToString(),
                     Tb_TextChanged));
             */
-            LoadConfiguration();
+            Model.OpenDocumentAsync("Samples/Sample", false);
             // reset starting mouse position
             MouseUtil.ResetMousePos();
             // reset workspace state to "not moving"
@@ -478,27 +551,98 @@ namespace SM_Layout_Editor
             if(ActiveElement != null)
                 ((TextBox)ActiveElement.Children[0]).Text = ((TextBox)sender).Text;
         }
+        private ApplicationConfiguration _configuration;
+        private async void LoadConfiguration()
+        {
+            _configuration = JsonApplicationConfiguration.Load<ApplicationConfiguration>("SM_Layout_Editor/Config", true, true);
+            Width = _configuration.WindowWidth;
+            Height = _configuration.WindowHeight;
+            WindowState = _configuration.WindowState;
+            Model.Configuration = _configuration;
+            if (_configuration.IsFirstStart)
+            {
+                _configuration.IsFirstStart = false;
+                await Model.OpenDocumentAsync("Samples/Sample", false);
+            }
+        }
+        private void SaveConfiguration()
+        {
+            _configuration.WindowWidth = Width;
+            _configuration.WindowHeight = Height;
+            _configuration.WindowState = WindowState;
+
+            JsonApplicationConfiguration.Save("SM_Layout_Editor/Config", _configuration, true);
+        }
+        private void RegisterShortcuts()
+        {
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.N, ModifierKeys.Control),
+                () => Model.CreateDocumentCommand.TryExecute());
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.O, ModifierKeys.Control),
+                () => Model.OpenDocumentCommand.TryExecute());
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.S, ModifierKeys.Control),
+                () => Model.SaveDocumentCommand.TryExecute(Model.SelectedDocument));
+
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.W, ModifierKeys.Control),
+                () => Model.CloseDocumentCommand.TryExecute(Model.SelectedDocument));
+
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.Z, ModifierKeys.Control),
+                () => Model.UndoCommand.TryExecute(Model.SelectedDocument));
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.Y, ModifierKeys.Control),
+                () => Model.RedoCommand.TryExecute(Model.SelectedDocument));
+
+            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.U, ModifierKeys.Control),
+                () => Model.ValidateDocumentCommand.TryExecute(Model.SelectedDocument));
+        }
+        private void RegisterFileOpenHandler()
+        {
+            var fileHandler = new FileOpenHandler();
+            fileHandler.FileOpen += (sender, args) => { Model.OpenDocumentAsync(args.FileName); };
+            fileHandler.Initialize(this);
+        }
         private async void OnDocumentClosing(object sender, DocumentClosingEventArgs args)
         {
             args.Cancel = true;
             await Model.CloseDocumentAsync((JsonDocumentModel)args.Document.Content);
         }
-        private ApplicationConfiguration _configuration;
-        private async void LoadConfiguration()
+        private async void OnWindowClosing(object sender, CancelEventArgs args)
         {
-            _configuration = JsonApplicationConfiguration.Load<ApplicationConfiguration>("SM_Layout_Editor/Config", true, true);
+            args.Cancel = true;
 
-            Width = _configuration.WindowWidth;
-            Height = _configuration.WindowHeight;
-            WindowState = _configuration.WindowState;
-
-            Model.Configuration = _configuration;
-
-            if (_configuration.IsFirstStart)
+            foreach (var document in Model.Documents.ToArray())
             {
-                _configuration.IsFirstStart = false;
-                await Model.OpenDocumentAsync("Samples/Sample.json", true);
+                var result = await Model.CloseDocumentAsync(document);
+                if (!result)
+                    return;
             }
+
+            Closing -= OnWindowClosing;
+            SaveConfiguration();
+            await Dispatcher.InvokeAsync(Close);
+        }
+        private void OnShowAboutWindow(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void OnExitApplication(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        private void OnOpenDocument(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Window_ContentRendered(object sender, System.EventArgs e)
+        {
+            LoadConfiguration();
+            MinHeight = 400;
+            MinWidth = 600;
+            XML_Viewer.SyntaxHighlighting = Utility.LoadHighlightingDefinition("HightlightingRules.xshd");
+            XML_Viewer.Text = File.ReadAllText(@"C:\Program Files (x86)\Steam\steamapps\common\Scrap Mechanic\Data\Gui\Layouts\SurvivalHudGui.layout");
+        }
+
+        private void ScrollViewer_Initialized(object sender, EventArgs e)
+        {
+            // PropertiesScrollView = (ScrollViewer)sender;
         }
     }
 }

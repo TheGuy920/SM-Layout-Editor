@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -22,10 +21,8 @@ namespace SM_Layout_Editor.Converters
             if (list != null)
             {
                 var index = list.IndexOf(values[0]) + 1;
-                Debug.WriteLine(targetType == typeof(string) ? index.ToString() : (object)index);
                 return targetType == typeof(string) ? index.ToString() : (object)index;
             }
-            Debug.WriteLine(null);
             return null; 
         }
 
