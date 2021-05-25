@@ -3,7 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SM_Layout_Editor"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:controls="clr-namespace:SM_Layout_Editor.Controls"
+        xmlns:models="clr-namespace:SM_Layout_Editor.Models"
+        xmlns:viewModels="clr-namespace:SM_Layout_Editor.ViewModels"
+        xmlns:converters="clr-namespace:MyToolkit.Converters;assembly=MyToolkit.Extended"
         mc:Ignorable="d"
         Title="Scrap Mechanic Layout Editor"
         d:DesignHeight="450" d:DesignWidth="800"
@@ -15,6 +19,9 @@
         SizeToContent="WidthAndHeight"
         PreviewMouseMove="Window_MouseMove">
     <Window.Resources>
+        <viewModels:MainWindowModel x:Key="ViewModel" />
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:NotConverter x:Key="NotConverter" />
         <Style x:Key="InvisibleButton" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
@@ -128,13 +135,69 @@
         </Button>
         <Grid x:Name="PropertiesBox" Background="#241f1f" HorizontalAlignment="Right" Margin="0,25,10,10" Width="105">
             <TextBlock Height="19" VerticalAlignment="Top" Background="#362e2e" Padding="3,0" Foreground="LightGray" Text="Properties"/>
-            <Grid Margin="0,24,0,0">
-                <Border BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Foreground="White" Margin="5,2">Text</TextBlock>
-                        <TextBox HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Foreground="White" Background="Transparent" BorderBrush="Gray">Button Text Here</TextBox>
-                    </StackPanel>
-                </Border>
+            <Grid Margin="0,24,0,0" DataContext="{StaticResource ViewModel}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <xcad:DockingManager DocumentsSource="{Binding Documents}" Grid.Row="1" Margin="0,8,0,0"
+                             ActiveContent="{Binding SelectedDocument, Mode=TwoWay}"
+                             x:Name="DockingManager" DocumentClosing="OnDocumentClosing">
+                    <!-- document template -->
+                    <xcad:DockingManager.LayoutItemTemplate>
+                        <DataTemplate>
+                            <ScrollViewer Margin="-1" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}" Focusable="False">
+                                <Border IsEnabled="{Binding IsLoading, Source={StaticResource ViewModel}, Converter={StaticResource NotConverter}}">
+                                    <controls:JsonEditor Margin="8" Data="{Binding Data}" 
+                                                 IsEnabled="{Binding IsReadOnly, Converter={StaticResource NotConverter}}" />
+                                </Border>
+                            </ScrollViewer>
+                        </DataTemplate>
+                    </xcad:DockingManager.LayoutItemTemplate>
+                    <!-- header on floating windows -->
+                    <xcad:DockingManager.DocumentTitleTemplate>
+                        <DataTemplate>
+                            <Border d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,0,0,0">
+                                <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
+                                    d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
+                                    <TextBlock Text="{Binding DisplayTitle}" />
+                                    <TextBlock Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
+                                       Visibility="{Binding IsReadOnly, Converter={StaticResource VisibilityConverter}}" />
+                                    <TextBlock Text=" *" Width="8" 
+                                       Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </xcad:DockingManager.DocumentTitleTemplate>
+                    <!-- header on tabs -->
+                    <xcad:DockingManager.DocumentHeaderTemplate>
+                        <DataTemplate>
+                            <Border d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,2,0,0">
+                                <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
+                                    ToolTip="{Binding FilePath}" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
+                                    <TextBlock Text="{Binding DisplayTitle}" />
+                                    <TextBlock Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
+                                       Visibility="{Binding IsReadOnly, Converter={StaticResource VisibilityConverter}}" />
+                                    <TextBlock Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </xcad:DockingManager.DocumentHeaderTemplate>
+                    <!-- header in pane menu -->
+                    <xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
+                        <DataTemplate>
+                            <Border d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}">
+                                <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
+                                    d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
+                                    <TextBlock Text="{Binding DisplayTitle}" />
+                                    <TextBlock Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
+                                    <TextBlock Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource NotConverter}}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
+                </xcad:DockingManager>
             </Grid>
         </Grid>
         <Grid Background="#1f1c1c" Height="20" VerticalAlignment="Top">

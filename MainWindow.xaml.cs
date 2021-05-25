@@ -8,6 +8,15 @@ using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
 using CustomExtensions;
 using System.Diagnostics;
+using Xceed.Wpf.AvalonDock;
+using SM_Layout_Editor.ViewModels;
+using MyToolkit.Mvvm;
+using System.ComponentModel;
+using System.Linq;
+using MyToolkit.UI;
+using MyToolkit.Utilities;
+using SM_Layout_Editor.Models;
+using SM_Layout_Editor.Utilities;
 
 namespace SM_Layout_Editor
 {
@@ -45,12 +54,15 @@ namespace SM_Layout_Editor
         private Grid ActiveElement = null;
         private Rectangle WorkspaceRec;
         private Grid Properites;
+
+        public MainWindowModel Model { get { return (MainWindowModel)Resources["ViewModel"]; } }
         /// <summary>
         /// Initializaer for the thing and stuff
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            ViewModelHelper.RegisterViewModel(Model, this);
             JObject Default = JObject.Parse(Utility.ReadLocalResource("Fixed.json"));
             JObject Library = JObject.Parse(Utility.ReadLocalResource("Library.json"));
             JObject ExtendedLibrary = null;
@@ -62,8 +74,11 @@ namespace SM_Layout_Editor
             MenuJson = Default;
             WorkspaceRec = (Rectangle)Workspace.Children[0];
             Properites = (Grid)PropertiesBox.Children[1];
-
             Get = this;
+
+            // halp
+            //LoadConfiguration();
+            //Dispatcher.InvokeAsync(delegate { Model.OpenDocumentAsync(@"Samples/Sample.json"); });
         }
         /// <summary>
         /// Event handler for window resize
@@ -277,10 +292,12 @@ namespace SM_Layout_Editor
             // finally, add the overlay to the selected item
             ActiveElement.Children.Add(cc);
             // this will build and add items to the properties tab
-            Properites.Children.Add(
+            /* Properites.Children.Add(
                 GUI.Builder.BuildPropertiesItem(
                     ActiveElement.Tag.ToString(),
                     Tb_TextChanged));
+            */
+            LoadConfiguration();
             // reset starting mouse position
             MouseUtil.ResetMousePos();
             // reset workspace state to "not moving"
@@ -312,7 +329,7 @@ namespace SM_Layout_Editor
             if (ActiveElement != null)
             {
                 ActiveElement.Children.Remove(Utility.FindContentControl("ControlButtonTemplate"));
-                Properites.Children.Clear();
+                // Properites.Children.Clear();
                 ActiveElement = null;
             }
         }
@@ -460,6 +477,28 @@ namespace SM_Layout_Editor
             // This translates the properties text to the textbox text (WIP)
             if(ActiveElement != null)
                 ((TextBox)ActiveElement.Children[0]).Text = ((TextBox)sender).Text;
+        }
+        private async void OnDocumentClosing(object sender, DocumentClosingEventArgs args)
+        {
+            args.Cancel = true;
+            await Model.CloseDocumentAsync((JsonDocumentModel)args.Document.Content);
+        }
+        private ApplicationConfiguration _configuration;
+        private async void LoadConfiguration()
+        {
+            _configuration = JsonApplicationConfiguration.Load<ApplicationConfiguration>("SM_Layout_Editor/Config", true, true);
+
+            Width = _configuration.WindowWidth;
+            Height = _configuration.WindowHeight;
+            WindowState = _configuration.WindowState;
+
+            Model.Configuration = _configuration;
+
+            if (_configuration.IsFirstStart)
+            {
+                _configuration.IsFirstStart = false;
+                await Model.OpenDocumentAsync("Samples/Sample.json", true);
+            }
         }
     }
 }
