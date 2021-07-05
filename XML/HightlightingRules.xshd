@@ -9,18 +9,18 @@
 <Color foreground="#79a1fc" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
 <Color foreground="#79a1fc" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
   
-<Color foreground="#8c8c8c" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
-<Color foreground="#872cb8" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
+<Color foreground="#cc7c4e" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
+<Color foreground="#32779c" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
   
-<Color foreground="#32779c" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
-<Color foreground="#c7c7c7" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
+<Color foreground="#63cc4e" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+<Color foreground="#c4c4c4" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
 
 <Color foreground="#454242" name="XmlIrrelevant" exampleText='&lt;?xml version="1.0"?&gt;' />
   
-<Color foreground="#9bc282" name="NumberType" exampleText="&lt;!-- comment --&gt;" />
-<Color foreground="#a32a2a" name="BooleanType" exampleText="&lt;!-- comment --&gt;" />
+<Color foreground="#316ed6" name="NumberType" exampleText="&lt;!-- comment --&gt;" />
+<Color foreground="#d92e2e" name="BooleanType" exampleText="&lt;!-- comment --&gt;" />
   
-<Color foreground="#b0b828" name="Quotes" exampleText="&lt;!-- comment --&gt;" />
+<Color foreground="#454242" name="Quotes" exampleText="&lt;!-- comment --&gt;" />
 
 <RuleSet>
     <Span color="Comment" multiline="true">

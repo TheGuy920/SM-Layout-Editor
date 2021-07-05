@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:SM_Layout_Editor"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="pack://application:,,,/Json/Themes/generic.xaml" />
+        
     </Application.Resources>
 </Application>

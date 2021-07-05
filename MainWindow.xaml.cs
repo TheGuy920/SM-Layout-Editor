@@ -9,16 +9,20 @@ using Newtonsoft.Json.Linq;
 using CustomExtensions;
 using System.Diagnostics;
 using Xceed.Wpf.AvalonDock;
-using SM_Layout_Editor.ViewModels;
 using MyToolkit.Mvvm;
 using System.ComponentModel;
 using System.Linq;
 using MyToolkit.UI;
 using MyToolkit.Utilities;
-using SM_Layout_Editor.Models;
 using SM_Layout_Editor.Utilities;
 using SM_Layout_Editor.Windows;
 using Microsoft.Win32;
+using Gameloop.Vdf;
+using Gameloop.Vdf.Linq;
+using Path = System.IO.Path;
+using Gameloop.Vdf.JsonConverter;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SM_Layout_Editor
 {
@@ -34,6 +38,7 @@ namespace SM_Layout_Editor
         public static int MoveSensitivity = 1;
         public static int ZoomSensitivity = 1;
         public static int GridSize = 10;
+        public static Tuple<int, int> Resolution;
 
         private bool ResizingProperties;
         private bool ResizingEditor;
@@ -41,6 +46,7 @@ namespace SM_Layout_Editor
         private bool DraggingSubMenuItem;
         private bool SelectedItemDoubleClick;
         private int ItemScaleMode = -1;
+
         private readonly Thickness[] adjustSubItem = new Thickness[]
         {
             new Thickness(1,1,0,0),
@@ -52,20 +58,25 @@ namespace SM_Layout_Editor
             new Thickness(1,0,0,1),
             new Thickness(1,0,0,0)
         };
+
         private MenuState WindowMenu = MenuState.Closed;
-        private JObject MenuJson;
+        private JObject Library;
         private Grid ActiveElement = null;
         private Rectangle WorkspaceRec;
         private Grid Properites;
+
         private string SteamPath;
+        private string GamePath;
         private bool Installed;
         private bool Running;
         private bool Updating;
-        private bool Firewall;
         private string SteamDisplayName;
         private string Language;
 
-        public MainWindowModel Model { get { return (MainWindowModel)Resources["ViewModel"]; } }
+        private ApplicationConfiguration _configuration;
+        private MenuItem prevItem = null;
+        private bool HasContentRendered = false;
+
         /// <summary>
         /// Initializaer for the thing and stuff
         /// </summary>
@@ -73,44 +84,45 @@ namespace SM_Layout_Editor
         {
             InitializeComponent();
 
-            ViewModelHelper.RegisterViewModel(Model, this);
-
-            RegisterFileOpenHandler();
-            RegisterShortcuts();
-
-
-            JObject Default = JObject.Parse(Utility.ReadLocalResource("Fixed.json"));
-            JObject Library = JObject.Parse(Utility.ReadLocalResource("Library.json"));
-
-            JObject ExtendedLibrary = null;
-            if (File.Exists("Library.json"))
-                ExtendedLibrary = JObject.Parse(File.ReadAllText("Library.json"));
-            Default.Merge(Library);
-            if(ExtendedLibrary != null)
-                Default.Merge(ExtendedLibrary);
-
-            MenuJson = Default;
+            Library = JObject.Parse(Utility.ReadLocalResource("Library.json"));
             WorkspaceRec = (Rectangle)Workspace.Children[0];
             Properites = (Grid)PropertiesBox.Children[1];
             Get = this;
 
             Closing += OnWindowClosing;
 
+            // STEAM STUFF
+
             SteamPath = Utility.GetRegVal<string>("Software\\Valve\\Steam", "SteamPath").ToValidPath();
             Installed = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Installed");
             Updating = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Updating");
             Running = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Running");
-            Firewall = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Firewall");
             SteamDisplayName = Utility.GetRegVal<string>("Software\\Valve\\Steam", "LastGameNameUsed");
             Language = Utility.GetRegVal<string>("Software\\Valve\\Steam", "Language").CapitilzeFirst();
-            Debug.WriteLine(
-                $"SteamPath: {SteamPath},\n" +
-                $"Installed: {Installed},\n" +
-                $"Updating: {Updating},\n" +
-                $"Running: {Running},\n" +
-                $"Firewall: {Firewall},\n" +
-                $"SteamDisplayName: {SteamDisplayName},\n" +
-                $"Language: {Language}");
+
+            if (!Directory.Exists(Path.Combine(SteamPath, "steamapps", "common", "Scrap Mechanic"))) {
+                VProperty VDF_Object = VdfConvert.Deserialize(File.ReadAllText(Path.Combine(SteamPath, "steamapps", "libraryfolders.vdf")));
+                JObject GameInstallationPaths = (JObject)JObject.Parse("{" + VDF_Object.ToJson().ToString() + "}")["LibraryFolders"];
+                int index = 1;
+                while (GameInstallationPaths.ContainsKey(index.ToString()))
+                {
+                    string smPath = Path.Combine(GameInstallationPaths[index.ToString()].ToString(), "steamapps", "common", "Scrap Mechanic");
+                    if (Directory.Exists(smPath))
+                    {
+                        GamePath = smPath;
+                        break;
+                    }
+                    index++;
+                }
+            }
+            else
+            {
+                GamePath = Path.Combine(SteamPath, "steamapps", "common", "Scrap Mechanic");
+            }
+
+            Debug.WriteLine(GamePath);
+
+            LoadConfiguration();
         }
         /// <summary>
         /// Event handler for window resize
@@ -273,74 +285,23 @@ namespace SM_Layout_Editor
             }
         }
         /// <summary>
-        /// This is the handler for when a menu top-tier item is opened
-        /// like, file, view, and settings.
-        /// once clicked, it builds the menu
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuButton_Click(object sender, MouseEventArgs e)
-        {
-            // get menu tag (basically index)
-            MenuState enumTag = (MenuState)int.Parse(((Button)sender).Tag.ToString());
-            // only update menu when the target menu is not the current menu
-            if (WindowMenu != enumTag)
-            {
-                // update GUI menu properties
-                Menu.Visibility = Visibility.Visible;
-                OffClickDetection.Visibility = Visibility.Visible;
-                Menu.SetMarginL(10 + (55 * ((int)enumTag-1)));
-                MenuList.Items.Clear();
-                int Height = 5;
-                // load json to build the menu
-                foreach (var item in MenuJson[enumTag.ToString("g")])
-                {
-                    Height += 25;
-                    TextBlock buttonToAdd = new() 
-                    {
-                        Text = item["Display"].ToString(),
-                        Tag = item["Tag"].ToString(),
-                        Height = 20
-                    };
-                    MenuList.Items.Add(buttonToAdd);
-                }
-                MenuList.Height = Height;
-                WindowMenu = enumTag;
-            }
-        }
-        /// <summary>
         /// Event handler for the menu options
         /// This is a generic event handler, that is going to need lots of work
         /// It should be used for all menu options and when their selection is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AddNewElement(object sender, SelectionChangedEventArgs e)
         {
-            // get the listbox where the change came from
-            var box = (ListBox)sender;
-            // check the listbox tag, if its the toolbox,
-            // then it will not start with MENU-
-            if (!box.Tag.ToString().StartsWith("MENU-"))
-            {
-                if (box.SelectedIndex >= 0)
-                {
-                    TextBlock item = (TextBlock)box.SelectedItem;
-                    Grid g = GUI.Builder.BuildToolBoxItem(
-                        item.Tag.ToString(),
-                        this,
-                        B_PreviewMouseDown,
-                        B_PreviewMouseUp);
-                    Workspace.Children.Add(g);
-                    box.SelectedIndex = -1;
-                }
-            }
-            else
-            {
-                var settings = new SettingsWindow();
-                settings.ShowDialog();
-            }
+            /*
+            Grid g = GUI.Builder.BuildToolBoxItem(
+                item.Tag.ToString(),
+                this,
+                B_PreviewMouseDown,
+                B_PreviewMouseUp);
+            Workspace.Children.Add(g);
             Menu_PreviewMouseDown(sender, null);
+            */
         }
         /// <summary>
         /// MouseDown event for when a UI elemenent inside the workspace has been selected
@@ -370,7 +331,6 @@ namespace SM_Layout_Editor
                     ActiveElement.Tag.ToString(),
                     Tb_TextChanged));
             */
-            Model.OpenDocumentAsync("Samples/Sample", false);
             // reset starting mouse position
             MouseUtil.ResetMousePos();
             // reset workspace state to "not moving"
@@ -394,7 +354,6 @@ namespace SM_Layout_Editor
         {
             // change states and visibilities
             WindowMenu = MenuState.Closed;
-            Menu.Visibility = Visibility.Hidden;
             OffClickDetection.Visibility = Visibility.Hidden;
             // OffClickDetection is also used for items
             // it will remove the ActiveElement and reset other various varaibles
@@ -415,29 +374,33 @@ namespace SM_Layout_Editor
         {
             if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Delta != 0)
             {
-                // load previous scale for comparison
-                var prev = Scale;
-                // calcualte scale with pre-set sensitivity of 2500
-                // this can be changed to affect the zoom sensitivity
-                Scale = Math.Clamp(Scale + ((float)e.Delta / 2500), 0.1, 4);
-                // scale the workspace
-                Workspace.RenderTransform = new ScaleTransform()
-                {
-                    ScaleX = Scale,
-                    ScaleY = Scale
-                };
-                // scale boarder
-                WorkspaceRec.StrokeThickness = 3 / Scale;
-                // calcualte the positional offset for Left and Top
-                var wDiff = (((Workspace.ActualWidth * Scale) - Workspace.ActualWidth) / 2) -
-                    (((Workspace.ActualWidth * prev) - Workspace.ActualWidth) / 2);
-                var hDiff = (((Workspace.ActualHeight * Scale) - Workspace.ActualHeight) / 2) -
-                    (((Workspace.ActualHeight * prev) - Workspace.ActualHeight) / 2);
-                // adjust position and clamp
-                Workspace.SetMarginLT(
-                    Math.Clamp(Workspace.Margin.Left - wDiff, -(Workspace.ActualWidth * Scale - 90), ViewBox.ActualWidth - 90),
-                    Math.Clamp(Workspace.Margin.Top - hDiff, -(Workspace.ActualHeight * Scale - 60), ViewBox.ActualHeight - 60));
+                ChangeScale(Math.Clamp(Scale + ((float)e.Delta / 3500), 0.1, 4));
             }
+        }
+        private void ChangeScale(double newScale)
+        {
+            // load previous scale for comparison
+            var prev = Scale;
+            // calcualte scale with pre-set sensitivity of 2500
+            // this can be changed to affect the zoom sensitivity
+            Scale = newScale;
+            // scale the workspace
+            Workspace.RenderTransform = new ScaleTransform()
+            {
+                ScaleX = Scale,
+                ScaleY = Scale
+            };
+            // scale boarder
+            WorkspaceRec.StrokeThickness = 3 / Scale;
+            // calcualte the positional offset for Left and Top
+            var wDiff = (((Workspace.ActualWidth * Scale) - Workspace.ActualWidth) / 2) -
+                (((Workspace.ActualWidth * prev) - Workspace.ActualWidth) / 2);
+            var hDiff = (((Workspace.ActualHeight * Scale) - Workspace.ActualHeight) / 2) -
+                (((Workspace.ActualHeight * prev) - Workspace.ActualHeight) / 2);
+            // adjust position and clamp
+            Workspace.SetMarginLT(
+                Math.Clamp(Workspace.Margin.Left - wDiff, -(Workspace.ActualWidth * Scale - 90), ViewBox.ActualWidth - 90),
+                Math.Clamp(Workspace.Margin.Top - hDiff, -(Workspace.ActualHeight * Scale - 60), ViewBox.ActualHeight - 60));
         }
         /// <summary>
         /// This is the mouse down event for the viewbox, and only the viewbox
@@ -539,84 +502,79 @@ namespace SM_Layout_Editor
             if(e.Key == Key.Delete && ActiveElement != null)
                 Workspace.Children.Remove(ActiveElement);
         }
-        /// <summary>
-        /// TextChangedEvent for the properties menu
-        /// this should be use for ALL editable text properties
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tb_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // This translates the properties text to the textbox text (WIP)
-            if(ActiveElement != null)
-                ((TextBox)ActiveElement.Children[0]).Text = ((TextBox)sender).Text;
-        }
-        private ApplicationConfiguration _configuration;
-        private async void LoadConfiguration()
+        private async Task LoadConfiguration()
         {
             _configuration = JsonApplicationConfiguration.Load<ApplicationConfiguration>("SM_Layout_Editor/Config", true, true);
-            Width = _configuration.WindowWidth;
-            Height = _configuration.WindowHeight;
+            
+            if(_configuration.Top > 0)
+                Top = _configuration.Top;
+            if (_configuration.Left > 0)
+                Left = _configuration.Left;
+            if (_configuration.WindowWidth > 0)
+                Width = _configuration.WindowWidth;
+            if (_configuration.WindowHeight > 0)
+                Height = _configuration.WindowHeight;
+
+            MoveSensitivity = _configuration.MoveSensitivity;
+            ZoomSensitivity = _configuration.ZoomSensitivity;
+            GridSize = _configuration.GridSize;
             WindowState = _configuration.WindowState;
-            Model.Configuration = _configuration;
+
             if (_configuration.IsFirstStart)
-            {
                 _configuration.IsFirstStart = false;
-                await Model.OpenDocumentAsync("Samples/Sample", false);
+
+            while (!HasContentRendered) { await Task.Delay(100); }
+
+            if(_configuration.Scale > 0)
+                ChangeScale(_configuration.Scale);
+
+            if (_configuration.Resolution != null)
+                Resolution_Click(new Tuple<object, object>(_configuration.Resolution, _configuration.Workspace), null);
+            else
+                Resolution_Click(new Tuple<int, int>(1280, 720), null);
+
+            var sws = _configuration.SubWindowSizing;
+            if (sws != null)
+            {
+                ViewBox.SetMarginR(sws.Item1);
+                PropertiesBox.Width = sws.Item2;
+                ResizeProp.SetMarginR(sws.Item3);
+                UpperWorkspace.SetMarginB(sws.Item4);
+                LowwerWorkspace.Height = sws.Item5;
             }
         }
         private void SaveConfiguration()
         {
+            _configuration.Left = Left;
+            _configuration.Top = Top;
             _configuration.WindowWidth = Width;
             _configuration.WindowHeight = Height;
             _configuration.WindowState = WindowState;
+            _configuration.Resolution = Resolution;
+            _configuration.GridSize = GridSize;
+            _configuration.Scale = Scale;
+            _configuration.MoveSensitivity = MoveSensitivity;
+            _configuration.ZoomSensitivity = ZoomSensitivity;
+            Thickness m = Workspace.Margin;
+            _configuration.Workspace = new(new(m.Left, m.Top), new(Workspace.ActualWidth, Workspace.ActualHeight));
+
+            _configuration.SubWindowSizing = new(
+                ViewBox.Margin.Right,
+                PropertiesBox.Width,
+                ResizeProp.Margin.Right,
+                UpperWorkspace.Margin.Bottom,
+                LowwerWorkspace.Height);
 
             JsonApplicationConfiguration.Save("SM_Layout_Editor/Config", _configuration, true);
         }
-        private void RegisterShortcuts()
-        {
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.N, ModifierKeys.Control),
-                () => Model.CreateDocumentCommand.TryExecute());
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.O, ModifierKeys.Control),
-                () => Model.OpenDocumentCommand.TryExecute());
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.S, ModifierKeys.Control),
-                () => Model.SaveDocumentCommand.TryExecute(Model.SelectedDocument));
-
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.W, ModifierKeys.Control),
-                () => Model.CloseDocumentCommand.TryExecute(Model.SelectedDocument));
-
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.Z, ModifierKeys.Control),
-                () => Model.UndoCommand.TryExecute(Model.SelectedDocument));
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.Y, ModifierKeys.Control),
-                () => Model.RedoCommand.TryExecute(Model.SelectedDocument));
-
-            ShortcutManager.RegisterShortcut(typeof(MainWindow), new KeyGesture(Key.U, ModifierKeys.Control),
-                () => Model.ValidateDocumentCommand.TryExecute(Model.SelectedDocument));
-        }
-        private void RegisterFileOpenHandler()
-        {
-            var fileHandler = new FileOpenHandler();
-            fileHandler.FileOpen += (sender, args) => { Model.OpenDocumentAsync(args.FileName); };
-            fileHandler.Initialize(this);
-        }
-        private async void OnDocumentClosing(object sender, DocumentClosingEventArgs args)
-        {
-            args.Cancel = true;
-            await Model.CloseDocumentAsync((JsonDocumentModel)args.Document.Content);
-        }
         private async void OnWindowClosing(object sender, CancelEventArgs args)
         {
+            SaveConfiguration();
+
             args.Cancel = true;
 
-            foreach (var document in Model.Documents.ToArray())
-            {
-                var result = await Model.CloseDocumentAsync(document);
-                if (!result)
-                    return;
-            }
-
             Closing -= OnWindowClosing;
-            SaveConfiguration();
+  
             await Dispatcher.InvokeAsync(Close);
         }
         private void OnShowAboutWindow(object sender, RoutedEventArgs e)
@@ -627,22 +585,90 @@ namespace SM_Layout_Editor
         {
             Close();
         }
-        private void OnOpenDocument(object sender, RoutedEventArgs e)
+        private void Window_ContentRendered(object sender, EventArgs e)
         {
-
-        }
-        private void Window_ContentRendered(object sender, System.EventArgs e)
-        {
-            LoadConfiguration();
-            MinHeight = 400;
-            MinWidth = 600;
             XML_Viewer.SyntaxHighlighting = Utility.LoadHighlightingDefinition("HightlightingRules.xshd");
-            XML_Viewer.Text = File.ReadAllText(@"C:\Program Files (x86)\Steam\steamapps\common\Scrap Mechanic\Data\Gui\Layouts\SurvivalHudGui.layout");
+            XML_Viewer.Text = File.ReadAllText(@"C:\Program Files (x86)\Steam\steamapps\common\Scrap Mechanic\Data\Gui\Layouts\Hud\Hud_SurvivalHud.layout");
+            HasContentRendered = true;
         }
-
-        private void ScrollViewer_Initialized(object sender, EventArgs e)
+        private void ToolBar_Loaded(object sender, RoutedEventArgs e)
         {
-            // PropertiesScrollView = (ScrollViewer)sender;
+            ToolBar toolBar = sender as ToolBar;
+            var overflowGrid = toolBar.Template.FindName("OverflowGrid", toolBar) as FrameworkElement;
+            
+            if (overflowGrid != null)
+                overflowGrid.Visibility = Visibility.Collapsed;
+
+            var mainPanelBorder = toolBar.Template.FindName("MainPanelBorder", toolBar) as FrameworkElement;
+            
+            if (mainPanelBorder != null)
+                mainPanelBorder.Margin = new Thickness();
+        }
+        private void Resolution_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Tuple<int, int> || sender is Tuple<object, object>)
+            {
+                object tuple = sender;
+                object additionalArgs = null;
+                if (!(sender is Tuple<int, int>))
+                {
+                    Tuple<object, object> obj = sender as Tuple<object, object>;
+                    tuple = obj.Item1 as Tuple<int, int>;
+                    additionalArgs = obj.Item2;
+                }
+
+                Tuple<int, int> args = tuple as Tuple<int, int>;
+
+                SetResolution(args.Item1, args.Item2, additionalArgs);
+
+                foreach (MenuItem item in ResolutionSideMenu.Items)
+                    if (item.Header.ToString().Contains(args.Item1 + "x" + args.Item2))
+                    {
+                        item.Background = Brushes.LightBlue;
+                        prevItem = item;
+                    }
+            }
+            else
+            {
+                MenuItem SelectedOption = sender as MenuItem;
+
+                if (prevItem != null)
+                    prevItem.Background = Brushes.Transparent;
+
+                var resoultion = SelectedOption.Header.ToString().Split(" ")[0].Split("x");
+
+                SetResolution(int.Parse(resoultion[0]), int.Parse(resoultion[1]));
+
+                SelectedOption.Background = Brushes.LightBlue;
+
+                prevItem = SelectedOption;
+            }
+        }
+        private void SetResolution(int width, int height, object optional = null)
+        {
+            Resolution = new(width, height);
+            if (optional == null)
+            {
+                Workspace.SetWidthAndHeight(width, height);
+
+                double NewScaleH = Scale, NewScaleW = Scale;
+                if (width > ViewBox.ActualWidth)
+                    NewScaleW = (ViewBox.ActualWidth - 50) / width;
+                if (height > ViewBox.ActualHeight)
+                    NewScaleH = (ViewBox.ActualHeight - 50) / height;
+
+                ChangeScale(Math.Min(NewScaleH, NewScaleW));
+
+                Workspace.SetMarginLT(
+                    (ViewBox.ActualWidth - width * Scale) / 2,
+                    (ViewBox.ActualHeight - height * Scale) / 2);
+            }
+            else
+            {
+                var w = optional as Tuple<Tuple<double, double>, Tuple<double, double>>;
+                Workspace.SetMarginLT(w.Item1.Item1, w.Item1.Item2);
+                Workspace.SetWidthAndHeight(w.Item2.Item1, w.Item2.Item2);
+            }            
         }
     }
 }

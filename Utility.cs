@@ -55,7 +55,6 @@ namespace SM_Layout_Editor
         {
             string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
             var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName));
-            Debug.WriteLine(stream);
             using var reader = new XmlTextReader(stream);
             return HighlightingLoader.Load(reader, HighlightingManager.Instance);
         }

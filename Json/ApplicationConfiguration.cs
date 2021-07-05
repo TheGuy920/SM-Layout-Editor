@@ -1,11 +1,12 @@
-﻿﻿//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="ApplicationConfiguration.cs" company="Visual JSON Editor">
 //     Copyright (c) Rico Suter. All rights reserved.
 // </copyright>
 // <license>http://visualjsoneditor.codeplex.com/license</license>
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
- 
+
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -20,9 +21,12 @@ namespace SM_Layout_Editor
         {
             IsFirstStart = true;
             
-            WindowHeight = 600;
-            WindowWidth = 700;
             WindowState = WindowState.Normal;
+
+            Scale = 1;
+            GridSize = 1;
+            MoveSensitivity = 1;
+            ZoomSensitivity = 1;
 
             RecentFiles = new ObservableCollection<RecentFile>();
         }
@@ -32,6 +36,15 @@ namespace SM_Layout_Editor
         public double WindowHeight { get; set; }
         public WindowState WindowState { get; set; }
         public ObservableCollection<RecentFile> RecentFiles { get; set; }
+        public double Left { get; set; }
+        public double Top { get; set; }
+        public double Scale { get; set; }
+        public int GridSize { get; set; }
+        public int MoveSensitivity { get; set; }
+        public int ZoomSensitivity { get; set; }
+        public Tuple<int, int> Resolution { get; set; }
+        public Tuple<Tuple<double, double>, Tuple<double, double>> Workspace { get; set; }
+        public Tuple<double, double, double, double, double> SubWindowSizing { get; set; }
     }
 
     /// <summary>Describes a recently opened file. </summary>

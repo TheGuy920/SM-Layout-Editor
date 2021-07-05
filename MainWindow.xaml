@@ -4,25 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
-        xmlns:controls="clr-namespace:SM_Layout_Editor.Controls"
-        xmlns:models="clr-namespace:SM_Layout_Editor.Models"
-        xmlns:viewModels="clr-namespace:SM_Layout_Editor.ViewModels"
-        xmlns:converters="clr-namespace:MyToolkit.Converters;assembly=MyToolkit.Extended"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d" 
         Title="Scrap Mechanic Layout Editor"
         d:DesignHeight="750" d:DesignWidth="1000"
         Height="750" Width="1000"
-        MinHeight="750" MinWidth="1000"
+        MinHeight="400" MinWidth="600"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         SizeChanged="Window_SizeChanged"
         PreviewMouseMove="Window_MouseMove"
         ContentRendered="Window_ContentRendered">
     <Window.Resources>
-        <viewModels:MainWindowModel x:Key="ViewModel" />
-        <converters:VisibilityConverter x:Key="VisibilityConverter" />
-        <converters:NotConverter x:Key="NotConverter" />
         <Style x:Key="InvisibleButton" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
@@ -92,7 +85,7 @@
     </Window.Resources>
     <Grid Background="#242222" PreviewMouseUp="Grid_PreviewMouseUp" PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid x:Name="UpperWorkspace" Margin="0,0,0,320">
-            <Grid x:Name="ViewBox" Margin="10,25,320,0" Background="Transparent"
+            <Grid x:Name="ViewBox" Margin="10,35,320,0" Background="Transparent"
               PreviewMouseWheel="Grid_PreviewMouseWheel" PreviewMouseDown="Grid_PreviewMouseDown"
               MouseLeave="ViewBox_MouseLeave"
               ClipToBounds="True">
@@ -125,82 +118,20 @@
                 <Grid x:Name="Workspace"
                   ClipToBounds="True" Background="Transparent" Width="600" Height="350"
                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                  Margin="35,15,-1000,-1000">
+                  Margin="35,15,-50000,-5000">
                     <Rectangle Stroke="Gray" StrokeThickness="3"/>
                 </Grid>
             </Grid>
-            <Button x:Name="ResizeProp" Margin="0,25,315,0"
+            <Button x:Name="ResizeProp" Margin="0,35,315,0"
                 Background="DarkGray" BorderThickness="0"
                 HorizontalAlignment="Right" Cursor="SizeWE" Width="5"
                 PreviewMouseDown="ResizeProp_MouseDown"
                 PreviewMouseUp="ResizeProp_MouseUp">
             </Button>
-            <Grid x:Name="PropertiesBox" Background="#241f1f" HorizontalAlignment="Right" Margin="0,25,10,0" Width="305">
+            <Grid x:Name="PropertiesBox" Background="#241f1f" HorizontalAlignment="Right" Margin="0,35,10,0" Width="305">
                 <TextBlock Height="19" VerticalAlignment="Top" Background="#362e2e" Padding="3,0" Foreground="LightGray" Text="Properties"/>
-                <Grid Margin="0,24,0,0" DataContext="{StaticResource ViewModel}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="67*" />
-                        <RowDefinition Height="6*"/>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <xcad:DockingManager DocumentsSource="{Binding Documents}" Grid.Row="1" Margin="0,8,0,0"
-                             ActiveContent="{Binding SelectedDocument, Mode=TwoWay}" Background="Transparent"
-                             x:Name="DockingManager_0" DocumentClosing="OnDocumentClosing" BorderThickness="0" Grid.RowSpan="2">
-                        <!-- document template -->
-                        <xcad:DockingManager.LayoutItemTemplate>
-                            <DataTemplate>
-                                <ScrollViewer Initialized="ScrollViewer_Initialized" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderThickness="0" Margin="-1" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}" Focusable="False">
-                                    <Border IsEnabled="{Binding IsLoading, Source={StaticResource ViewModel}, Converter={StaticResource NotConverter}}">
-                                        <controls:JsonEditor Margin="8" Data="{Binding Data}" 
-                                                 IsEnabled="{Binding IsReadOnly, Converter={StaticResource NotConverter}}" />
-                                    </Border>
-                                </ScrollViewer>
-                            </DataTemplate>
-                        </xcad:DockingManager.LayoutItemTemplate>
-                        <!-- header on floating windows -->
-                        <xcad:DockingManager.DocumentTitleTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="0" d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,0,0,0">
-                                    <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
-                                    d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
-                                        <TextBlock Foreground="Black" Text="{Binding DisplayTitle}" />
-                                        <TextBlock Foreground="Black" Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
-                                       Visibility="{Binding IsReadOnly, Converter={StaticResource VisibilityConverter}}" />
-                                        <TextBlock Text=" *" Width="8" 
-                                       Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </xcad:DockingManager.DocumentTitleTemplate>
-                        <!-- header on tabs -->
-                        <xcad:DockingManager.DocumentHeaderTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="0" d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}" Margin="6,2,0,0">
-                                    <StackPanel Orientation="Horizontal" DataContext="{Binding Content}"
-                                    ToolTip="{Binding DisplayTitle}" d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
-                                        <TextBlock Foreground="Black" Text="{Binding DisplayTitle}"/>
-                                        <TextBlock Foreground="Black" Text="{Binding Strings.LabelReadOnly, Source={StaticResource ViewModel}}" 
-                                       Visibility="{Binding IsReadOnly, Converter={StaticResource VisibilityConverter}}" />
-                                        <TextBlock Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </xcad:DockingManager.DocumentHeaderTemplate>
-                        <!-- header in pane menu -->
-                        <xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="0" d:DataContext="{d:DesignInstance Type=xcad:LayoutDocument}">
-                                    <StackPanel Orientation="Horizontal" DataContext="{Binding Content}" 
-                                    d:DataContext="{d:DesignInstance Type=models:JsonDocumentModel}">
-                                        <TextBlock Foreground="Black" Text="{Binding DisplayTitle}" />
-                                        <TextBlock Foreground="Black" Text=" *" Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource VisibilityConverter}}" />
-                                        <TextBlock Width="8" Visibility="{Binding UndoRedoManager.CanUndo, Converter={StaticResource NotConverter}}" />
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </xcad:DockingManager.DocumentPaneMenuItemHeaderTemplate>
-                    </xcad:DockingManager>
+                <Grid Margin="0,24,0,0">
+                    
                 </Grid>
             </Grid>
             <Button x:Name="ResizeEditor" Margin="10,0,10,-5"
@@ -218,26 +149,56 @@
                 SyntaxHighlighting="XML"
                 FontSize="10pt" Background="Transparent"/>
         </Grid>
-        <Grid Background="#1f1c1c" Height="20" VerticalAlignment="Top">
-            <Button Content="Settings" BorderThickness="0" Background="Transparent" Foreground="LightGray"
-                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="10,0,0,0" Width="55"
-                    PreviewMouseDown="MenuButton_Click" Tag="1"/>
-            <Button Content="File" BorderThickness="0" Background="Transparent" Foreground="LightGray"
-                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="65,0,0,0" Width="55"
-                    PreviewMouseDown="MenuButton_Click" Tag="2"/>
-            <Button Content="View" BorderThickness="0" Background="Transparent" Foreground="LightGray"
-                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="120,0,0,0" Width="55"
-                    PreviewMouseDown="MenuButton_Click" Tag="3"/>
-            <Button Content="Toolbox" BorderThickness="0" Background="Transparent" Foreground="LightGray"
-                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Margin="175,0,0,0" Width="55"
-                    PreviewMouseDown="MenuButton_Click" Tag="4"/>
+        <Grid Background="#1f1c1c" Height="30" VerticalAlignment="Top">
+            <ToolBarPanel DockPanel.Dock="Top">
+                <ToolBar BorderThickness="0" ToolBarTray.IsLocked="True" Background="Transparent" Loaded="ToolBar_Loaded">
+                    <Menu Background="Transparent" >
+                        <MenuItem Header="Settings" Foreground="White">
+                            <MenuItem Header="Resolution"/>
+                            <MenuItem Header="Exit"/>
+                        </MenuItem>
+                    </Menu>
+                    <Menu Background="Transparent">
+                        <MenuItem Header="File" Foreground="White">
+                            <MenuItem Header="Load file"/>
+                            <MenuItem Header="Save file" IsCheckable="False"/>
+                            <MenuItem Header="Save as"/>
+                            <MenuItem Header="Save project"/>
+                        </MenuItem>
+                    </Menu>
+                    <Menu Background="Transparent">
+                        <MenuItem Header="View" Foreground="White">
+                            <MenuItem Header="Resolution" x:Name="ResolutionSideMenu">
+                                <MenuItem Header="1024x768" Click="Resolution_Click"/>
+                                <MenuItem Header="1152x864" Click="Resolution_Click"/>
+                                <MenuItem Header="1280x720 - 720p" Click="Resolution_Click"/>
+                                <MenuItem Header="1280x800" Click="Resolution_Click"/>
+                                <MenuItem Header="1280x960" Click="Resolution_Click"/>
+                                <MenuItem Header="1280x1024" Click="Resolution_Click"/>
+                                <MenuItem Header="1360x768" Click="Resolution_Click"/>
+                                <MenuItem Header="1366x768" Click="Resolution_Click"/>
+                                <MenuItem Header="1440x900" Click="Resolution_Click"/>
+                                <MenuItem Header="1680x1050" Click="Resolution_Click"/>
+                                <MenuItem Header="1920x1080 - 1080p" Click="Resolution_Click"/>
+                                <MenuItem Header="2103x1183" Click="Resolution_Click"/>
+                                <MenuItem Header="2351x1323" Click="Resolution_Click"/>
+                                <MenuItem Header="2560x1440 - 1440p" Click="Resolution_Click"/>
+                                <MenuItem Header="2715x1527" Click="Resolution_Click"/>
+                                <MenuItem Header="2880x1620" Click="Resolution_Click"/>
+                                <MenuItem Header="3325x1871" Click="Resolution_Click"/>
+                                <MenuItem Header="3840x2160 - 4k" Click="Resolution_Click"/>
+                            </MenuItem>
+                        </MenuItem>
+                    </Menu>
+                    <Menu Background="Transparent">
+                        <MenuItem Header="Toolbox" Foreground="White">
+                            <MenuItem Header="MenuItem1"/>
+                        </MenuItem>
+                    </Menu>
+                </ToolBar>
+            </ToolBarPanel>
         </Grid>
         <Button x:Name="OffClickDetection" Visibility="Hidden" PreviewMouseDown="Menu_PreviewMouseDown"
                 Background="Transparent" BorderThickness="0" Style="{StaticResource InvisibleButton}" Margin="0,25,0,0"/>
-        <Grid x:Name="Menu" Visibility="Hidden"  Margin="10,25,10,10" Width="200" HorizontalAlignment="Left">
-            <ListBox x:Name="MenuList" SelectionChanged="MenuList_SelectionChanged" Background="White" Tag="0"
-                        BorderThickness="2" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" Height="120">
-            </ListBox>
-        </Grid>
     </Grid>
 </Window>

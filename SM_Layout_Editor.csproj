@@ -15,38 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Fixed.json" />
-    <None Remove="Json\Images\ButtonAboutLarge.png" />
-    <None Remove="Json\Images\ButtonAboutSmall.png" />
-    <None Remove="Json\Images\ButtonCloseLarge.png" />
-    <None Remove="Json\Images\ButtonCloseSmall.png" />
-    <None Remove="Json\Images\ButtonConfigurationLarge.png" />
-    <None Remove="Json\Images\ButtonConfigurationSmall.png" />
-    <None Remove="Json\Images\ButtonCreateLarge.png" />
-    <None Remove="Json\Images\ButtonCreateLarge2.png" />
-    <None Remove="Json\Images\ButtonCreateSmall.png" />
-    <None Remove="Json\Images\ButtonCreateSmall2.png" />
-    <None Remove="Json\Images\ButtonExitSmall.png" />
-    <None Remove="Json\Images\ButtonOpenLarge.png" />
-    <None Remove="Json\Images\ButtonOpenSmall.png" />
-    <None Remove="Json\Images\ButtonRedoSmall.png" />
-    <None Remove="Json\Images\ButtonSaveLarge.png" />
-    <None Remove="Json\Images\ButtonSaveSmall.png" />
-    <None Remove="Json\Images\ButtonUndoSmall.png" />
-    <None Remove="Json\Images\ButtonValidateLarge.png" />
-    <None Remove="Json\Images\ButtonValidateSmall.png" />
     <None Remove="Library.json" />
     <None Remove="XML\HightlightingRules.xshd" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Fixed.json" />
     <EmbeddedResource Include="Library.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.1.1" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="2.4.0" />
+    <PackageReference Include="Gameloop.Vdf" Version="0.6.1" />
+    <PackageReference Include="Gameloop.Vdf.JsonConverter" Version="0.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.0.1" />
     <PackageReference Include="MyToolkit" Version="2.5.16" />
     <PackageReference Include="MyToolkit.Extended" Version="2.5.16" />
@@ -56,45 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Json\Images\ButtonAboutLarge.png" />
-    <Resource Include="Json\Images\ButtonAboutSmall.png" />
-    <Resource Include="Json\Images\ButtonCloseLarge.png" />
-    <Resource Include="Json\Images\ButtonCloseSmall.png" />
-    <Resource Include="Json\Images\ButtonConfigurationLarge.png" />
-    <Resource Include="Json\Images\ButtonConfigurationSmall.png" />
-    <Resource Include="Json\Images\ButtonCreateLarge.png" />
-    <Resource Include="Json\Images\ButtonCreateLarge2.png" />
-    <Resource Include="Json\Images\ButtonCreateSmall.png" />
-    <Resource Include="Json\Images\ButtonCreateSmall2.png" />
-    <Resource Include="Json\Images\ButtonExitSmall.png" />
-    <Resource Include="Json\Images\ButtonOpenLarge.png" />
-    <Resource Include="Json\Images\ButtonOpenSmall.png" />
-    <Resource Include="Json\Images\ButtonRedoSmall.png" />
-    <Resource Include="Json\Images\ButtonSaveLarge.png" />
-    <Resource Include="Json\Images\ButtonSaveSmall.png" />
-    <Resource Include="Json\Images\ButtonUndoSmall.png" />
-    <Resource Include="Json\Images\ButtonValidateLarge.png" />
-    <Resource Include="Json\Images\ButtonValidateSmall.png" />
     <EmbeddedResource Include="XML\HightlightingRules.xshd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Json\Localization\Strings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Json\Localization\Strings.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Json\Localization\Strings.resx">
-      <CustomToolNamespace></CustomToolNamespace>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -107,13 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Json\Controls\JsonEditor.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Update="Json\Themes\Generic.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Page>
     <Page Update="MainWindow.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
