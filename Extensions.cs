@@ -41,7 +41,7 @@ namespace CustomExtensions
             button.Margin = new Thickness(button.Margin.Left, button.Margin.Top, button.Margin.Right, bottom);
         }
 
-        // ==================================== GRIDS ====================================
+// ==================================== GRIDS ====================================
 
         /// <summary>
         /// This adds the existing margin for the grid to a new margin
@@ -134,6 +134,44 @@ namespace CustomExtensions
         public static string ToValidPath(this string s)
         {
             return System.IO.Path.GetFullPath(CapitilzeFirst(s).Replace("/", "\\"));
+        }
+
+// ================================= CONTENT CONTROL================================
+
+        /// <summary>
+        /// This sets the existing width and height to the new width and heigh
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public static void SetWidthAndHeight(this ContentControl cc, double width, double height)
+        {
+            cc.Width = width;
+            cc.Height = height;
+        }
+
+        /// <summary>
+        /// This sets the margin to a new margin
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <param name="right"></param>
+        /// <param name="bottom"></param>
+        public static void SetMargin(this ContentControl cc, double left, double top, double right, double bottom)
+        {
+            cc.Margin = new Thickness(left, top, right, bottom);
+        }
+        /// <summary>
+        /// This sets the margin to a new margin
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <param name="right"></param>
+        /// <param name="bottom"></param>
+        public static void SetMargin(this ContentControl cc, Thickness m)
+        {
+            cc.Margin = m;
         }
     }
 }

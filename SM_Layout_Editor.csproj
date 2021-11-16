@@ -15,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Json\MyGUI_Trace.json" />
+    <None Remove="Json\MyGUI_Trace.schema.json" />
     <None Remove="Library.json" />
     <None Remove="XML\HightlightingRules.xshd" />
   </ItemGroup>
@@ -41,12 +43,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Samples\Sample">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples\Sample.schema">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Json\MyGUI_Trace.json" />
+    <EmbeddedResource Include="Json\MyGUI_Trace.schema.json" />
   </ItemGroup>
 
   <ItemGroup>

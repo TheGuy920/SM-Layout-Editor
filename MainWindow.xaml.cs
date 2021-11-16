@@ -34,16 +34,37 @@ namespace SM_Layout_Editor
         public static MainWindow Get;
 
         public static Point MouseStart;
-        public static double Scale = 1;
+        private static double g_scale = 1;
+        public static double Scale {
+            get { 
+                return g_scale;
+            }
+            set {
+                g_scale = value;
+                Get.ZoomDisplay.Text = (Math.Floor(g_scale*100)/100).ToString() + "x";
+            }
+        }
         public static int MoveSensitivity = 1;
         public static int ZoomSensitivity = 1;
-        public static int GridSize = 10;
+        public static int GridSize = 50;
         public static Tuple<int, int> Resolution;
 
         private bool ResizingProperties;
         private bool ResizingEditor;
         private bool MovingWorkspace;
-        private bool DraggingSubMenuItem;
+        private static bool d_item = false;
+        private bool DraggingSubMenuItem
+        {
+            get
+            {
+                return d_item;
+            }
+            set
+            {
+                d_item = value;
+                Debug.WriteLine(value);
+            }
+        }
         private bool SelectedItemDoubleClick;
         private int ItemScaleMode = -1;
 
@@ -84,7 +105,7 @@ namespace SM_Layout_Editor
         {
             InitializeComponent();
 
-            Library = JObject.Parse(Utility.ReadLocalResource("Library.json"));
+            Library = JObject.Parse(Utility.LoadInternalFile.TextFile("Library.json"));
             WorkspaceRec = (Rectangle)Workspace.Children[0];
             Properites = (Grid)PropertiesBox.Children[1];
             Get = this;
@@ -123,6 +144,8 @@ namespace SM_Layout_Editor
             Debug.WriteLine(GamePath);
 
             LoadConfiguration();
+
+            LoadToolBoxItems();
         }
         /// <summary>
         /// Event handler for window resize
@@ -132,9 +155,6 @@ namespace SM_Layout_Editor
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ClampWorkspace();
-            //if (WindowSizeCanChange)
-            //    WindowSize = new Vector(ActualWidth, ActualHeight);
-            //DockingManager.Height = WindowSize.Y - 100;
         }
         /// <summary>
         /// Event handler for when the resizing of the properties window has started
@@ -211,7 +231,7 @@ namespace SM_Layout_Editor
                 UpperWorkspace.SetMarginB(size);
                 // Change the lowwerworkspace height
                 LowwerWorkspace.Height = UpperWorkspace.Margin.Bottom - 15;
-                // Clamp the workspace
+                // Clamp the workspace position
                 ClampWorkspace();
             }
             if (MovingWorkspace)
@@ -222,6 +242,7 @@ namespace SM_Layout_Editor
                 Workspace.SetMarginLT(
                     Math.Clamp(Workspace.Margin.Left + diff.X, -(Workspace.ActualWidth * Scale - 90), ViewBox.ActualWidth - 90),
                     Math.Clamp(Workspace.Margin.Top + diff.Y, -(Workspace.ActualHeight * Scale - 60), ViewBox.ActualHeight - 60));
+                ClampWorkspace();
             }
             if (DraggingSubMenuItem)
             {
@@ -231,10 +252,12 @@ namespace SM_Layout_Editor
                 if ((int)diff.X != 0 || (int)diff.Y != 0)
                 {
                     ActiveElement.SetMarginLT(
-                        Math.Clamp(ActiveElement.Margin.Left + (diff.X * GridSize), 0, Workspace.ActualWidth - ActiveElement.ActualWidth),
-                        Math.Clamp(ActiveElement.Margin.Top + (diff.Y * GridSize), 0, Workspace.ActualHeight - ActiveElement.ActualHeight));
+                        Math.Clamp(ActiveElement.Margin.Left + (diff.X * GridSize), 0, Math.Clamp(Workspace.ActualWidth - ActiveElement.ActualWidth, 0, 999999)),
+                        Math.Clamp(ActiveElement.Margin.Top + (diff.Y * GridSize), 0, Math.Clamp(Workspace.ActualHeight - ActiveElement.ActualHeight, 0, 999999)));
                     MouseUtil.ResetMousePos();
                 }
+                // Update the position
+                UpdateItemControlPos();
             }
             // if the item scale mode is zero or greater, then we are scaling
             if (ItemScaleMode > -1)
@@ -278,72 +301,83 @@ namespace SM_Layout_Editor
                     // Update the mouse pos
                     MouseUtil.ResetMousePos();
                 }
-                // Update the scaling overlay size
-                UpdateItemControlSize();
                 // Clamp the workspace position
                 ClampWorkspace();
             }
         }
-        /// <summary>
-        /// Event handler for the menu options
-        /// This is a generic event handler, that is going to need lots of work
-        /// It should be used for all menu options and when their selection is changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddNewElement(object sender, SelectionChangedEventArgs e)
+
+        private void ClampActiveElementScale()
         {
-            /*
-            Grid g = GUI.Builder.BuildToolBoxItem(
-                item.Tag.ToString(),
-                this,
-                B_PreviewMouseDown,
-                B_PreviewMouseUp);
-            Workspace.Children.Add(g);
-            Menu_PreviewMouseDown(sender, null);
-            */
+            if (ActiveElement != null)
+            {
+                ActiveElement.SetMarginL(Math.Clamp(ActiveElement.Margin.Left + (GridSize), 0, Workspace.ActualWidth));
+                ActiveElement.Width = Math.Clamp(ActiveElement.ActualWidth + (GridSize), GridSize, Workspace.ActualWidth);
+                ActiveElement.SetMarginT(Math.Clamp(ActiveElement.Margin.Top + (GridSize), 0, Workspace.ActualHeight));
+                ActiveElement.Height = Math.Clamp(ActiveElement.ActualHeight + (GridSize), GridSize, Workspace.ActualHeight);
+            }
         }
+
+        private void UpdateItemControlPos()
+        {
+            if (ActiveElement != null)
+            {
+                ContentControl cc = Utility.FindContentControl("ControlButtonTemplate");
+                Thickness m = ActiveElement.Margin;
+                Thickness w = Workspace.Margin;
+                m = new Thickness(m.Left * Scale, m.Top * Scale, m.Right * Scale, m.Bottom * Scale);
+                m = new Thickness(m.Left + w.Left, m.Top + w.Top, m.Right + w.Right, m.Bottom + w.Bottom);
+                cc.SetMargin(m);
+                ((Grid)cc.Content).SetWidthAndHeight(ActiveElement.ActualWidth * Scale, ActiveElement.ActualHeight * Scale);
+            }
+        }
+
         /// <summary>
         /// MouseDown event for when a UI elemenent inside the workspace has been selected
         /// this element becomes the ActiveElement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void B_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void Item_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            // when the item is selected, we are in a "dragging" state
-            DraggingSubMenuItem = true;
-            // make sure we are not moving the workspace, and just the item
-            MovingWorkspace = false;
-            // set the active element
-            ActiveElement = (Grid)sender;
-            // the control button template, is the template for the scaling overlay
-            var cc = Utility.FindContentControl("ControlButtonTemplate");
-            // add double click event handler for the overlay
-            cc.MouseDoubleClick += B_MouseDoubleClick;
-            // set the width and height of the overlay
-            ((Grid)cc.Content).SetWidthAndHeight(ActiveElement.ActualWidth, ActiveElement.ActualHeight);
-            // finally, add the overlay to the selected item
-            ActiveElement.Children.Add(cc);
-            // this will build and add items to the properties tab
-            /* Properites.Children.Add(
-                GUI.Builder.BuildPropertiesItem(
-                    ActiveElement.Tag.ToString(),
-                    Tb_TextChanged));
-            */
-            // reset starting mouse position
-            MouseUtil.ResetMousePos();
-            // reset workspace state to "not moving"
-            Grid_PreviewMouseUp(sender, e);
+            if (e.LeftButton == MouseButtonState.Pressed && e.MiddleButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed)
+            {
+                // when the item is selected, we are in a "dragging" state
+                DraggingSubMenuItem = true;
+                // make sure we are not moving the workspace, and just the item
+                MovingWorkspace = false;
+                // reset scaling mode
+                ItemScaleMode = -1;
+                // remove highlighting effect
+                WorkspaceRec.Stroke = Brushes.Gray;
+                // set the active element
+                ActiveElement = (Grid)sender;
+                // the control button template, is the template for the scaling overlay
+                var cc = Utility.FindContentControl("ControlButtonTemplate");
+                // add double click event handler for the overlay
+                cc.MouseDoubleClick += Item_MouseDoubleClick;
+                // set the width and height of the overlay
+                ((Grid)cc.Content).SetWidthAndHeight(ActiveElement.ActualWidth, ActiveElement.ActualHeight);
+                // finally, add the overlay to the selected item
+                ViewBox.Children.Add(cc);
+                // this will build and add items to the properties tab
+                /* Properites.Children.Add(
+                    GUI.Builder.BuildPropertiesItem(
+                        ActiveElement.Tag.ToString(),
+                        Tb_TextChanged));
+                */
+                // reset starting mouse position
+                MouseUtil.ResetMousePos();                
+            }
         }
         /// <summary>
         /// Simple mouse event for the MouseUp event, after dragging the ActiveElement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void B_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void Item_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            DraggingSubMenuItem = false;
+            if(e.ChangedButton == MouseButton.Left && e.LeftButton == MouseButtonState.Released)
+                DraggingSubMenuItem = false;
         }
         /// <summary>
         /// This closes the menu, when the mouse clicks off of the menu
@@ -358,11 +392,12 @@ namespace SM_Layout_Editor
             // OffClickDetection is also used for items
             // it will remove the ActiveElement and reset other various varaibles
             // such as clearing properties menu, and removing the scaling overlay
-            if (ActiveElement != null)
+            ContentControl cc = Utility.FindContentControl("ControlButtonTemplate");
+            if (ActiveElement != null && e.MiddleButton != MouseButtonState.Pressed && ItemScaleMode == -1)
             {
-                ActiveElement.Children.Remove(Utility.FindContentControl("ControlButtonTemplate"));
+                ViewBox.Children.Remove(cc);
                 // Properites.Children.Clear();
-                ActiveElement = null;
+                // ActiveElement = null;
             }
         }
         /// <summary>
@@ -377,6 +412,10 @@ namespace SM_Layout_Editor
                 ChangeScale(Math.Clamp(Scale + ((float)e.Delta / 3500), 0.1, 4));
             }
         }
+        /// <summary>
+        /// Changes scale of main grid
+        /// </summary>
+        /// <param name="newScale">New Scale</param>
         private void ChangeScale(double newScale)
         {
             // load previous scale for comparison
@@ -401,6 +440,7 @@ namespace SM_Layout_Editor
             Workspace.SetMarginLT(
                 Math.Clamp(Workspace.Margin.Left - wDiff, -(Workspace.ActualWidth * Scale - 90), ViewBox.ActualWidth - 90),
                 Math.Clamp(Workspace.Margin.Top - hDiff, -(Workspace.ActualHeight * Scale - 60), ViewBox.ActualHeight - 60));
+            ClampWorkspace();
         }
         /// <summary>
         /// This is the mouse down event for the viewbox, and only the viewbox
@@ -409,11 +449,14 @@ namespace SM_Layout_Editor
         /// <param name="e"></param>
         private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            // if user is not 
-            if (!DraggingSubMenuItem)
+            // if user is not DraggingSubMenuItem
+            if ((
+                (!DraggingSubMenuItem && e.LeftButton == MouseButtonState.Pressed)
+                || e.MiddleButton == MouseButtonState.Pressed)
+                && e.RightButton != MouseButtonState.Pressed)
             {
-                if (ActiveElement != null)
-                    ActiveElement.Children.Remove(ActiveElement.Children[^1]);
+                if (ActiveElement != null && e.MiddleButton != MouseButtonState.Pressed)
+                    ViewBox.Children.Remove(Utility.FindContentControl("ControlButtonTemplate"));
                 Menu_PreviewMouseDown(sender, e);
                 MouseUtil.ResetMousePos();
                 WorkspaceRec.Stroke = Brushes.White;
@@ -459,20 +502,15 @@ namespace SM_Layout_Editor
                     Workspace.Margin.Top,
                     -(Workspace.ActualHeight * Scale - 60),
                     ViewBox.ActualHeight - 60));
-        }
-        /// <summary>
-        /// This updates the scale overlay width and height
-        /// </summary>
-        private void UpdateItemControlSize()
-        {
-            ((Grid)Utility.FindContentControl("ControlButtonTemplate").Content).SetWidthAndHeight(ActiveElement.ActualWidth, ActiveElement.ActualHeight);
+            // Update the position and scale and w/h
+            UpdateItemControlPos();
         }
         /// <summary>
         /// Double click event for workspace items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void B_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             SelectedItemDoubleClick = true;
         }
@@ -485,9 +523,22 @@ namespace SM_Layout_Editor
         {
             // Disbale moving, because we are scaling, not moving
             DraggingSubMenuItem = false;
+            // disable this bc
+            Grid_PreviewMouseUp(sender, e);
             // Fetch the scale mode
             var button = (Button)sender;
             ItemScaleMode = int.Parse(button.Tag.ToString());
+            // the control button template, is the template for the scaling overlay
+            var cc = Utility.FindContentControl("ControlButtonTemplate");
+            if (!ViewBox.Children.Contains(cc))
+            {
+                // add double click event handler for the overlay
+                cc.MouseDoubleClick += Item_MouseDoubleClick;
+                // set the width and height of the overlay
+                ((Grid)cc.Content).SetWidthAndHeight(ActiveElement.ActualWidth, ActiveElement.ActualHeight);
+                // finally, add the overlay to the selected item
+                ViewBox.Children.Add(cc);
+            }
             // Update the mouse starting position
             MouseUtil.ResetMousePos();
         }
@@ -499,8 +550,11 @@ namespace SM_Layout_Editor
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // Simple delete method for deleting the selected item
-            if(e.Key == Key.Delete && ActiveElement != null)
+            if (e.Key == Key.Delete && ActiveElement != null)
+            {
                 Workspace.Children.Remove(ActiveElement);
+                ViewBox.Children.Remove(Utility.FindContentControl("ControlButtonTemplate"));
+            }
         }
         private async Task LoadConfiguration()
         {
@@ -514,10 +568,12 @@ namespace SM_Layout_Editor
                 Width = _configuration.WindowWidth;
             if (_configuration.WindowHeight > 0)
                 Height = _configuration.WindowHeight;
-
-            MoveSensitivity = _configuration.MoveSensitivity;
-            ZoomSensitivity = _configuration.ZoomSensitivity;
-            GridSize = _configuration.GridSize;
+            if(_configuration.MoveSensitivity > 0)
+                MoveSensitivity = _configuration.MoveSensitivity;
+            if (_configuration.ZoomSensitivity > 0)
+                ZoomSensitivity = _configuration.ZoomSensitivity;
+            if (_configuration.GridSize > 0)
+                GridSize = _configuration.GridSize;
             WindowState = _configuration.WindowState;
 
             if (_configuration.IsFirstStart)
@@ -587,7 +643,7 @@ namespace SM_Layout_Editor
         }
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            XML_Viewer.SyntaxHighlighting = Utility.LoadHighlightingDefinition("HightlightingRules.xshd");
+            RefreshHighlighting();
             XML_Viewer.Text = File.ReadAllText(@"C:\Program Files (x86)\Steam\steamapps\common\Scrap Mechanic\Data\Gui\Layouts\Hud\Hud_SurvivalHud.layout");
             HasContentRendered = true;
         }
@@ -668,7 +724,40 @@ namespace SM_Layout_Editor
                 var w = optional as Tuple<Tuple<double, double>, Tuple<double, double>>;
                 Workspace.SetMarginLT(w.Item1.Item1, w.Item1.Item2);
                 Workspace.SetWidthAndHeight(w.Item2.Item1, w.Item2.Item2);
-            }            
+            }
+            ClampActiveElementScale();
+            ClampWorkspace();
+        }
+
+        private void RefreshHighlighting()
+        {
+            XML_Viewer.SyntaxHighlighting = Utility.LoadInternalFile.HighlightingDefinition("HightlightingRules.xshd");
+        }
+
+        private void LoadToolBoxItems()
+        {
+            JObject json = JObject.Parse(Utility.LoadInternalFile.TextFile("MyGUI_Trace.json"));
+            List<string> tbxi = new List<string>();
+            foreach(JProperty item in json["Widget"])
+            {
+                tbxi.Add(item.Name.ToString());
+            }
+            tbxi.Sort();
+            foreach(string item in tbxi)
+            {
+                MenuItem menuItem = new MenuItem();
+                menuItem.Name = item;
+                menuItem.Header = item;
+                menuItem.Click += MenuItem_Click;
+                ToolBoxDropDown.Items.Add(menuItem);
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            Grid g = GUI.Builder.BuildToolBoxItem(menuItem.Name, Get, Item_PreviewMouseDown, Item_PreviewMouseUp);
+            Workspace.Children.Add(g);
         }
     }
 }

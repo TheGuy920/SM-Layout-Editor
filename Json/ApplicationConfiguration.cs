@@ -23,10 +23,10 @@ namespace SM_Layout_Editor
             
             WindowState = WindowState.Normal;
 
-            Scale = 1;
-            GridSize = 1;
-            MoveSensitivity = 1;
-            ZoomSensitivity = 1;
+            Scale = 0;
+            GridSize = 0;
+            MoveSensitivity = 0;
+            ZoomSensitivity = 0;
 
             RecentFiles = new ObservableCollection<RecentFile>();
         }

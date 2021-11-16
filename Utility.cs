@@ -27,11 +27,6 @@ namespace SM_Layout_Editor
         {
             return (ContentControl)MainWindow.Get.FindResource(s);
         }
-        public static string ReadLocalResource(string path)
-        {
-            string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(path));
-            return new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName)).ReadToEnd();
-        }
         public static T GetRegVal<T>(string path, string value)
         {
             try
@@ -45,18 +40,25 @@ namespace SM_Layout_Editor
                 else
                     throw new();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return default(T);
+                return default;
             }
         }
-        public static IHighlightingDefinition LoadHighlightingDefinition(
-    string resourceName)
+        public static class LoadInternalFile
         {
-            string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
-            var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName));
-            using var reader = new XmlTextReader(stream);
-            return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+            public static string TextFile(string resourceName)
+            {
+                string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
+                return new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName)).ReadToEnd();
+            }
+            public static IHighlightingDefinition HighlightingDefinition(string resourceName)
+            {
+                string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
+                var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName));
+                using var reader = new XmlTextReader(stream);
+                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+            }
         }
     }
     public class MouseUtil
@@ -87,7 +89,7 @@ namespace SM_Layout_Editor
             if (GridSize)
                 returnVec /= MainWindow.GridSize;
             if(resetPosition)
-                MainWindow.MouseStart = GetMousePosition();
+                ResetMousePos();
             return returnVec;
         }
         public static void ResetMousePos()

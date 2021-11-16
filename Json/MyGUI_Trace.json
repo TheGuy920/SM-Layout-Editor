@@ -1,0 +1,1371 @@
+{
+    "MyGUI": {
+        "type": "Layout",
+        "version": "3.2.0"
+    },
+    "Widget": {
+        "TabItem": {
+            "Properties": {
+                "type": [
+                    "TabItem"
+                ],
+                "skin": [
+                    "PanelEmpty"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "Caption": [
+                {
+                    "String": [
+                        "Sliders",
+                        "Buttons and Checkboxes",
+                        "Buttons and Checkboxes 2",
+                        "Watch List"
+                    ]
+                }
+            ]
+        },
+        "ScrollBar": {
+            "Properties": {
+                "type": [
+                    "ScrollBar"
+                ],
+                "skin": [
+                    "YellowHSlider_Horn"
+                ],
+                "name": [
+                    "Slider"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "MoveToClick": [
+                "Bool"
+            ],
+            "Range": [
+                "Int"
+            ],
+            "RangePosition": [
+                "Int"
+            ],
+            "Page": [
+                "Int"
+            ]
+        },
+        "EditBox": {
+            "Properties": {
+                "type": [
+                    "EditBox"
+                ],
+                "skin": [
+                    "SMEditBox"
+                ],
+                "name": [
+                    "Max"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "Caption": [
+                "Int",
+                "Float",
+                {
+                    "String": [
+                        "CHECKBOX 0",
+                        "CHECKBOX 1",
+                        "CHECKBOX 2",
+                        "CHECKBOX 3",
+                        "CHECKBOX 4",
+                        "CHECKBOX 5",
+                        "CHECKBOX 6",
+                        "CHECKBOX 7",
+                        "CHECKBOX 8",
+                        "CHECKBOX 9",
+                        "CHECKBOX 10",
+                        "CHECKBOX 11",
+                        "CHECKBOX 12",
+                        "CHECKBOX 13",
+                        "CHECKBOX 14",
+                        "CHECKBOX 15",
+                        "CHECKBOX 16",
+                        "CHECKBOX 17",
+                        "CHECKBOX 18",
+                        "CHECKBOX 19",
+                        "#{MENU_CREATIVE_GAME_NAME}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_TOGGLE_REPEAT}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_TOGGLE_BACK_AND_FORTH}",
+                        "#{HANDBOOK_FAQ_PAGE1_CREATION_FELL_OVER}",
+                        "#{HANDBOOK_FAQ_PAGE1_CREATION_FELL_OVER_ANSWER}",
+                        "#{HANDBOOK_FAQ_PAGE1_FINDING_THE_INVENTORY}",
+                        "#{HANDBOOK_FAQ_PAGE1_FINDING_THE_INVENTORY_ANSWER}",
+                        "#{HANDBOOK_FAQ_PAGE1_ROTATE_PARTS_ANSWER}",
+                        "#{HANDBOOK_FAQ_PAGE1_PARTS_PLACE_OR_REMOVE}",
+                        "#{HANDBOOK_FAQ_PAGE1_PARTS_PLACE_ANSWER}",
+                        "#{HANDBOOK_FAQ_PAGE1_PARTS_REMOVE_ANSWER}",
+                        "#{HANDBOOK_FAQ_PAGE1_REMOVE_CONNECTIONS}",
+                        "#{HANDBOOK_FAQ_PAGE1_REMOVE_CONNECTIONS_ANSWER}",
+                        "#{HANDBOOK_FAQ_PAGE1_CAMERA_ANGLE}",
+                        "#{HANDBOOK_FAQ_PAGE1_CAMERA_ANGLE_ANSWER}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_IN_OUT}",
+                        "#{HANDBOOK_HOLD_AND_DRAG}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_BLOCKS_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_INTERACTIVE_PARTS_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_CONSUMABLES_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_PARTS_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_CONNECT_TOOL_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_LIFT_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_PAINT_TOOL_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_SLEDGEHAMMER_TEXT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_WELD_TOOL_TEXT}",
+                        "#{HANDBOOK_ARROW_KEYS}",
+                        "#{CONTROLLER_LOGIC_DESCRIPTION_XOR}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_SWITCH_TEXT}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_BUTTON_TEXT}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_SENSOR_TEXT}",
+                        "Search",
+                        "Level 5/5",
+                        "This is a very long title on two rows",
+                        "#{SEARCH}",
+                        "Blueprint Name",
+                        "A breif(?) description of your new, fancy creation",
+                        "Lorem Ipsum",
+                        "Description",
+                        "#{WARNING_TUNNELING_LINE1}",
+                        "TEXT FIELD",
+                        "TITLE",
+                        "MESSAGE",
+                        "R E S E T   T O   D E F A U L T",
+                        "Are you sure you want to reset the key bindings to their default?",
+                        "Message",
+                        "#{CHALLENGE_BUILDER_SAVE_BEFORE_EXIT}"
+                    ]
+                }
+            ],
+            "TextColour": [
+                "Int, Int, Int",
+                "Float, Float, Float"
+            ],
+            "FontName": [
+                {
+                    "String": [
+                        "Debug_SliderText",
+                        "Debug_ButtonCaption",
+                        "Futura.21.manual",
+                        "Debug_ButtonCaptionSmall",
+                        "SM_TextSmall",
+                        "SM_TextLabel",
+                        "SM_SearchText",
+                        "HandbookDescriptionSmall",
+                        "HandbookFAQQuestion",
+                        "HandbookFAQAnswer",
+                        "HandbookInstructionMedium",
+                        "HandbookInstructionSmall",
+                        "HandbookDescriptionLarge",
+                        "HandbookLogicDescription",
+                        "SM_LabelTiny",
+                        "SM_ItemTitle",
+                        "SM_TextTiny",
+                        "SM_TextLarge",
+                        "SM_HeaderTiny",
+                        "SM_Text",
+                        "SM_HeaderLarge_Medium"
+                    ]
+                }
+            ],
+            "TextAlign": [
+                {
+                    "String": [
+                        "Center",
+                        "Left VCenter",
+                        "Left Top",
+                        "Left Bottom",
+                        "Default",
+                        "Right Top",
+                        "HCenter Top"
+                    ]
+                }
+            ],
+            "FontSize": [
+                "Int"
+            ],
+            "Static": [
+                "Bool"
+            ],
+            "WordWrap": [
+                "Bool"
+            ],
+            "InheritsAlpha": [
+                "Bool"
+            ],
+            "TextShadow": [
+                "Bool"
+            ],
+            "NeedKey": [
+                "Bool"
+            ],
+            "NeedMouse": [
+                "Bool"
+            ],
+            "MultiLine": [
+                "Bool"
+            ],
+            "ReadOnly": [
+                "Bool"
+            ],
+            "Enabled": [
+                "Bool"
+            ],
+            "TextShadowColour": [
+                "Int, Int, Int"
+            ],
+            "VisibleVScroll": [
+                "Bool"
+            ],
+            "FontHeight": [
+                "Int"
+            ],
+            "MaxTextLength": [
+                "Int"
+            ],
+            "OverflowToTheLeft": [
+                "Bool"
+            ]
+        },
+        "Button": {
+            "Properties": {
+                "type": [
+                    "Button"
+                ],
+                "skin": [
+                    "SMButton"
+                ],
+                "name": [
+                    "Button"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "Caption": [
+                {
+                    "String": [
+                        "BUTTON 0",
+                        "BUTTON 1",
+                        "BUTTON 2",
+                        "BUTTON 3",
+                        "BUTTON 4",
+                        "BUTTON 5",
+                        "BUTTON 6",
+                        "BUTTON 7",
+                        "BUTTON 8",
+                        "BUTTON 9",
+                        "BUTTON 10",
+                        "BUTTON 11",
+                        "BUTTON 12",
+                        "BUTTON 13",
+                        "BUTTON 14",
+                        "BUTTON 15",
+                        "BUTTON 16",
+                        "BUTTON 17",
+                        "BUTTON 18",
+                        "BUTTON 19",
+                        "Lock",
+                        "#{CHALLENGE_BUILDER_ADD}",
+                        "#{DELETE}",
+                        "#{PLAY}",
+                        "#{BUILD}",
+                        "#{CHALLENGE_BUILDER_NEW_CHALLENGE_PACK}",
+                        "#{MENU_YN_CANCEL}",
+                        "#{MENU_YN_OK}",
+                        "#{SHARE}",
+                        "#{CHALLENGE_MENU_SELECT_CHALLENGE}",
+                        "#{CHALLENGE_BUILDER_2}",
+                        "#{BROWSE}",
+                        "#{REMOVE}",
+                        "#{NEW_GAME}",
+                        "#{MODS} [1234567890]",
+                        "#{MENU_CREATIVE_TILE_BUILDER}",
+                        "#{MENU_CREATIVE_WORLD_BUILDER}",
+                        "#{MENU_MODS_ENABLE_ALL}",
+                        "#{MENU_MODS_DISABLE_ALL}",
+                        "#{MENU_MODS_SELECT_MODS} [0]",
+                        "I",
+                        "L",
+                        "H",
+                        "#{MENU_INGAME_RESUME}",
+                        "#{MENU_INGAME_INVITE_FRIEND}",
+                        "#{MENU_MAIN_OPTIONS}",
+                        "#{MENU_INGAME_EXIT}",
+                        "#{CHALLENGE_RESET}",
+                        "#{CHALLENGE_RESTART}",
+                        "#{MENU_INGAME_SAVE}",
+                        "#{MENU_INGAME_SAVE_AND_TEST}",
+                        "#{MENU_INGAME_STOP_TEST}",
+                        "#{COOKBOT_REVIVAL}",
+                        "#{COOKBOT_PIZZA}",
+                        "#{COOKBOT_VEGGIE}",
+                        "#{CRAFT}",
+                        "#{COLLECT}",
+                        "#{DRESSBOT_MAKE}",
+                        "#{DRESSBOT_UNBOX}",
+                        "#{DRESSBOT_PICK_UP}",
+                        "#{HIDEOUT_TRADE}",
+                        "AND",
+                        "OR",
+                        "XOR",
+                        "NAND",
+                        "NOR",
+                        "XNOR",
+                        "#{MECHANIC_STATION_CRAFT_BOT}",
+                        "#{MECHANIC_STATION_COOK_BOT}",
+                        "#{MECHANIC_STATION_REFINERY_BOT}",
+                        "#{MECHANIC_STATION_DRESS_BOT}",
+                        "#{MECHANIC_STATION_RESOURCE_COLLECTOR}",
+                        "#{CONTROLLER_SENSOR_MODE_SWITCH}",
+                        "#{CONTROLLER_SENSOR_MODE_BUTTON}",
+                        "#{ON}",
+                        "#{OFF}",
+                        "#{ON_CAPS}",
+                        "#{OFF_CAPS}",
+                        "#{CONTROLLER_TONE_BUTTON_RETRO}",
+                        "#{CONTROLLER_TONE_BUTTON_DANCE}",
+                        "#{LIFT_DELETE}",
+                        "#{LIFT_EXPORT_SAVE}",
+                        "#{PART_FILTER_PARTS}",
+                        "#{DESCRIPTION_CAPS}",
+                        "#{STEAM_WORKSHOP_2}",
+                        "#{LIFT_IMPORT_BUILD}",
+                        "#{LIFT_IMPORT_SHARE}",
+                        "#{ON_CAPS}#{OFF_CAPS}",
+                        "V",
+                        "BINDING 1",
+                        "BINDING 2",
+                        "#{MENU_OPTIONS_GAMEPLAY}",
+                        "#{MENU_OPTIONS_CONTROLS}",
+                        "#{MENU_OPTIONS_AUDIO}",
+                        "#{MENU_OPTIONS_DISPLAY}",
+                        "#{MENU_OPTIONS_GRAPHICS}",
+                        "#{MENU_OPTION_APPLY}",
+                        "#{MENU_OPTION_DEFAULT}",
+                        "#{MENU_YN_YES}",
+                        "#{MENU_YN_NO}",
+                        "Steam Workshop"
+                    ]
+                },
+                "Int"
+            ],
+            "FontName": [
+                {
+                    "String": [
+                        "Debug_ButtonCaption",
+                        "Debug_ButtonCaptionSmall",
+                        "Default",
+                        "SM_ButtonSmall",
+                        "SM_Button",
+                        "SM_ButtonSmallBold",
+                        "SM_HotbarBinding",
+                        "SM_ButtonTiny",
+                        "SM_TabSmall",
+                        "SM_NumberSmall",
+                        "InventoryTitle",
+                        "SM_Tab",
+                        "ToolTip",
+                        "ButtonCaptionSmall"
+                    ]
+                }
+            ],
+            "TextAlign": [
+                {
+                    "String": [
+                        "Center"
+                    ]
+                }
+            ],
+            "NeedKey": [
+                "Bool"
+            ],
+            "NeedMouse": [
+                "Bool"
+            ],
+            "ImageTexture": [
+                "Image.png"
+            ],
+            "StateSelected": [
+                "Bool"
+            ],
+            "TextShadow": [
+                "Bool"
+            ],
+            "TextShadowColour": [
+                "Float, Float, Float"
+            ],
+            "Enabled": [
+                "Bool"
+            ],
+            "Colour": [
+                "Int, Int, Int"
+            ],
+            "Visible": [
+                "Bool"
+            ]
+        },
+        "Widget": {
+            "Properties": {
+                "type": [
+                    "Widget"
+                ],
+                "skin": [
+                    "InventoryBackground"
+                ],
+                "name": [
+                    "MainPanel"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "NeedMouse": [
+                "Bool"
+            ],
+            "Alpha": [
+                "Float",
+                "Int"
+            ],
+            "NeedKey": [
+                "Bool"
+            ],
+            "Colour": [
+                "Int, Int, Int",
+                "Float, Float, Float",
+                {
+                    "String": [
+                        "#4f6cff",
+                        "#af7dff",
+                        "#00ffff",
+                        "#90ff78",
+                        "#ffd046",
+                        "#ffffc0",
+                        "#ff6619",
+                        "#ff3737"
+                    ]
+                }
+            ],
+            "InheritsAlpha": [
+                "Bool"
+            ],
+            "Visible": [
+                "Bool"
+            ],
+            "InheritsPick": [
+                "Bool"
+            ],
+            "Font": [
+                {
+                    "String": [
+                        "SM_LabelMini",
+                        "SM_SliderLabel",
+                        "SM_TextLabel"
+                    ]
+                }
+            ]
+        },
+        "TextBox": {
+            "Properties": {
+                "type": [
+                    "TextBox"
+                ],
+                "skin": [
+                    "TextBox"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "Caption": [
+                {
+                    "String": [
+                        "#{CHARACTER_CUSTOMIZATION_TITLE}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_FACE}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_HAIR}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_HAIR_FACIAL}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_HATS}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_TORSO}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_GLOVES}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_LEGS}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_SHOES}",
+                        "#{CHARACTER_CUSTOMIZATION_CATEGORY_BACKPACK}",
+                        "FACIAL HAIR: ",
+                        "SHORT BOXED BEARD",
+                        "#{BACK}",
+                        "#{CHALLENGE_BUILDER}",
+                        "#{CHALLENGE_BUILDER_CHALLENGE_NAME}",
+                        "#{DESCRIPTION}",
+                        "#{CHALLENGE_BUILDER_HAVE_TO_BEAT_LINE_1}",
+                        "#{CHALLENGE_BUILDER_HAVE_TO_BEAT_LINE_2}",
+                        "2d 32h 56h",
+                        "#{PLAYTIME}",
+                        "#{CHALLENGE_BUILDER_NEW_CHALLENGE}",
+                        "#{CHALLENGE_BUILDER_CHALLENGE_PACK_NAME}",
+                        "#{CHALLENGE_BUILDER_CHALLENGE_PACKS}",
+                        "#808383#{CHALLENGE_BUILDER_NO_PACKS_LINE_1}\\n#{CHALLENGE_BUILDER_NO_PACKS_LINE_2}\\n\u201c#ffd046#{CHALLENGE_BUILDER_NEW_CHALLENGE_PACK}#808383\u201d",
+                        "#{CHALLENGE_BUILDER_CHALLENGE_PACK_NAME_2}",
+                        "#{CHALLENGE_BUILDER_NAME_YOUR_CHALLENGE_PACK}",
+                        "#{CHALLENGE_MENU_TITLE}",
+                        "#{BUILD}",
+                        "#{CHALLENGE_MENU_BUILDER_TITLE_LINE_2}",
+                        "#{CHALLENGE_MENU_BUILDER_TITLE_LINE_3}",
+                        "#{CHALLENGE_MENU_BUILDER_DESCRIPTION_LINE_1}",
+                        "#{CHALLENGE_MENU_BUILDER_DESCRIPTION_LINE_2}",
+                        "#{CHALLENGE_MENU_BUILDER_DESCRIPTION_LINE_3}",
+                        "#{CHALLENGE_PACK_MENU_TITLE}",
+                        "Challenge Name",
+                        "#{GAME_MODE_MENU_TITLE}",
+                        "#{GAME_MODE_MENU_SURVIVAL}",
+                        "#{GAME_MODE_MENU_CHALLENGE}",
+                        "#{GAME_MODE_MENU_CREATIVE}",
+                        "#{MENU_CREATIVE_TITLE}",
+                        "#{MENU_CREATIVE_SELECT_WORLD}",
+                        "#{MENU_CREATIVE_NO_SAVES} \u201c#{NEW_GAME}\u201d",
+                        "Game Name",
+                        "0123456789#{TIME_DAY_SHORT}#{TIME_HOUR_SHORT}#{TIME_MINUTE_SHORT}",
+                        "23:42 PM",
+                        "2019-02-08",
+                        "#{TIME}",
+                        "#{DATE}",
+                        "#{MENU_CREATIVE_TILE_BUILDER_TITLE_LINE_1}",
+                        "#{MENU_CREATIVE_TILE_BUILDER_TITLE_LINE_2}",
+                        "#{MENU_CREATIVE_TILE_BUILDER_DESCRIPTION_LINE_1}",
+                        "#{MENU_CREATIVE_TILE_BUILDER_DESCRIPTION_LINE_2}",
+                        "#{MENU_CREATIVE_WORLD_BUILDER_TITLE_LINE_1}",
+                        "#{MENU_CREATIVE_WORLD_BUILDER_TITLE_LINE_2}",
+                        "#{MENU_CREATIVE_WORLD_BUILDER_DESCRIPTION_LINE_1}",
+                        "#{MENU_CREATIVE_WORLD_BUILDER_DESCRIPTION_LINE_2}",
+                        "#{MENU_MODS_TITLE}",
+                        "#808383#{MENU_MODS_NO_MODS_PART_1}\\n\u201c#ffd046#{BROWSE}#909292\u201d #{MENU_MODS_NO_MODS_PART_2} \\n#{MENU_MODS_NO_MODS_PART_3}",
+                        "0 #{MENU_MODS_SELECTED}",
+                        "Today",
+                        "by The Modder",
+                        "By line",
+                        "#{MENU_SURVIVAL_TITLE}",
+                        "#808383#{MENU_SURVIVAL_NO_SAVES_1}\\n#{MENU_SURVIVAL_NO_SAVES_2}\\n#{MENU_SURVIVAL_NO_SAVES_3} \u201c#ffd046#{NEW_GAME}#909292\u201d",
+                        "INFORMATION!",
+                        "5/5",
+                        "#{HANDBOOK_BEARING_TITLE}",
+                        "#{HANDBOOK_BEARING_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_BEARING_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_BEARING_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_CONNECT_TOOL_TITLE}",
+                        "#{HANDBOOK_CONNECT_TOOL_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_CONNECT_TOOL_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_HOLD_AND_DRAG}",
+                        "#{HANDBOOK_CONTROLLER_TITLE}",
+                        "#{HANDBOOK_CONTROLLER_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_CONTROLLER_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_CONTROLLER_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_SUBTITLE1}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_SUBTITLE2}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_SUBTITLE3}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_ADJUST_SPEED}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_ADJUST_START_ANGLE}",
+                        "#{HANDBOOK_CONTROLLER_PAGE2_FINE_TUNE_ANGLE}",
+                        "#{HANDBOOK_ENGINE_TITLE}",
+                        "#{HANDBOOK_ENGINE_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_ENGINE_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_ENGINE_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_FAQ_TITLE}",
+                        "#{HANDBOOK_FAQ_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_FAQ_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_FAQ_PAGE1_ROTATE_PARTS}",
+                        "#{HANDBOOK_HOW_TO_PLAY_TITLE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_MOVE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_LOOK}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_CAMERA}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_JUMP}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_SPRINT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_CROUCH}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_INVENTORY}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE1_HOTBAR}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_SUBTITLE1}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_SUBTITLE2}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_ADJUST_POSITION}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_OBJECT_PLACE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_OBJECT_REMOVE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_OBJECT_ROTATE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE2_ROTATE_DIRECTION}",
+                        "#{HANDBOOK_RELEASE}",
+                        "#{HANDBOOK_HOLD}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_SUBTITLE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_BLOCKS}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_INTERACTIVE_PARTS}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_PARTS}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE3_CONSUMABLES}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_SUBTITLE}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_CONNECT_TOOL}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_LIFT}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_SLEDGEHAMMER}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_PAINT_TOOL}",
+                        "#{HANDBOOK_HOW_TO_PLAY_PAGE4_WELD_TOOL}",
+                        "#{HANDBOOK_LIFT_TITLE}",
+                        "#{HANDBOOK_LIFT_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_LIFT_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_LIFT_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_LIFT_PAGE1_ADJUST_HEIGHT}",
+                        "#{HANDBOOK_LIFT_PAGE1_PICKING_UP_OBJECTS}",
+                        "#{HANDBOOK_LIFT_PAGE1_PICKING_UP_OBJECTS_CLICK_ON_OBJECT}",
+                        "#{HANDBOOK_LIFT_PAGE1_PICKING_UP_OBJECTS_CLICK_ON_GROUND}",
+                        "#{HANDBOOK_LOGIC_GATE_TITLE}",
+                        "#{HANDBOOK_LOGIC_GATE_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_LOGIC_GATE_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_LOGIC_GATE_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_DRIVERS_SEAT_TITLE}",
+                        "#{HANDBOOK_DRIVERS_SEAT_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_DRIVERS_SEAT_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_DRIVERS_SEAT_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_THRUSTER_TITLE}",
+                        "#{HANDBOOK_THRUSTER_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_THRUSTER_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_THRUSTER_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_TRIGGERS_TITLE}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_SWITCH}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_BUTTON}",
+                        "#{HANDBOOK_TRIGGERS_PAGE1_SENSOR}",
+                        "#{HANDBOOK_PRESS}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_TITLE}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_PAGE1_SUBTITLE1}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_PAGE1_SUBTITLE2}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_PAGE1_SUBTITLE3}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_PAGE2_SUBTITLE1}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_PAGE2_SUBTITLE2}",
+                        "#{HANDBOOK_HOW_TO_BUILD_A_VEHICLE_PAGE2_SUBTITLE3}",
+                        "You're starved, dehydrated and tired. Haybots are approaching, oh and your car is on fire by the way",
+                        "-50",
+                        "PARTICLES",
+                        "#{BEACON_TITLE}",
+                        "#{BEACON_SELECT_COLOR}",
+                        "#{CHEST_TITLE_CHEST}",
+                        "#{INVENTORY_TITLE}",
+                        "#{CONTAINER_TITLE_AMMUNITION}",
+                        "#{INVENTORY_BACKPACK}",
+                        "#{CONTAINER_TITLE_BATTERY}",
+                        "#{CONTAINER_TITLE_CHEMICAL}",
+                        "#{CONTAINER_TITLE_FERTILIZER}",
+                        "#{CONTAINER_TITLE_GAS}",
+                        "#{CONTAINER_TITLE_SEED}",
+                        "#{CONTAINER_TITLE_WATER}",
+                        "#{CONTROLLER_SEQUENCE_LOOP}",
+                        "#{CONTROLLER_SEQUENCE_TITLE}",
+                        "#{LEVEL} 12345",
+                        "#{SLIDER_SLOW}",
+                        "#{SLIDER_LIMIT}",
+                        "#{SLIDER_FAST}",
+                        "#{CONTROLLER_UPGRADE}",
+                        "00 / 00",
+                        "#{CONTROLLER_SEQUENCE_NOT_USED}",
+                        "#{CONTROLLER_SEQUENCE_UNLOCK} X",
+                        "-+0123456789",
+                        "#{COOKBOT_TITLE}",
+                        "#{DESCRIPTION_CAPS}",
+                        "#{INGREDIENTS}",
+                        "04:20",
+                        "#{CRAFTBOT_TITLE}",
+                        "#{ALL_CAPS}",
+                        "#{PART_FILTER_TOOLS}",
+                        "#{PART_FILTER_BLOCKS}",
+                        "#{PART_FILTER_INTERACTIVE}",
+                        "#{PART_FILTER_PARTS}",
+                        "#{PART_FILTER_CONSUMABLE}",
+                        "#{PROPERTY_WEIGHT}",
+                        "#{PROPERTY_DURABILITY}",
+                        "#{PROPERTY_FRICTION}",
+                        "#{PROPERTY_BUOYANCY}",
+                        "#{PROPERTY_FLAMMABLE}",
+                        "#{MENU_YN_YES}#{MENU_YN_NO}",
+                        "#{MATERIAL}",
+                        "*/0123456789",
+                        "88:88",
+                        "#{UNLOCK}",
+                        "#{DRESSBOT_TITLE}",
+                        "#{DRESSBOT_MAKE}",
+                        "#{DRESSBOT_TIME} 01234567:89",
+                        "#{TIME}: 00:00",
+                        "#{DRESSBOT_BOX_COUNT_PART_1} ",
+                        " #{DRESSBOT_BOX_COUNT_PART_2}",
+                        "#{DRESSBOT_INSTRUCTION}",
+                        "#{DRESSBOT_RECEIVE}",
+                        "An Item",
+                        "#{CONTROLLER_ENGINE_GAS_TITLE}",
+                        "#{CONTROLLER_ENGINE_INSTRUCTION}",
+                        "#{OFF_CAPS}",
+                        "#{SLIDER_MAX}",
+                        "#{HIDEOUT_TITLE}",
+                        "#{HIDEOUT_TRADING}",
+                        "X 100",
+                        "#{HIDEOUT_TRADE}",
+                        "#{HIDEOUT_RECEIVE}",
+                        "#{CONTROLLER_LIGHT_TITLE}",
+                        "#{CONTROLLER_LOGIC_TITLE}",
+                        "#{CONTROLLER_LOGIC_BASIC}",
+                        "#{CONTROLLER_LOGIC_INVERTED}",
+                        "#{CONTROLLER_LOGIC_DESCRIPTION_AND}",
+                        "#{MECHANIC_STATION_TITLE_1}",
+                        "#{MECHANIC_STATION_TITLE_2}",
+                        "#{CONTROLLER_PISTON_TITLE}",
+                        "#{CONTROLLER_PISTON_RANGE}",
+                        "#{CONTROLLER_PISTON_SPEED}",
+                        "#{CONTROLLER_DRIVER_SEAT_TITLE}",
+                        "#{CONTROLLER_DRIVER_SEAT_SETTINGS}",
+                        "#{CONTROLLER_SENSOR_TITLE}",
+                        "#{CONTROLLER_SENSOR_MODE}",
+                        "#{CONTROLLER_SENSOR_SOUND}",
+                        "#{CONTROLLER_SENSOR_COLOR}",
+                        "#{CONTROLLER_SENSOR_COLOR_PICKER_TITLE_1}\\n#{CONTROLLER_SENSOR_COLOR_PICKER_TITLE_2}",
+                        "#{CONTROLLER_DRIVER_SEAT_TURNING}",
+                        "1234567890\u00b0 ",
+                        "#{CONTROLLER_DRIVER_SEAT_LOCK}",
+                        "#{CONTROLLER_DRIVER_SEAT_TURN_SPEED}",
+                        "#{CONTROLLER_DRIVER_SEAT_TURN_LEFT}",
+                        "#{CONTROLLER_DRIVER_SEAT_TURN_RIGHT}",
+                        "#{CONTROLLER_TIMER_TITLE}",
+                        "#{CONTROLLER_TIMER_DELAY}",
+                        "S",
+                        "MS",
+                        "0123456789 #{CONTROLLER_TIMER_TICKS}",
+                        "#{CONTROLLER_TIMER_SECONDS}",
+                        "#{CONTROLLER_TIMER_TICKS}",
+                        "#{CONTROLLER_TONE_TITLE}",
+                        "#{CONTROLLER_TONE_STYLE}",
+                        "#{CONTROLLER_TONE_VOLUME}",
+                        "#{CONTROLLER_TONE_DRUM_KICK}",
+                        "#{CONTROLLER_TONE_DRUM_SNARE}",
+                        "#{CONTROLLER_TONE_DRUM_HIHAT}",
+                        "#{CONTROLLER_TONE_DRUM_GLITCH}",
+                        "#{CONTROLLER_TONE_DRUM_MISC}",
+                        " #{ALL_CAPS}",
+                        " #{PART_FILTER_TOOLS}",
+                        " #{PART_FILTER_BLOCKS}",
+                        " #{PART_FILTER_INTERACTIVE}",
+                        " #{PART_FILTER_PARTS}",
+                        " #{PART_FILTER_CONSUMABLE}",
+                        "#{PART_FILTER_MODS}",
+                        "-- Mod Name --",
+                        "-- Creator Name --",
+                        "#{LIFT_EXPORT_TITLE}",
+                        "#{LIFT_IMPORT_TITLE}",
+                        "#{LIFT_IMPORT_BLUEPRINTS}",
+                        "By User",
+                        "#{LOGBOOK_BEACONS}",
+                        "#{DAY}",
+                        "100 m",
+                        "Title",
+                        "#{LOGBOOK_SET_WAYPOINT}",
+                        "#{MENU_MAIN_CHARACTER}",
+                        "#{MENU_MAIN_OPTIONS}",
+                        "#{MENU_MAIN_EXIT_GAME}",
+                        "Scrap Mechanic BETA Ver 0.3.5. Build 479. 2019 Axolot Games. All rights reserved.",
+                        "- VALUE -",
+                        "123456 x 7890",
+                        "720 1080p 1440 4K",
+                        "LABEL",
+                        "-1234567890",
+                        "#{MENU_OPTIONS_TITLE}",
+                        "#{MENU_OPTIONS_CONTROLS_BIND_TITLE}",
+                        "\" ",
+                        "Move Forward",
+                        " \"",
+                        "#{MENU_OPTIONS_CONTROLS_BIND_TEXT_PART_1} ",
+                        " #{MENU_OPTIONS_CONTROLS_BIND_TEXT_PART_2}",
+                        "#{WARNING_TUNNELING_TITLE}",
+                        "TITLE",
+                        "#{CONTAINER_AMOUNT}",
+                        "#{PAINT_TOOL_TITLE}"
+                    ]
+                },
+                "Int"
+            ],
+            "FontName": [
+                {
+                    "String": [
+                        "SM_HeaderLarge_Wide",
+                        "SM_TextLabel",
+                        "SM_Header",
+                        "SM_ButtonLarge",
+                        "SM_ToolTipText",
+                        "SM_HeaderLarge_Medium",
+                        "SM_TextSmall",
+                        "SM_TextTiny",
+                        "SM_LabelTiny",
+                        "SM_ButtonTiny",
+                        "SM_ListItem",
+                        "SM_HeaderMedium",
+                        "SM_GameName",
+                        "SM_HeaderLarge_Narrow",
+                        "X_MenuGamemodeMenu_GameMode",
+                        "SM_Text",
+                        "SM_UserName",
+                        "ToolTip",
+                        "HandbookPageCount",
+                        "HandbookTitle",
+                        "HandbookSubTitle",
+                        "HandbookInstructionSmall",
+                        "HandbookSubTitleItalic",
+                        "HandbookDescriptionSmall",
+                        "HandbookInstructionMedium",
+                        "HandbookFAQQuestion",
+                        "HandbookInstructionLarge",
+                        "X_Hud_Alert",
+                        "X_Hud_Interaction",
+                        "SM_NumberSmall",
+                        "SM_SubHeader",
+                        "SM_SliderLabel",
+                        "SM_NumberMini",
+                        "SM_HeaderSmall",
+                        "SM_NumberHuge",
+                        "SM_NumberTiny",
+                        "SM_HeaderTiny",
+                        "SM_TabSmall",
+                        "SM_LabelMini",
+                        "SM_ButtonSmall",
+                        "SM_LabelSmall",
+                        "SM_ItemTitle",
+                        "X_Interactable_LogicGate_Category",
+                        "X_Interactable_Timer_TimeUnit",
+                        "X_Interactable_Timer_TickCount",
+                        "SM_Button"
+                    ]
+                }
+            ],
+            "TextAlign": [
+                {
+                    "String": [
+                        "Left VCenter",
+                        "Center",
+                        "Left Top",
+                        "HCenter Bottom",
+                        "HCenter Top",
+                        "Right VCenter",
+                        "VCenter HCenter",
+                        "Center VCenter",
+                        "HTop VCenter",
+                        "VCenter Right",
+                        "Default",
+                        "Right Top",
+                        "Right Bottom",
+                        "Left Bottom"
+                    ]
+                }
+            ],
+            "NeedMouse": [
+                "Bool"
+            ],
+            "NeedKey": [
+                "Bool"
+            ],
+            "TextColour": [
+                "Int, Int, Int",
+                "Int, Float, Float",
+                "Int, Int, Float",
+                "Float, Float, Float"
+            ],
+            "Alpha": [
+                "Float"
+            ],
+            "MultiLine": [
+                "Bool"
+            ],
+            "TextShadow": [
+                "Bool"
+            ],
+            "TextShadowColour": [
+                "Int, Int, Int, Float"
+            ],
+            "InheritsAlpha": [
+                "Bool"
+            ],
+            "InheritsPick": [
+                "Bool"
+            ],
+            "Visible": [
+                "Bool"
+            ]
+        },
+        "ImageBox": {
+            "Properties": {
+                "type": [
+                    "ImageBox"
+                ],
+                "skin": [
+                    "ImageBox"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "ImageTexture": [
+                "Image.png",
+                "Image.jpg"
+            ],
+            "Colour": [
+                "Int, Float, Float",
+                "Float, Float, Float"
+            ],
+            "NeedKey": [
+                "Bool"
+            ],
+            "NeedMouse": [
+                "Bool"
+            ],
+            "ImageResource": [
+                {
+                    "String": [
+                        "ItemIconsSet0",
+                        "Rotation",
+                        "BeaconIconMap",
+                        "ItemTypeSet",
+                        "CraftbotQueueUnlocked",
+                        "CraftbotQueueActive",
+                        "HideoutTradeItems",
+                        "IconsLampSpritesheet",
+                        "LogicGateIcons",
+                        "LogicGateDescriptionDots",
+                        "LogicGateDescriptionLamps",
+                        "LogbookItemMap"
+                    ]
+                }
+            ],
+            "Visible": [
+                "Bool"
+            ],
+            "NeedToolTip": [
+                "Bool"
+            ],
+            "Clickable": [
+                {
+                    "String": [
+                        "Yes"
+                    ]
+                }
+            ],
+            "Link": [
+                {
+                    "String": [
+                        "https://www.youtube.com/embed/C4Kgdvc6cBg?autoplay=1",
+                        "https://www.youtube.com/embed/TRavpZqkNcc?autoplay=1",
+                        "https://www.youtube.com/embed/qwAvu8q-guk?autoplay=1",
+                        "https://www.youtube.com/embed/OifCVmm5Yi4?autoplay=1",
+                        "https://www.youtube.com/embed/GUBjeBUnwPI?autoplay=1"
+                    ]
+                }
+            ],
+            "ImageGroup": [
+                {
+                    "String": [
+                        "remove",
+                        "BeaconIconMap",
+                        "ItemTypeColor",
+                        "Count",
+                        "ItemIcons",
+                        "IconsLampSpritesheet",
+                        "LogbookItemMap"
+                    ]
+                }
+            ],
+            "ImageName": [
+                "Int",
+                {
+                    "String": [
+                        "tool",
+                        "block",
+                        "interactive",
+                        "part",
+                        "consumable",
+                        "and",
+                        "or",
+                        "xor",
+                        "nand",
+                        "nor",
+                        "xnor",
+                        "off",
+                        "on",
+                        "audio"
+                    ]
+                }
+            ],
+            "Cmpnd_InheritColor": [
+                "Bool"
+            ],
+            "ImageIndex": [
+                "Int"
+            ],
+            "Caption": [
+                "Int"
+            ],
+            "FontName": [
+                {
+                    "String": [
+                        "Default"
+                    ]
+                }
+            ],
+            "TextAlign": [
+                {
+                    "String": [
+                        "Center"
+                    ]
+                }
+            ],
+            "InheritsPick": [
+                "Bool"
+            ]
+        },
+        "ItemBox": {
+            "Properties": {
+                "type": [
+                    "ItemBox"
+                ],
+                "skin": [
+                    "InventoryItemBox2"
+                ],
+                "name": [
+                    "FeatureGrid"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "NeedKey": [
+                "Bool"
+            ],
+            "NeedToolTip": [
+                "Bool"
+            ],
+            "NeedMouse": [
+                "Bool"
+            ],
+            "VerticalAlignment": [
+                "Bool"
+            ],
+            "Visible": [
+                "Bool"
+            ],
+            "NeedDragDrop": [
+                "Bool"
+            ]
+        },
+        "ProgressBar": {
+            "Properties": {
+                "type": [
+                    "ProgressBar"
+                ],
+                "skin": [
+                    "HUDProgressBarRedLarge"
+                ],
+                "name": [
+                    "HealthLoss"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "Range": [
+                "Int"
+            ],
+            "RangePosition": [
+                "Int"
+            ],
+            "Alpha": [
+                "Int"
+            ],
+            "InheritsAlpha": [
+                "Bool"
+            ],
+            "NeedKey": [
+                "Bool"
+            ]
+        },
+        "ListBox": {
+            "Properties": {
+                "type": [
+                    "ListBox"
+                ],
+                "skin": [
+                    "SM_ListBox"
+                ],
+                "name": [
+                    "ParticleList"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "AddItem": [
+                {
+                    "String": [
+                        "Test"
+                    ]
+                }
+            ],
+            "NeedKey": [
+                "Bool"
+            ]
+        },
+        "EffectWidget": {
+            "Properties": {
+                "type": [
+                    "EffectWidget"
+                ],
+                "skin": [
+                    "DressbotEffectBackground"
+                ],
+                "name": [
+                    "EffectBackground"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "NeedKey": [
+                "Bool"
+            ],
+            "NeedMouse": [
+                "Bool"
+            ],
+            "Visible": [
+                "Bool"
+            ]
+        },
+        "Window": {
+            "Properties": {
+                "type": [
+                    "Window"
+                ],
+                "skin": [
+                    "PanelEmpty"
+                ],
+                "name": [
+                    "Slider"
+                ],
+                "position_real": [
+                    "Float, Float, Float, Float"
+                ]
+            },
+            "Range": [
+                "Int"
+            ],
+            "NeedKey": [
+                "Bool"
+            ],
+            "Caption": [
+                {
+                    "String": [
+                        "Tools",
+                        "Properties",
+                        "Tile Settings",
+                        "Asset Library",
+                        "Node Library",
+                        "Shape Library",
+                        "Harvestable Library",
+                        "Ground Material",
+                        "Clutter Library",
+                        "Brush",
+                        "Terrain Brush",
+                        "Color",
+                        "Camera"
+                    ]
+                }
+            ],
+            "MinSize": [
+                "Int, Int"
+            ],
+            "Visible": [
+                "Bool"
+            ]
+        },
+        "MenuBar": {
+            "Properties": {
+                "type": [
+                    "MenuBar"
+                ],
+                "skin": [
+                    "SMMenuBar"
+                ],
+                "position": [
+                    "Float, Float, Float, Float"
+                ],
+                "align": [
+                    "HStretch Top"
+                ],
+                "layer": [
+                    "Main"
+                ],
+                "name": [
+                    "MenuBar"
+                ]
+            },
+            "NeedKey": [
+                "Bool"
+            ]
+        },
+        "MenuItem": {
+            "Properties": {
+                "type": [
+                    "MenuItem"
+                ],
+                "skin": [
+                    "SMMenuBarButton"
+                ],
+                "position": [
+                    "Float, Float, Float, Float"
+                ],
+                "name": [
+                    "File"
+                ]
+            },
+            "Caption": [
+                {
+                    "String": [
+                        "File",
+                        "New - (Ctrl+N)",
+                        "Open - (Ctrl+O)",
+                        "Save - (Ctrl+S)",
+                        "Save As.. - (Shift+Ctrl+S)",
+                        "Exit",
+                        "Editor",
+                        "Grid Snap        ",
+                        "Show Grid        ",
+                        "Random Rotation     ",
+                        "Show Visualization     ",
+                        "Reset Layout",
+                        "Reload Effects",
+                        "Generate Icons",
+                        "Assets",
+                        "Harvestables",
+                        "Nodes",
+                        "Share",
+                        "Help",
+                        "Filter",
+                        "All",
+                        "Asset        ",
+                        "Blueprint        ",
+                        "Prefab        ",
+                        "Node        ",
+                        "Decal        ",
+                        "Harvestable        ",
+                        "Blueprints",
+                        "Import Blueprint",
+                        "Merge Blueprints",
+                        "Reload Blueprints",
+                        "Prefabs",
+                        "Import Prefab",
+                        "Load Prefab (Opens new tile)",
+                        "Save Prefab",
+                        "Upgrade Prefabs",
+                        "Tile Settings",
+                        "Rendering",
+                        "Redering Mode",
+                        "Default",
+                        "Challenge Indoor",
+                        "Dungeon",
+                        "Shadows",
+                        "On",
+                        "Off",
+                        "Connections",
+                        "Reflections",
+                        "..",
+                        "Category: All"
+                    ]
+                }
+            ],
+            "MenuItemType": [
+                {
+                    "String": [
+                        "Popup"
+                    ]
+                }
+            ],
+            "MenuItemId": [
+                {
+                    "String": [
+                        "Project"
+                    ]
+                }
+            ],
+            "Visible": [
+                "Bool"
+            ]
+        },
+        "ScrollView": {
+            "Properties": {
+                "type": [
+                    "ScrollView"
+                ],
+                "skin": [
+                    "SMEmptyScrollView"
+                ],
+                "position": [
+                    "Float, Float, Float, Float"
+                ],
+                "align": [
+                    "Stretch"
+                ],
+                "name": [
+                    "ToolsView"
+                ]
+            },
+            "NeedKey": [
+                "Bool"
+            ]
+        },
+        "ComboBox": {
+            "Properties": {
+                "type": [
+                    "ComboBox"
+                ],
+                "skin": [
+                    "SMComboBox"
+                ],
+                "position": [
+                    "Float, Float, Float, Float"
+                ],
+                "align": [
+                    "HStretch Top"
+                ],
+                "name": [
+                    "GroundMaterialSet"
+                ]
+            },
+            "NeedKey": [
+                "Bool"
+            ]
+        },
+        "TextureBox": {
+            "Properties": {
+                "type": [
+                    "TextureBox"
+                ],
+                "skin": [
+                    "TextureBox"
+                ],
+                "position": [
+                    "Float, Float, Float, Float"
+                ],
+                "align": [
+                    "Stretch"
+                ],
+                "name": [
+                    "CameraView"
+                ]
+            },
+            "NeedKey": [
+                "Bool"
+            ]
+        }
+    }
+}

@@ -14,14 +14,6 @@ namespace SM_Layout_Editor.GUI
     {
         public static Border BuildPropertiesItem(string info, TextChangedEventHandler Tb_TextChanged)
         {
-            /*
-               <Border BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Foreground="White" Margin="5,2">Text</TextBlock>
-                        <TextBox Foreground="White" Background="Transparent" BorderThickness="0">Button Text Here</TextBox>
-                    </StackPanel>
-                </Border>
-             */
             var s = new StackPanel()
             {
                 Orientation = Orientation.Horizontal
