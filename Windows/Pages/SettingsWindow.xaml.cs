@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SM_Layout_Editor.Windows
+namespace LayoutEditor.Windows
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml

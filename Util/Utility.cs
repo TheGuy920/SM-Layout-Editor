@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
+using LayoutEditor.Windows.Pages;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -10,8 +11,9 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
+using LayoutEditor.CustomXML;
 
-namespace SM_Layout_Editor
+namespace LayoutEditor
 {
     public enum MenuState
     {
@@ -23,10 +25,6 @@ namespace SM_Layout_Editor
     }
     class Utility
     {
-        public static ContentControl FindContentControl(string s)
-        {
-            return (ContentControl)MainWindow.Get.FindResource(s);
-        }
         public static T GetRegVal<T>(string path, string value)
         {
             try
@@ -78,23 +76,6 @@ namespace SM_Layout_Editor
             var w32Mouse = new Win32Point();
             GetCursorPos(ref w32Mouse);
             return new Point(w32Mouse.X, w32Mouse.Y);
-        }
-        public static Vector GetMouseMovement(bool resetPosition = false, bool MoveSensitivity = false, bool Scale = false, bool GridSize = false)
-        {
-            Vector returnVec = GetMousePosition() - MainWindow.MouseStart;
-            if (MoveSensitivity)
-                returnVec *= MainWindow.MoveSensitivity;
-            if (Scale)
-                returnVec /= MainWindow.Scale;
-            if (GridSize)
-                returnVec /= MainWindow.GridSize;
-            if(resetPosition)
-                ResetMousePos();
-            return returnVec;
-        }
-        public static void ResetMousePos()
-        {
-            MainWindow.MouseStart = GetMousePosition();
         }
     }
 }

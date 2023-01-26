@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NJsonSchema;
 
-namespace SM_Layout_Editor.Utilities
+namespace LayoutEditor.Utilities
 {
     /// <summary>Provides methods to load and save the application configuration. </summary>
     public static class JsonApplicationConfiguration

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows;
+using AdonisUI;
 
-namespace SM_Layout_Editor
+namespace LayoutEditor
 {
     /// <summary>
     /// Interaction logic for App.xaml

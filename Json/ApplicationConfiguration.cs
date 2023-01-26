@@ -12,7 +12,7 @@ using System.IO;
 using System.Windows;
 using Newtonsoft.Json;
 
-namespace SM_Layout_Editor
+namespace LayoutEditor
 {
     /// <summary>Stores the application configuration. </summary>
     public class ApplicationConfiguration

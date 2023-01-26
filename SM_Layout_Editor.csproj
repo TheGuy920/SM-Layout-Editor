@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
+    <StartupObject>LayoutEditor.App</StartupObject>
+	<LangVersion>preview</LangVersion>
+	<TargetFramework>net6.0-windows</TargetFramework>
+	<EnablePreviewFeatures>True</EnablePreviewFeatures>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,39 +19,43 @@
 
   <ItemGroup>
     <None Remove="Json\MyGUI_Trace.json" />
-    <None Remove="Json\MyGUI_Trace.schema.json" />
     <None Remove="Library.json" />
-    <None Remove="XML\HightlightingRules.xshd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Library.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.1.1" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="2.4.0" />
-    <PackageReference Include="Gameloop.Vdf" Version="0.6.1" />
-    <PackageReference Include="Gameloop.Vdf.JsonConverter" Version="0.2.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.0.1" />
-    <PackageReference Include="MyToolkit" Version="2.5.16" />
-    <PackageReference Include="MyToolkit.Extended" Version="2.5.16" />
-    <PackageReference Include="Namotion.Reflection" Version="1.0.23" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NJsonSchema" Version="10.4.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="XML\HightlightingRules.xshd" />
+    <None Remove="CustomXML\XmlRendering\HightlightingRules.xshd" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Json\MyGUI_Trace.json" />
-    <EmbeddedResource Include="Json\MyGUI_Trace.schema.json" />
+    <EmbeddedResource Include="Library.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="MainWindow.xaml">
+    <PackageReference Include="AdonisUI" Version="1.17.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="NJsonSchema" Version="10.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CustomXML\XmlRendering\HightlightingRules.xshd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>E:\Documents\GitHub\AvalonEdit\ICSharpCode.AvalonEdit\bin\Avalon Edit\Release\net6.0-windows\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Windows\MainWindow.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
