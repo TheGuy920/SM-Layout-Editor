@@ -12,11 +12,11 @@ using Xceed.Wpf.Toolkit;
 
 namespace LayoutEditor.GUI
 {
-    class Builder
+    partial class Builder
     {
-        private static JObject json = JObject.Parse(Utility.LoadInternalFile.TextFile("MyGUI_Trace.json"));
+        private static readonly JObject json = JObject.Parse(Utility.LoadInternalFile.TextFile("MyGUI_Trace.json"));
         private static JObject ElementList = null;
-        private static Dictionary<string, Action> CallBackList = new();
+        private static readonly Dictionary<string, Action> CallBackList = new();
         public static JObject getTrace()
         {
             return json;
@@ -108,7 +108,7 @@ namespace LayoutEditor.GUI
                             break;
                         case "name":
                         default:
-                            if ((item.Value.Length > 1 && !item.Key.Equals("name")) || item.Key.Equals("skin"))
+                            if (item.Value.Length > 1 && !item.Key.Equals("name") || item.Key.Equals("skin"))
                             {
                                 ComboBox cb = new()
                                 {
@@ -166,13 +166,13 @@ namespace LayoutEditor.GUI
                     else
                     {
                         JArray jry = item.Value as JArray;
-                        if (jry.Count == 1 || (jry.Count == 2 && (
+                        if (jry.Count == 1 || jry.Count == 2 && (
                             jry[0].ToString().ToLower().Contains("int") ||
                             jry[0].ToString().ToLower().Contains("float")
                             ) && (
                             jry[1].ToString().ToLower().Contains("int") ||
                             jry[1].ToString().ToLower().Contains("float")
-                            )))
+                            ))
                         {
                             string sk = jry[0].ToString().ToLower().Trim();
                             if(jry.Count > 1 && jry[1].ToString().ToLower().Trim().Length > sk.Length)
@@ -351,13 +351,15 @@ namespace LayoutEditor.GUI
             StackPanel grid = new() { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch };
             for (int i = 0; i < nOfNumberInput; i++)
             {
-                SingleUpDown p = new();
-                p.Height = 20;
-                p.Value = values[i];
-                p.Minimum = min;
-                p.Maximum = max;
-                p.HorizontalAlignment = HorizontalAlignment.Stretch;
-                p.Margin = new Thickness(5, 2, 5, 2);
+                SingleUpDown p = new()
+                {
+                    Height = 20,
+                    Value = values[i],
+                    Minimum = min,
+                    Maximum = max,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Margin = new Thickness(5, 2, 5, 2)
+                };
                 p.PreviewTextInput += NumberValidationTextBox;
                 p.ValueChanged += P_ValueChanged;
                 grid.Children.Add(p);
@@ -389,7 +391,7 @@ namespace LayoutEditor.GUI
 
         private static void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new("[^0-9]+");
+            Regex regex = NumberMatch();
             e.Handled = regex.IsMatch(e.Text);
         }
         private static void TextChanged(object sender, TextChangedEventArgs e)
@@ -485,10 +487,7 @@ namespace LayoutEditor.GUI
 
         public static Grid BuildToolBoxItem(string type, MainWindow App, MouseButtonEventHandler B_PreviewMouseDown, MouseButtonEventHandler B_PreviewMouseUp)
         {
-            if(ElementList == null)
-            {
-                ElementList = new();
-            }
+            ElementList ??= new();
 
             string GUID = Guid.NewGuid().ToString();
 
@@ -526,8 +525,10 @@ namespace LayoutEditor.GUI
             g.Children.Add(b);
             g.Children.Add(new Grid());
 
-            JObject j = new();
-            j.Add("type", type);
+            JObject j = new()
+            {
+                { "type", type }
+            };
             ElementList.Add(GUID, j);
             //CallBackList.Add(GUID, UpdatedProperties);
             return g;
@@ -576,5 +577,8 @@ namespace LayoutEditor.GUI
             }
             return null;
         }
+
+        [GeneratedRegex("[^0-9]+")]
+        private static partial Regex NumberMatch();
     }
 }

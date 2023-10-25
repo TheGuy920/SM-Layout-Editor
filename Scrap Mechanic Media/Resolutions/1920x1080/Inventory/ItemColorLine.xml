@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource name="ItemColorLine" size="15 6" texture="gui_item_color_line.png" type="ResourceSkin">
+		<BasisSkin align="Left VStretch" offset="0 0 3 6" type="SubSkin">
+			<State name="normal" offset="0 3 3 6" />
+			<State name="part" offset="0 3 3 6" />
+			<State name="interactive" offset="0 15 3 6" />
+			<State name="block" offset="0 27 3 6" />
+			<State name="tool" offset="0 39 3 6" />
+			<State name="consumable" offset="0 51 3 6" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="3 0 9 6" type="SubSkin">
+			<State name="normal" offset="3 3 9 6" />
+			<State name="part" offset="3 3 9 6" />
+			<State name="interactive" offset="3 15 9 6" />
+			<State name="block" offset="3 27 9 6" />
+			<State name="tool" offset="3 39 9 6" />
+			<State name="consumable" offset="3 51 9 6" />
+		</BasisSkin>
+		<BasisSkin align="Right VStretch" offset="12 0 3 6" type="SubSkin">
+			<State name="normal" offset="12 3 3 6" />
+			<State name="part" offset="12 3 3 6" />
+			<State name="interactive" offset="12 15 3 6" />
+			<State name="block" offset="12 27 3 6" />
+			<State name="tool" offset="12 39 3 6" />
+			<State name="consumable" offset="12 51 3 6" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

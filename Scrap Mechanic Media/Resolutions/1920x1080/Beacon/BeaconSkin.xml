@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource name="BeaconBG" size="510 120" texture="BeaconBG@1080.png" type="ResourceSkin">
+		<BasisSkin align="HStretch Top" offset="0 0 510 114" type="SubSkin">
+			<State name="normal" offset="0 0 510 114" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="0 114 510 6" type="SubSkin">
+			<State name="normal" offset="0 114 510 6" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BeaconBottomBG" size="510 72" texture="BeaconBG@1080.png" type="ResourceSkin">
+		<BasisSkin align="HStretch Top" offset="0 0 510 18" type="SubSkin">
+			<State name="normal" offset="0 120 510 18" />
+		</BasisSkin>
+		<BasisSkin align="HStretch Bottom" offset="0 24 510 48" type="SubSkin">
+			<State name="normal" offset="0 144 510 48" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="0 18 510 6" type="SubSkin">
+			<State name="normal" offset="0 138 510 6" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BeaconIconColor" size="30 30" texture="BeaconIconColor@1080.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 30 30" type="SubSkin">
+			<State name="normal" offset="0 0 30 30" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BeaconIconColorBorder" size="42 42" texture="BeaconIconColorBorder@1080.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 42 42" type="SubSkin">
+			<State name="normal" offset="0 0 42 42" />
+			<State name="highlighted" offset="42 0 42 42" />
+			<State name="pushed" offset="42 0 42 42" />
+			<State name="normal_checked" offset="42 0 42 42" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BeaconIconBorder" size="78 78" texture="IconBorder@1080.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 78 78" type="SubSkin">
+			<State name="normal" offset="0 0 78 78" />
+			<State name="highlighted" offset="78 0 78 78" />
+			<State name="pushed" offset="78 0 78 78" />
+			<State name="normal_checked" offset="78 0 78 78" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BeaconWorldIconBG" size="66 66" texture="BeaconIconBlur@1080.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 66 66" type="SubSkin">
+			<State name="normal" offset="0 0 66 66" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

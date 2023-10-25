@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceSkin" name="TutorialBgMain" size="75 75" texture="gui_tutorial_bg_main.png">
+		<BasisSkin type="SubSkin" offset="0 0 3 66" align="Left Top">
+			<State name="normal" offset="0 0 3 66" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="3 0 6 66" align="HStretch Top">
+			<State name="normal" offset="3 0 6 66" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="9 0 66 66" align="Right Top">
+			<State name="normal" offset="9 0 66 66" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="9 66 66 6" align="Right VStretch">
+			<State name="normal" offset="9 66 66 6" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="9 72 66 3" align="Right Bottom">
+			<State name="normal" offset="9 72 66 3" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="3 72 6 3" align="HStretch Bottom">
+			<State name="normal" offset="3 72 6 3" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 72 3 3" align="Left Bottom">
+			<State name="normal" offset="0 72 3 3" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 66 3 6" align="Left VStretch">
+			<State name="normal" offset="0 66 3 6" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="3 66 6 6" align="Stretch">
+			<State name="normal" offset="3 66 6 6" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource name="LogicGateBG" size="1080 180" texture="LogicGateBG@1080.png" type="ResourceSkin">
+		<BasisSkin align="HStretch Top" offset="0 0 1080 120" type="SubSkin">
+			<State name="normal" offset="0 0 1080 120" />
+		</BasisSkin>
+		<BasisSkin align="HStretch Bottom" offset="0 123 1080 57" type="SubSkin">
+			<State name="normal" offset="0 123 1080 57" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="0 120 1080 3" type="SubSkin">
+			<State name="normal" offset="0 120 1080 3" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="LogicGateButtons" size="144 144" texture="LogicGateButtons@1080.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 144 144" type="SubSkin">
+			<State name="normal" offset="12 3 144 144" />
+			<State name="highlighted" offset="162 3 144 144" />
+			<State name="pushed" offset="312 3 144 144" />
+			<State name="normal_checked" offset="312 3 144 144" />
+			<State name="highlighted_checked" offset="312 3 144 144" />
+			<State name="pushed_checked" offset="312 3 144 144" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="0 105 144 27" type="SimpleText">
+			<State colour="0.5 0.5 0.5" name="normal" shift="0" />
+			<State colour="1 0.815686 0.27451" name="highlighted" shift="0" />
+			<State colour="1 0.815686 0.27451" name="pushed" shift="0" />
+			<State colour="0.560784 0.921569 0.976471" name="normal_checked" shift="0" />
+			<State colour="0.560784 0.921569 0.976471" name="highlighted_checked" shift="0" />
+			<State colour="0.560784 0.921569 0.976471" name="pushed_checked" shift="0" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

@@ -1,0 +1,33 @@
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceImageSet" name="HideoutTradeItems">
+        <Group name="ItemIcons" texture="gui_icon_hideout.png" size="46 46">
+			<Index name="0bc74539-df8a-47c7-aad8-d55d809a01e4">
+                <Frame point="0 0"/>
+            </Index>
+			<Index name="e77d9577-589a-446b-96c1-f6d0d7495489">
+                <Frame point="46 0"/>
+            </Index>
+			<Index name="99477093-e819-4199-b62a-fda6143aae89">
+                <Frame point="92 0"/>
+            </Index>
+			<Index name="9cd8288c-5a19-479f-af47-9eb55230ade2">
+                <Frame point="138 0"/>
+            </Index>
+			<Index name="c10a77d5-3357-4cb4-8113-a2cbe69c7ff2">
+                <Frame point="184 0"/>
+            </Index>
+			<Index name="bc69cb3b-7e0c-4c36-805d-f8d89fcfced3">
+                <Frame point="230 0"/>
+            </Index>
+			<Index name="628fd350-577d-413f-82a8-7f08a83de3d8">
+                <Frame point="276 0"/>
+            </Index>
+			<Index name="1dcd74ca-39ba-4b00-a36a-3381b25055f4">
+                <Frame point="322 0"/>
+            </Index>
+			<Index name="8d601982-4608-4d5e-bb9e-e4041486f7c7">
+                <Frame point="368 0"/>
+            </Index>
+		</Group>
+    </Resource>
+</MyGUI>

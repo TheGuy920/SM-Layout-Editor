@@ -1,0 +1,22 @@
+{
+    "720" : {
+        "cacheScale" : 1.0,
+        "runtimeScale" : 1.0,
+        "downScaleMerge" : false
+    },
+    "1080" : {
+        "cacheScale" : 1.5,
+        "runtimeScale" : 1.0,
+        "downScaleMerge" : false
+    },
+    "1440" : {
+        "cacheScale" : 2.0,
+        "runtimeScale" : 1.0,
+        "downScaleMerge" : false
+    },
+    "2160" : {
+        "cacheScale" : 3.0,
+        "runtimeScale" : 1.0,
+        "downScaleMerge" : false
+    }
+}

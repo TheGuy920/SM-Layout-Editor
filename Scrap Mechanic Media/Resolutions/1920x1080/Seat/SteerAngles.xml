@@ -1,0 +1,368 @@
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceImageSet" name="SteerAngles">
+        <Group name="Left" texture="gui_bearing_left.png" size="110 234">
+			<Index name="1">
+                <Frame point="0 0"/>
+            </Index>
+			<Index name="2">
+                <Frame point="110 0"/>
+            </Index>
+			<Index name="3">
+                <Frame point="220 0"/>
+            </Index>
+			<Index name="4">
+                <Frame point="330 0"/>
+            </Index>
+			<Index name="5">
+                <Frame point="440 0"/>
+            </Index>
+			<Index name="6">
+                <Frame point="550 0"/>
+            </Index>
+			<Index name="7">
+                <Frame point="660 0"/>
+            </Index>
+			<Index name="8">
+                <Frame point="770 0"/>
+            </Index>
+			<Index name="9">
+                <Frame point="880 0"/>
+            </Index>
+			<Index name="10">
+                <Frame point="990 0"/>
+            </Index>
+			<Index name="11">
+                <Frame point="0 234"/>
+            </Index>
+			<Index name="12">
+                <Frame point="110 234"/>
+            </Index>
+			<Index name="13">
+                <Frame point="220 234"/>
+            </Index>
+			<Index name="14">
+                <Frame point="330 234"/>
+            </Index>
+			<Index name="15">
+                <Frame point="440 234"/>
+            </Index>
+			<Index name="16">
+                <Frame point="550 234"/>
+            </Index>
+			<Index name="17">
+                <Frame point="660 234"/>
+            </Index>
+			<Index name="18">
+                <Frame point="770 234"/>
+            </Index>
+			<Index name="19">
+                <Frame point="880 234"/>
+            </Index>
+			<Index name="20">
+                <Frame point="990 234"/>
+            </Index>
+			<Index name="21">
+                <Frame point="0 468"/>
+            </Index>
+			<Index name="22">
+                <Frame point="110 468"/>
+            </Index>
+			<Index name="23">
+                <Frame point="220 468"/>
+            </Index>
+			<Index name="24">
+                <Frame point="330 468"/>
+            </Index>
+			<Index name="25">
+                <Frame point="440 468"/>
+            </Index>
+			<Index name="26">
+                <Frame point="550 468"/>
+            </Index>
+			<Index name="27">
+                <Frame point="660 468"/>
+            </Index>
+			<Index name="28">
+                <Frame point="770 468"/>
+            </Index>
+			<Index name="29">
+                <Frame point="880 468"/>
+            </Index>
+			<Index name="30">
+                <Frame point="990 468"/>
+            </Index>
+			<Index name="31">
+                <Frame point="0 702"/>
+            </Index>
+			<Index name="32">
+                <Frame point="110 702"/>
+            </Index>
+			<Index name="33">
+                <Frame point="220 702"/>
+            </Index>
+			<Index name="34">
+                <Frame point="330 702"/>
+            </Index>
+			<Index name="35">
+                <Frame point="440 702"/>
+            </Index>
+			<Index name="36">
+                <Frame point="550 702"/>
+            </Index>
+			<Index name="37">
+                <Frame point="660 702"/>
+            </Index>
+			<Index name="38">
+                <Frame point="770 702"/>
+            </Index>
+			<Index name="39">
+                <Frame point="880 702"/>
+            </Index>
+			<Index name="40">
+                <Frame point="990 702"/>
+            </Index>
+			<Index name="41">
+                <Frame point="0 936"/>
+            </Index>
+			<Index name="42">
+                <Frame point="110 936"/>
+            </Index>
+			<Index name="43">
+                <Frame point="220 936"/>
+            </Index>
+			<Index name="44">
+                <Frame point="330 936"/>
+            </Index>
+			<Index name="45">
+                <Frame point="440 936"/>
+            </Index>
+			<Index name="46">
+                <Frame point="550 936"/>
+            </Index>
+			<Index name="47">
+                <Frame point="660 936"/>
+            </Index>
+			<Index name="48">
+                <Frame point="770 936"/>
+            </Index>
+			<Index name="49">
+                <Frame point="880 936"/>
+            </Index>
+			<Index name="50">
+                <Frame point="990 936"/>
+            </Index>
+			<Index name="51">
+                <Frame point="0 1170"/>
+            </Index>
+			<Index name="52">
+                <Frame point="110 1170"/>
+            </Index>
+			<Index name="53">
+                <Frame point="220 1170"/>
+            </Index>
+			<Index name="54">
+                <Frame point="330 1170"/>
+            </Index>
+			<Index name="55">
+                <Frame point="440 1170"/>
+            </Index>
+			<Index name="56">
+                <Frame point="550 1170"/>
+            </Index>
+			<Index name="57">
+                <Frame point="660 1170"/>
+            </Index>
+			<Index name="58">
+                <Frame point="770 1170"/>
+            </Index>
+			<Index name="59">
+                <Frame point="880 1170"/>
+            </Index>
+			<Index name="60">
+                <Frame point="990 1170"/>
+            </Index>
+		</Group>
+		<Group name="Right" texture="gui_bearing_right.png" size="110 234">
+			<Index name="1">
+                <Frame point="0 0"/>
+            </Index>
+			<Index name="2">
+                <Frame point="110 0"/>
+            </Index>
+			<Index name="3">
+                <Frame point="220 0"/>
+            </Index>
+			<Index name="4">
+                <Frame point="330 0"/>
+            </Index>
+			<Index name="5">
+                <Frame point="440 0"/>
+            </Index>
+			<Index name="6">
+                <Frame point="550 0"/>
+            </Index>
+			<Index name="7">
+                <Frame point="660 0"/>
+            </Index>
+			<Index name="8">
+                <Frame point="770 0"/>
+            </Index>
+			<Index name="9">
+                <Frame point="880 0"/>
+            </Index>
+			<Index name="10">
+                <Frame point="990 0"/>
+            </Index>
+			<Index name="11">
+                <Frame point="0 234"/>
+            </Index>
+			<Index name="12">
+                <Frame point="110 234"/>
+            </Index>
+			<Index name="13">
+                <Frame point="220 234"/>
+            </Index>
+			<Index name="14">
+                <Frame point="330 234"/>
+            </Index>
+			<Index name="15">
+                <Frame point="440 234"/>
+            </Index>
+			<Index name="16">
+                <Frame point="550 234"/>
+            </Index>
+			<Index name="17">
+                <Frame point="660 234"/>
+            </Index>
+			<Index name="18">
+                <Frame point="770 234"/>
+            </Index>
+			<Index name="19">
+                <Frame point="880 234"/>
+            </Index>
+			<Index name="20">
+                <Frame point="990 234"/>
+            </Index>
+			<Index name="21">
+                <Frame point="0 468"/>
+            </Index>
+			<Index name="22">
+                <Frame point="110 468"/>
+            </Index>
+			<Index name="23">
+                <Frame point="220 468"/>
+            </Index>
+			<Index name="24">
+                <Frame point="330 468"/>
+            </Index>
+			<Index name="25">
+                <Frame point="440 468"/>
+            </Index>
+			<Index name="26">
+                <Frame point="550 468"/>
+            </Index>
+			<Index name="27">
+                <Frame point="660 468"/>
+            </Index>
+			<Index name="28">
+                <Frame point="770 468"/>
+            </Index>
+			<Index name="29">
+                <Frame point="880 468"/>
+            </Index>
+			<Index name="30">
+                <Frame point="990 468"/>
+            </Index>
+			<Index name="31">
+                <Frame point="0 702"/>
+            </Index>
+			<Index name="32">
+                <Frame point="110 702"/>
+            </Index>
+			<Index name="33">
+                <Frame point="220 702"/>
+            </Index>
+			<Index name="34">
+                <Frame point="330 702"/>
+            </Index>
+			<Index name="35">
+                <Frame point="440 702"/>
+            </Index>
+			<Index name="36">
+                <Frame point="550 702"/>
+            </Index>
+			<Index name="37">
+                <Frame point="660 702"/>
+            </Index>
+			<Index name="38">
+                <Frame point="770 702"/>
+            </Index>
+			<Index name="39">
+                <Frame point="880 702"/>
+            </Index>
+			<Index name="40">
+                <Frame point="990 702"/>
+            </Index>
+			<Index name="41">
+                <Frame point="0 936"/>
+            </Index>
+			<Index name="42">
+                <Frame point="110 936"/>
+            </Index>
+			<Index name="43">
+                <Frame point="220 936"/>
+            </Index>
+			<Index name="44">
+                <Frame point="330 936"/>
+            </Index>
+			<Index name="45">
+                <Frame point="440 936"/>
+            </Index>
+			<Index name="46">
+                <Frame point="550 936"/>
+            </Index>
+			<Index name="47">
+                <Frame point="660 936"/>
+            </Index>
+			<Index name="48">
+                <Frame point="770 936"/>
+            </Index>
+			<Index name="49">
+                <Frame point="880 936"/>
+            </Index>
+			<Index name="50">
+                <Frame point="990 936"/>
+            </Index>
+			<Index name="51">
+                <Frame point="0 1170"/>
+            </Index>
+			<Index name="52">
+                <Frame point="110 1170"/>
+            </Index>
+			<Index name="53">
+                <Frame point="220 1170"/>
+            </Index>
+			<Index name="54">
+                <Frame point="330 1170"/>
+            </Index>
+			<Index name="55">
+                <Frame point="440 1170"/>
+            </Index>
+			<Index name="56">
+                <Frame point="550 1170"/>
+            </Index>
+			<Index name="57">
+                <Frame point="660 1170"/>
+            </Index>
+			<Index name="58">
+                <Frame point="770 1170"/>
+            </Index>
+			<Index name="59">
+                <Frame point="880 1170"/>
+            </Index>
+			<Index name="60">
+                <Frame point="990 1170"/>
+            </Index>
+		</Group>
+    </Resource>
+</MyGUI>

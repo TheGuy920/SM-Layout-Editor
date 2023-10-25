@@ -1,83 +1,108 @@
 ﻿<SyntaxDefinition name="XML"
                   extensions=".layout;.xml;.xsl;.xslt;.xsd;.manifest;.config;.addin;.xshd;.wxs;.wxi;.wxl;.proj;.csproj;.vbproj;.ilproj;.booproj;.build;.xfrm;.targets;.xaml;.xpt;.xft;.map;.wsdl;.disco;.ps1xml;.nuspec"
                   xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-   
-<Color foreground="Green" name="Comment" exampleText="&lt;!-- comment --&gt;" />
-<Color foreground="#79a1fc" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
-<Color foreground="#79a1fc" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
-  
-<Color foreground="#454242" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
-<Color foreground="#32779c" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
-  
-<Color foreground="#63cc4e" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
-<Color foreground="#c4c4c4" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
 
-<Color foreground="#454242" name="XmlIrrelevant" exampleText='&lt;?xml version="1.0"?&gt;' />
+	<Color foreground="Green" name="Comment" exampleText="&lt;!-- comment --&gt;" />
+	<Color foreground="#79a1fc" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
+	<Color foreground="#79a1fc" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
 
-<Color foreground="Red" name="WrongFormat" exampleText='&lt;?xml version="1.0"?&gt;' />
-  
-<Color foreground="#316ed6" name="NumberType" exampleText="1" />
-<Color foreground="#a25ffa" name="HexNumber" exampleText="#FFFFFF" />
-<Color foreground="#d92e2e" name="BooleanType" exampleText="true" />
-  
-<Color foreground="#454242" name="Quotes" exampleText="&quot;" />
-	
-<Color foreground="#e0671b" name="FormatedSymbols" exampleText="&amp;quot;" />
+	<Color foreground="#635f5f" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
+	<Color foreground="#569CD6" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
 
-<RuleSet>
-    <Span color="Comment" multiline="true">
-        <Begin>&lt;!--</Begin>
-        <End>--&gt;</End>
-    </Span>
-    <Span color="CData" multiline="true">
-        <Begin>&lt;!\[CDATA\[</Begin>
-        <End>]]&gt;</End>
-    </Span>
-    <Span color="DocType" multiline="true">
-        <Begin>&lt;!DOCTYPE</Begin>
-        <End>&gt;</End>
-    </Span>
-    <Span color="XmlDeclaration" multiline="true">
-        <Begin>&lt;\?</Begin>
-        <End>\?&gt;</End>
-    </Span>
-    <Span color="XmlIrrelevant" multiline="true">
-        <Begin>&lt;</Begin>
-        <End>&gt;</End>
-		<RuleSet>
-			<Rule color="XmlIrrelevant">\/\s*($|\n)</Rule>
-			<Rule color="AttributeName">([\s]+[\w]+(?=(\s*=\s*".*"( |\/|>|\?))))</Rule>
+	<Color foreground="#9CDCFE" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+	<Color foreground="#CE9178" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
 
-			<Rule color="BooleanType">(?&lt;=")\s*(\s*(true|false)+\s*)+(?=")</Rule>
-			<Rule color="NumberType">(?&lt;=")([-+]?[\s\.0-9](e[0-9])?)+(?=")</Rule>
-			<Rule color="HexNumber">(?&lt;=")\s*([#]?[0-9a-fA-F]{6})+\s*(?=")</Rule>
+	<Color foreground="#635f5f" name="XmlIrrelevant" exampleText='&lt;?xml version="1.0"?&gt;' />
 
-			<Rule color="FormatedSymbols">&amp;nbsp;</Rule>
-			<Rule color="FormatedSymbols">&amp;lt;</Rule>
-			<Rule color="FormatedSymbols">&amp;gt;</Rule>
-			<Rule color="FormatedSymbols">&amp;amp;</Rule>
-			<Rule color="FormatedSymbols">&amp;quot;</Rule>
-			<Rule color="FormatedSymbols">&amp;apos;</Rule>
-			<Rule color="FormatedSymbols">&amp;cent;</Rule>
-			<Rule color="FormatedSymbols">&amp;pound;</Rule>
-			<Rule color="FormatedSymbols">&amp;yen;</Rule>
-			<Rule color="FormatedSymbols">&amp;euro;</Rule>
-			<Rule color="FormatedSymbols">&amp;copy;</Rule>
-			<Rule color="FormatedSymbols">&amp;reg;</Rule>
+	<Color foreground="Red" name="WrongFormat" exampleText='&lt;?xml version="1.0"?&gt;' />
 
-			<Rule color="AttributeValue">(?&lt;=")(?!\s?\w+\s?=\s?")[^"\n&amp;]+(?=")</Rule>
-			<Rule color="AttributeValue">(?!&amp;.*;)(?&lt;=;)[^"\n]+</Rule>
-			<Rule color="AttributeValue">(?&lt;=")[^"]+(?!&amp;)*(?=&amp;)</Rule>
-			<Rule color="AttributeValue">(&amp;\w+)[^"]+</Rule>
+	<Color foreground="#5fbd17" name="ValidType" exampleText="T" />
 
-			<Rule color="Quotes">"</Rule>
-			<Rule color="XmlIrrelevant">=</Rule>
-			<Rule color="XmlIrrelevant">^\/</Rule>
-			<Rule color="XmlIrrelevant">\s[\/].?$</Rule>
+	<Color foreground="#316ed6" name="NumberType" exampleText="1" />
+	<Color foreground="#a25ffa" name="SMFormat" exampleText="#FFFFFF" />
+	<Color foreground="#ed9418" name="HexNumber" exampleText="#FFFFFF" />
+	<Color foreground="#d92e2e" name="BooleanType" exampleText="true" />
 
-			<Rule color="XmlTag">^[\w\/]+</Rule>
-			<Rule color="WrongFormat">[^ ]+</Rule>
-		</RuleSet>
-    </Span>
-</RuleSet>
+	<Color foreground="#635f5f" name="Quotes" exampleText="&quot;" />
+	<Color foreground="#fcff59" name="BackSlashItems" exampleText="&quot;" />
+
+	<Color foreground="#e0671b" name="FormatedSymbols" exampleText="&amp;quot;" />
+
+	<RuleSet>
+		<Span color="Comment" multiline="true">
+			<Begin>&lt;!--</Begin>
+			<End>--&gt;</End>
+		</Span>
+		<Span color="CData" multiline="true">
+			<Begin>&lt;!\[CDATA\[</Begin>
+			<End>]]&gt;</End>
+		</Span>
+		<Span color="DocType" multiline="true">
+			<Begin>&lt;!DOCTYPE</Begin>
+			<End>&gt;</End>
+		</Span>
+		<Span color="XmlDeclaration" multiline="true">
+			<Begin>&lt;\?</Begin>
+			<End>\?&gt;</End>
+		</Span>
+		<Span color="XmlIrrelevant" multiline="true">
+			<Begin>&lt;</Begin>
+			<End>&gt;</End>
+			<RuleSet>
+				<Rule color="XmlIrrelevant">(?!")[\W]*(id=".{8}-.{4}-.{4}-.{4}-.{12})</Rule>
+				<Rule color="AttributeName">([\s]+[\w]+(?=(\s*=\s*".*"( |\/|>|\?))))</Rule>
+				<Rule color="Quotes">"</Rule>
+				<Rule color="XmlIrrelevant">\/(\s|\n)*$</Rule>
+				<Rule color="XmlTag">^[\w\/]+</Rule>
+				<Rule color="AttributeValue">(?&lt;=")([^"]+)(?=")</Rule>
+				<Rule color="XmlIrrelevant">(=)</Rule>
+				<Rule color="WrongFormat">(.|\n)</Rule>
+				<!--REPLACE-->
+				<!--
+				<Rule color="WrongFormat">(.|\n)+</Rule>
+				<Rule color="AttributeName">([\s]+[\w]+(?=(\s*=\s*".*"( |\/|>|\?))))</Rule>
+
+				<Rule color="XmlIrrelevant">(?!")[\W]*(id=".{8}-.{4}-.{4}-.{4}-.{12})</Rule>
+				<Rule color="BooleanType">(?&lt;=")\s*(\s*(true|false)+\s*)+(?=")</Rule>
+				<Rule color="NumberType">(?&lt;=")([-+]?[\s\.0-9](e[0-9])?)+(?=")</Rule>
+
+				<Rule color="HexNumber">([#][0-9a-fA-F]{6})|(?&lt;=")\s*([0-9a-fA-F]{6})+\s*(?=")</Rule>
+				<Rule color="FormatedSymbols">(&amp;nbsp;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;lt;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;gt;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;amp;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;quot;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;apos;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;cent;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;pound;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;yen;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;euro;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;copy;)</Rule>
+				<Rule color="FormatedSymbols">(&amp;reg;)</Rule>
+				<Rule color="Quotes">"</Rule>
+				<Rule color="XmlIrrelevant">(=)</Rule>
+				<Rule color="XmlIrrelevant">(^\/)</Rule>
+				<Rule color="XmlIrrelevant">\s[\/].?$</Rule>
+				<Rule color="WrongFormat">(“)</Rule>
+				<Rule color="WrongFormat">(”)</Rule>
+				<Rule color="BackSlashItems">\\n</Rule>
+				<Rule color="BackSlashItems">\\r</Rule>
+
+				<Rule color="XmlIrrelevant">\/(\s|\n)*$</Rule>
+				<Rule color="XmlTag">^[\w\/]+</Rule>
+
+				<Rule color="AttributeValue">((?&lt;==\s")|(?&lt;=="))([^"]+)(?=")</Rule>
+				<Rule color="WrongFormat">(.|\n)+</Rule>
+
+				
+				<Rule color="AttributeValue">(?&lt;=")[^"]*(?=\#\{[^}]+\}).+(?=")</Rule>
+				<Rule color="AttributeValue">((?&lt;==\s")|(?&lt;=="))[^"]+(?=")</Rule>
+				<Rule color="AttributeValue">(?!&amp;.*;)(?&lt;=;)[^"\n]+</Rule>
+				<Rule color="AttributeValue">(?&lt;=")[^"]+(?!&amp;)*(?=&amp;)</Rule>
+				<Rule color="AttributeValue">(&amp;\w+)[^"]+</Rule>
+				<Rule color="SMFormat">(\#\{[^}]+\})</Rule>
+				-->
+			</RuleSet>
+		</Span>
+	</RuleSet>
 </SyntaxDefinition>

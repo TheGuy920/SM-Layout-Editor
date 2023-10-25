@@ -15,7 +15,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Linq;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace LayoutEditor.CustomXML
 {
@@ -34,22 +36,28 @@ namespace LayoutEditor.CustomXML
         private readonly float Version = 1.0f;
         private readonly XmlTextHandler TextHandler;
         private readonly Encoding Encoding = Encoding.UTF8;
-        private Dictionary<Guid, IXmlDOM> Document = new();
-        private readonly XmlOverlay Overlay = new(1);
-        private readonly List<XmlDOM> MouseUpEvent = new();
+        private Dictionary<Guid, IXmlDOM> Document;
+        private readonly XmlOverlay Overlay;
+        private readonly List<XmlDOM> MouseUpEvent;
         private List<XmlDOM> IsSelected { get { return this.Overlay.BindingPair; } }
-        public EventHandler<object> ChangesMade;
-        public EventHandler<object> ChangesSaved;
+        public event EventHandler<object> ChangesMade;
+        public event EventHandler<object> ChangesSaved;
+
         public XmlDocumentHandler(ref TextEditor textEditor, ref Canvas Workspace)
         {
             this.RootCanvas = Workspace;
             this.BuildCanvas();
+            this.Document = new();
+            this.Overlay = new(1);
+            this.MouseUpEvent = new();
             this.RootCanvas.LayoutUpdated += this.WorkspaceLayoutUpdated;
             this.TextHandler = new(ref textEditor, this.TextChanged);
             this.LoadGuiThread = new(this.LoadGui);
             this.InitializeDocumentHeaders(ref this.RootGrid);
             this.LastTextUpdate = new DateTime(0);
+            this.Overlay.DisplayItemChanged += this.VisualsChanged;
         }
+
         private void BuildCanvas()
         {
             this.RootGrid = new()
@@ -74,18 +82,23 @@ namespace LayoutEditor.CustomXML
             this.RootGrid.SetBinding(FrameworkElement.HeightProperty, Height);
             this.RootCanvas.Children.Add(this.RootGrid);
         }
+
         private void RootGridLoaded(object sender, RoutedEventArgs e)
         {
+            this.RootGrid.LayoutUpdated -= this.LayoutUpdated;
             this.RootGrid.LayoutUpdated += this.LayoutUpdated;
         }
+
         public void SetGridSize(double grid)
         {
             this.GridSize = grid;
         }
+
         public void HighlightBorder()
         {
             this.RootBorder.Stroke = Brushes.White;
         }
+
         private bool ScaleUpdated = false;
         public void ChangeScale(object sender, double e)
         {
@@ -105,28 +118,33 @@ namespace LayoutEditor.CustomXML
 
         private void LayoutUpdated(object sender, EventArgs e)
         {
-            if (ScaleUpdated)
+            if (this.ScaleUpdated)
             {
                 // set overlay scale
                 this.Overlay.ChangeScale(this, this.Scale);
                 // reset
                 this.ScaleUpdated = false;
+                // udap
+                this.VisualsChanged();
             }
-            this.VisualsChanged();
+            // this.VisualsChanged();
         }
 
         public void MouseEnter(object sender, MouseEventArgs e)
         {
             // Invoke all registered children
         }
+
         public void MouseLeave(object sender, MouseEventArgs e)
         {
             // Invoke all registered children
         }
+
         public void MouseUp(object sender, MouseButtonEventArgs e)
         {
             // remove highlighting effect
-            if (e.ChangedButton.Equals(MouseButton.Middle)) this.RootBorder.Stroke = Brushes.Gray;
+            if (e.ChangedButton.Equals(MouseButton.Middle))
+                this.RootBorder.Stroke = Brushes.Gray;
             if (e.ChangedButton.Equals(MouseButton.Left))
             {
                 // invoke mouse up and clear
@@ -137,7 +155,7 @@ namespace LayoutEditor.CustomXML
                 this.MouseStart = null;
                 this.UpdateMouseStart = false;
 
-                this.UpdateXML();
+                // this.UpdateXML();
             }
         }
         private bool UpdateMouseStart = false;
@@ -146,7 +164,7 @@ namespace LayoutEditor.CustomXML
             XmlDOM dom = sender as XmlDOM;
             this.MouseUpEvent.Add(dom);
 
-            if ( Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 this.Overlay.BindToDOM(dom, true);
             else
                 this.Overlay.BindToDOM(dom, false);
@@ -154,7 +172,10 @@ namespace LayoutEditor.CustomXML
             this.UpdateMouseStart = true;
 
             e.Handled = true;
+
+            this.UnSelectTextBox();
         }
+
         bool tick = false;
         public void MouseMove(object sender, MouseEventArgs e)
         {
@@ -173,6 +194,13 @@ namespace LayoutEditor.CustomXML
                 }
             }
         }
+
+        public void MoveSelected(Point diff)
+        {
+            if (diff.X != 0 || diff.Y != 0)
+                this.Overlay.MoveByPixels(diff);
+        }
+
         public void DeselectAll()
         {
             this.Overlay.BindToDOM(null);
@@ -180,24 +208,38 @@ namespace LayoutEditor.CustomXML
 
         private void WorkspaceLayoutUpdated(object sender, EventArgs e)
         {
-            
+            // Debug.WriteLine("hallo??");
         }
+
         private void TextChanged()
         {
 
         }
-        private void VisualsChanged()
+
+        private void VisualsChanged(object sender = null, EventArgs e = null)
         {
             if ((DateTime.UtcNow - this.LastTextUpdate).TotalSeconds > 0.5)
             {
-                UpdateXML();
+                this.UpdateXML();
                 this.LastTextUpdate = DateTime.UtcNow;
             }
         }
+
         private void UpdateXML()
         {
             this.TextHandler.UpdateText(this.ToString());
+            this.TextHandler.UpdateCursor(this.IsSelected, this);
             this.ChangesMade.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Undo()
+        {
+            this.TextHandler?.Undo();
+        }
+
+        public void Redo()
+        {
+            this.TextHandler?.Redo();
         }
 
         public void LoadGuiSync()
@@ -208,6 +250,7 @@ namespace LayoutEditor.CustomXML
                 this.LoadGuiThread.Wait();
             }
         }
+
         public void LoadGuiSync(ref Grid Workspace)
         {
             if (Workspace is not null)
@@ -218,11 +261,13 @@ namespace LayoutEditor.CustomXML
                 this.LoadGuiThread.Wait();
             }
         }
+
         public void LoadGuiAsync()
         {
             if (this.LoadGuiThread.Status == TaskStatus.Created)
                 this.LoadGuiThread.Start();
         }
+
         public void LoadGuiAsync(ref Grid Workspace)
         {
             if (Workspace is not null)
@@ -230,6 +275,7 @@ namespace LayoutEditor.CustomXML
             if (this.LoadGuiThread.Status == TaskStatus.Created)
                 this.LoadGuiThread.Start();
         }
+
         private void LoadGui()
         {
             this.RootGrid.Dispatcher.Invoke(() => {
@@ -245,19 +291,29 @@ namespace LayoutEditor.CustomXML
 
             this.RootGrid.Dispatcher.Invoke(() =>
             {
-                (this.RootGrid.Parent as Canvas).Children.Add(this.Overlay);
+                ((this.RootGrid.Parent as Canvas).Parent as Grid).Children.Add(this.Overlay);
             });
 
             this.VisualsChanged();
         }
+
+        public void DeleteSelected()
+        {
+            foreach(var elem in this.IsSelected)
+                this.Document.Remove(elem.Guid);
+
+            this.DeselectAll();
+        }
+
         public override string ToString()
         {
             StringBuilder DocumentString = new();
-            DocumentString.Append($"<?xml version=\"{this.Version}\" encoding=\"{this.Encoding.WebName.ToUpper()}\"?>");
+            DocumentString.Append($"<?xml version=\"{this.Version.ToString("0.0#")}\" encoding=\"{this.Encoding.WebName.ToUpper()}\"?>");
             DocumentString.Append(Environment.NewLine);
             DocumentString.Append(this.Document[RootXml].ToString());
             return DocumentString.ToString();
         }
+
         private void InitializeDocumentHeaders(ref Grid Workspace)
         {
             this.Document.Clear();
@@ -265,31 +321,40 @@ namespace LayoutEditor.CustomXML
             this.RootXml = root.Guid;
             this.Document.Add(this.RootXml, root);
         }
+
         public void SaveAs(string fileName, bool prettyPrint = true)
         {
-            StreamWriter sw = new(fileName, this.Encoding, new FileStreamOptions()
+            StreamWriter sw = new(
+                fileName,
+                this.Encoding,
+                new FileStreamOptions()
+                {
+                    Access = FileAccess.Write,
+                    Mode = FileMode.Create,
+                    Options = FileOptions.SequentialScan
+                })
             {
-                Access = FileAccess.ReadWrite,
-                Mode = FileMode.OpenOrCreate,
-                Options = FileOptions.SequentialScan
-            });
-            sw.NewLine = Environment.NewLine;
+                NewLine = Environment.NewLine
+            };
             sw.Write(this.ToString());
             sw.Close();
             sw.Dispose();
         }
+
         public void LoadString(string xml)
         {
             this.XElementToXDoc(XElement.Parse(xml));
             this.BuildLinkedList();
             this.LoadGui();
         }
+
         public void LoadFile(string path)
         {
             this.XElementToXDoc(XElement.Load(path));
             this.BuildLinkedList();
             this.LoadGui();
         }
+
         private void XElementToXDoc(XElement xlm, Guid? Parent = null)
         {
             XmlDOM xmlDOM = null;
@@ -303,11 +368,12 @@ namespace LayoutEditor.CustomXML
                     break;
                 // Add widget
                 case "Widget":
-                    xmlDOM = NewXmlDOM(Parent, XmlTag.Widget, xlm.Attributes());
+                    xmlDOM = this.NewXmlDOM(Parent, XmlTag.Widget, xlm.Attributes());
                     this.Document.Add(xmlDOM.Guid, xmlDOM);
                     break;
                 // Add property to parent
                 case "Property":
+                case "UserString":
                     List<XAttribute> PropertyList = xlm.Attributes().ToList();
                     // index 0 should be the Key and index 1 should be the Value for the propert tag
                     (this.Document[Parent.Value] as XmlDOM).ParseProperties(new(PropertyList[0].Value, PropertyList[1].Value));
@@ -318,16 +384,19 @@ namespace LayoutEditor.CustomXML
                     throw new Exception($"Unkown Tag: {xlm.Name}");
             }
             // Load all XML elements, with their respective parents (children not loaded)
-            foreach (XElement Child in xlm.Elements()) this.XElementToXDoc(Child, xmlDOM?.Guid ?? Parent ?? this.RootXml);
+            foreach (XElement Child in xlm.Elements())
+                this.XElementToXDoc(Child, xmlDOM?.Guid ?? Parent ?? this.RootXml);
         }
+
         public void ChangeViewMode(XmlViewMode viewMode)
         {
             this.CurrentViewMode = viewMode;
-            foreach (Guid child_guid in this.Document[this.RootXml]._Children)
-                this.RootGrid.Dispatcher.Invoke(() => {
-                    this.Document[child_guid].ChangeViewMode(viewMode);
-                });
+            var root = this.Document[this.RootXml];
+            foreach (Guid child_guid in root._Children)
+                if (this.Document.TryGetValue(child_guid, out var item))
+                    this.RootGrid.Dispatcher.Invoke(item.ChangeViewMode,viewMode);
         }
+
         private XmlDOM NewXmlDOM(Guid? Parent, XmlTag Tag, IEnumerable<XAttribute> attributes = null)
         {
             XmlDOM xmlDOM = new(ref this.Document, Parent, Tag);
@@ -335,11 +404,15 @@ namespace LayoutEditor.CustomXML
             xmlDOM.MouseDown += MouseDown;
             return xmlDOM;
         }
+
         private void BuildLinkedList()
         {
             // Add all children to their parents
-            foreach (IXmlDOM Item in this.Document.Values) if (Item._Parent.HasValue) this.Document[Item._Parent.Value]._Children.Add(Item.Guid);
+            foreach (IXmlDOM Item in this.Document.Values)
+                if (Item._Parent.HasValue)
+                    this.Document[Item._Parent.Value]._Children.Add(Item.Guid);
         }
+
         public XmlDOM AddXmlElement(XmlTag tag, XmlType type, Guid? parent = null)
         {
             XmlDOM d = new (
@@ -350,6 +423,25 @@ namespace LayoutEditor.CustomXML
             );
             this.Document.Add(d.Guid, d);
             return d;
+        }
+
+        internal IEnumerable<UIElement> GetSelected() => this.Overlay.BindingPair;
+
+        public void UnSelectTextBox()
+        {
+            this.TextHandler.RemoveCaret();
+            // Keyboard.ClearFocus();
+            // (this.RootCanvas.Parent as Grid).Focus();
+        }
+
+        public void UpdateOverlay()
+        {
+            this.Overlay.UpdateSize();
+        }
+
+        internal void AddTextSize(int delta)
+        {
+            this.TextHandler.AddTextSize(delta);
         }
     }
 }

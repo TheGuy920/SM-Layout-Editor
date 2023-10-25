@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceSkin" name="quest_partpin" size="75 102" texture="gui_quest_partpin.png">
+		<BasisSkin type="SubSkin" offset="0 0 75 102" align="Stretch">
+			<State name="normal" offset="0 0 75 102" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="quest_toolpin" size="102 147" texture="gui_quest_toolpin.png">
+		<BasisSkin type="SubSkin" offset="0 0 102 147" align="Stretch">
+			<State name="normal" offset="0 0 102 147" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="quest_rotbearringpin" size="90 132" texture="gui_quest_rotbearringpin.png">
+		<BasisSkin type="SubSkin" offset="0 0 90 132" align="Stretch">
+			<State name="normal" offset="0 0 90 132" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="quest_connectionorderpin" size="45 66" texture="gui_quest_conncetionorderpin.png">
+		<BasisSkin type="SubSkin" offset="0 0 45 66" align="Stretch" />
+	</Resource>
+</MyGUI>

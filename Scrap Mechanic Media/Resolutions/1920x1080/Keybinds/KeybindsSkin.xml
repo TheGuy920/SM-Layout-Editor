@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceSkin" name="gui_keybinds_bg" size="42 42" texture="gui_keybinds_bg.png">
+		<BasisSkin type="SubSkin" offset="28 0 13 42" align="Right VStretch">
+			<State name="normal" offset="28 0 13 42" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 0 13 42" align="Left VStretch">
+			<State name="normal" offset="0 0 13 42" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="13 0 15 42" align="Stretch">
+			<State name="normal" offset="13 0 15 42" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="gui_keybinds_bg_white" size="42 42" texture="gui_keybinds_bg_white.png">
+		<BasisSkin type="SubSkin" offset="28 0 13 42" align="Right VStretch">
+			<State name="normal" offset="28 0 13 42" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 0 13 42" align="Left VStretch">
+			<State name="normal" offset="0 0 13 42" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="13 0 15 42" align="Stretch">
+			<State name="normal" offset="13 0 15 42" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="gui_keybinds_bg_orange" size="42 42" texture="gui_keybinds_bg_orange.png">
+		<BasisSkin type="SubSkin" offset="28 0 13 42" align="Right VStretch">
+			<State name="normal" offset="28 0 13 42" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 0 13 42" align="Left VStretch">
+			<State name="normal" offset="0 0 13 42" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="13 0 15 42" align="Stretch">
+			<State name="normal" offset="13 0 15 42" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

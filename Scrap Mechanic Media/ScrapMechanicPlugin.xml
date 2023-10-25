@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Widgets">
+	<Widget name="Button">
+		<Property key="DefaultSkin" value="Button"/>
+		<Property key="Base" value="TextBox"/>
+
+		<!--<Property key="Skin" value="ActiveButton" group="SM Buttons"/>-->
+
+		<Property key="Parent" value="true"/>
+		<Property key="Child" value="true"/>
+		<Parameter key="StateSelected" value="Bool"/>
+		<Parameter key="ModeImage" value="Bool"/>
+		<Parameter key="ImageResource" value="String"/>
+		<Parameter key="ImageGroup" value="String"/>
+		<Parameter key="ImageName" value="String"/>
+	</Widget>
+	<Widget name="Widget">
+		<Property key="DefaultSkin" value=""/>
+
+		<!--BlurryBackgrounds.xml-->
+		<Property key="Skin" value="InventoryBackground" group="SM Background"/>
+		<!--<Property key="Skin" value="ContainerItemBackground" group="SM Background"/-->
+
+		<Property key="Parent" value="true"/>
+		<Property key="Child" value="true"/>
+		<Parameter key="Visible" value="Bool"/>
+		<Parameter key="Depth" value="1 int"/>
+		<Parameter key="Alpha" value="Alpha"/>
+		<Parameter key="InheritsAlpha" value="Bool"/>
+		<Parameter key="InheritsPick" value="Bool"/>
+		<Parameter key="MaskPick" value="FileName"/>
+		<Parameter key="Colour" value="Colour"/>
+		<Parameter key="NeedKey" value="Bool"/>
+		<Parameter key="NeedMouse" value="Bool"/>
+		<Parameter key="Enabled" value="Bool"/>
+		<Parameter key="NeedToolTip" value="Bool"/>
+		<Parameter key="Pointer" value="String"/>
+	</Widget>
+</MyGUI>

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceSkin" name="HotbarItemBackground" size="108 108" texture="gui_skin_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 108 108" align="Stretch">
+            <State name="disabled" offset="1 346 108 108"/>
+            <State name="normal" offset="1 346 108 108"/>
+            <State name="highlighted" offset="1 346 108 108"/>
+            <State name="pushed" offset="1 346 108 108"/>
+            <State name="disabled_checked" offset="1 237 108 108"/>
+            <State name="normal_checked" offset="1 237 108 108"/>
+            <State name="highlighted_checked" offset="1 237 108 108"/>
+            <State name="pushed_checked" offset="1 237 108 108"/>
+        </BasisSkin>
+    </Resource>
+	<Resource type="ResourceSkin" name="InteractionBackground" size="50 44" texture="gui_skin_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="25 0 25 44" align="Right VStretch">
+            <State name="normal" offset="537 400 25 44"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="0 0 25 44" align="Left VStretch">
+            <State name="normal" offset="512 400 25 44"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="25 0 0 44" align="Stretch">
+            <State name="normal" offset="537 400 0 44"/>
+        </BasisSkin>
+    </Resource>
+	<Resource type="ResourceSkin" name="HudBackgroundLarge" size="30 40" texture="gui_skin_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 11 11" align="Left Top">
+            <State name="normal" offset="614 1 11 11"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="11 0 8 11" align="HStretch Top">
+            <State name="normal" offset="625 1 8 11"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="19 0 11 11" align="Right Top">
+            <State name="normal" offset="633 1 11 11"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="19 11 11 18" align="Right VStretch">
+            <State name="normal" offset="633 12 11 18"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="19 29 11 11" align="Right Bottom">
+            <State name="normal" offset="633 30 11 11"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="11 29 8 11" align="HStretch Bottom">
+            <State name="normal" offset="625 30 8 11"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="0 29 11 11" align="Left Bottom">
+            <State name="normal" offset="614 30 11 11"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="0 11 11 18" align="Left VStretch">
+            <State name="normal" offset="614 12 11 18"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="11 11 8 18" align="Stretch">
+            <State name="normal" offset="625 12 8 18"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="HudBackgroundSmall" size="30 20" texture="gui_skin_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="15 0 15 20" align="Right VStretch">
+            <State name="normal" offset="629 79 15 20"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="0 0 15 20" align="Left VStretch">
+            <State name="normal" offset="614 79 15 20"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="15 0 0 20" align="Stretch">
+            <State name="normal" offset="629 79 0 20"/>
+        </BasisSkin>
+    </Resource>
+	<Resource type="ResourceSkin" name="HudBackgroundIcon" size="56 56" texture="gui_skin_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 56 56" align="Stretch">
+            <State name="disabled" offset="645 1 56 56"/>
+            <State name="normal" offset="645 1 56 56"/>
+            <State name="highlighted" offset="645 1 56 56"/>
+            <State name="pushed" offset="645 1 56 56"/>
+            <State name="disabled_checked" offset="702 1 56 56"/>
+            <State name="normal_checked" offset="702 1 56 56"/>
+            <State name="highlighted_checked" offset="702 1 56 56"/>
+            <State name="pushed_checked" offset="702 1 56 56"/>
+        </BasisSkin>
+    </Resource>
+	<Resource type="ResourceSkin" name="MenuButton" size="54 62" texture="gui_skin_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="28 0 26 62" align="Right VStretch">
+            <State name="disabled" offset="231 1 26 62"/>
+            <State name="normal" offset="231 1 26 62"/>
+            <State name="highlighted" offset="286 1 26 62"/>
+            <State name="pushed" offset="341 1 26 62"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="0 0 26 62" align="Left VStretch">
+            <State name="disabled" offset="203 1 26 62"/>
+            <State name="normal" offset="203 1 26 62"/>
+            <State name="highlighted" offset="258 1 26 62"/>
+            <State name="pushed" offset="313 1 26 62"/>
+        </BasisSkin>
+        <BasisSkin type="SubSkin" offset="26 0 2 62" align="Stretch">
+            <State name="disabled" offset="229 1 2 62"/>
+            <State name="normal" offset="229 1 2 62"/>
+            <State name="highlighted" offset="284 1 2 62"/>
+            <State name="pushed" offset="339 1 2 62"/>
+        </BasisSkin>
+        <BasisSkin type="SimpleText" offset="26 7 2 48" align="Stretch">
+            <State name="disabled" colour="1 0.843137 0.309804" shift="0"/>
+            <State name="normal" colour="1 0.843137 0.309804" shift="0"/>
+            <State name="highlighted" colour="0.321569 0.286275 0.188235" shift="0"/>
+            <State name="pushed" colour="0.321569 0.286275 0.188235" shift="0"/>
+        </BasisSkin>
+    </Resource>
+</MyGUI>

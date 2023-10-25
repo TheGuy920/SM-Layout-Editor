@@ -4,14 +4,29 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:LayoutEditor.Windows.Pages"
-      xmlns:Editor="clr-namespace:ICSharpCode.AvalonEdit"
       xmlns:Editor1="http://icsharpcode.net/sharpdevelop/avalonedit"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="MainEditor" Loaded="PageLoaded">
     <Grid PreviewMouseUp="EntireAppPreviewMouseUp" MouseLeave="ViewBoxMouseLeave" MouseEnter="ViewBoxMouseEnter">
-        <Grid x:Name="UpperWorkspace" Margin="0,0,0,220" PreviewKeyDown="GridPreviewKeyDown">
-            <Grid x:Name="ViewBox" Margin="5,5,220,0" Background="Transparent"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="ViewMode" Grid.Row="0" Orientation="Horizontal" Background="White" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+          Height="25" Width="Auto">
+            <Button Content="W" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="0"/>
+                <Button Content="C" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="1"/>
+            <Button Content="D" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="2"/>
+        </StackPanel>
+        <Grid x:Name="UpperWorkspace" Grid.Row="2" Margin="0,0,0,15" VerticalAlignment="Stretch" PreviewKeyDown="GridPreviewKeyDown" MouseDown="UpperWorkspace_MouseDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="ViewBox" Background="Transparent" Grid.Column="0" Margin="5,5,10,0"
               PreviewMouseWheel="GridPreviewMouseWheel" ClipToBounds="True" MouseDown="GridMouseDown">
                 <Rectangle Canvas.Left="10" Canvas.Top="10">
                     <Rectangle.Fill>
@@ -44,33 +59,30 @@
                 </Canvas>
                 <TextBlock x:Name="ZoomDisplay" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="White" FontSize="25px"
                            TextAlignment="Center" Margin="0,0,0,-5" Padding="5,0" FontFamily="Bahnschrift Light" Text="1x" />
-                <StackPanel x:Name="ViewMode"  Orientation="Horizontal" Background="White" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                      Height="50" Width="150">
-                    <Button Content="W" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="0"/>
-                    <Button Content="C" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="1"/>
-                    <Button Content="D" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="2"/>
-                </StackPanel>
             </Grid>
-            <Button x:Name="ResizeProp" Margin="0,5,212.5, 0"
-                Background="DarkGray" BorderThickness="0"
-                HorizontalAlignment="Right" Cursor="SizeWE" Width="5"
-                PreviewMouseDown="ResizePropMouseDown">
-            </Button>
-            <Grid x:Name="PropertiesBox" Margin="0,5,5,0" Background="#241f1f" HorizontalAlignment="Right" MinWidth="205" Width="205">
+            <Grid x:Name="PropertiesBox" Margin="0,5,5,0" Background="#241f1f" HorizontalAlignment="Right" Width="205" Grid.Column="1" MinWidth="205">
                 <TextBlock Height="19" VerticalAlignment="Top" Background="#362e2e" Padding="3,0" Foreground="LightGray" Text="Properties"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
                     <StackPanel Orientation="Vertical" x:Name="Properties" CanVerticallyScroll="True"/>
 
                 </ScrollViewer>
+                <Border x:Name="ResizeProp" Margin="-7,0,0,0"
+                    Background="DarkGray" BorderThickness="0"
+                    CornerRadius="2"
+                    HorizontalAlignment="Left" Cursor="SizeWE" Width="5"
+                    PreviewMouseDown="ResizePropMouseDown">
+                </Border>
             </Grid>
-            <Button x:Name="ResizeEditor" Margin="5,0,5,-7"
-                Background="DarkGray" BorderThickness="0"
-                VerticalAlignment="Bottom" Cursor="SizeNS" Height="4"
-                PreviewMouseDown="ResizeEditorMouseDown">
-            </Button>
         </Grid>
-        <Grid VerticalAlignment="Bottom" x:Name="LowwerWorkspace" Margin="5" Height="200">
+        <Grid Grid.Row="3" Visibility="Visible" VerticalAlignment="Bottom" x:Name="LowwerWorkspace" Height="200"
+              PreviewMouseWheel="LowwerWorkspace_PreviewMouseWheel">
+            <Border Background="DarkGray" VerticalAlignment="Top" Margin="5,-7,5,0" CornerRadius="2"
+                    x:Name="ResizeEditor"
+                    BorderThickness="0"
+                    Cursor="SizeNS" Height="4"
+                    PreviewMouseDown="ResizeEditorMouseDown"/>
             <Editor1:TextEditor HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                Margin="5"
                 x:Name="XMLViewer"
                 FontFamily="Consolas"
                 SyntaxHighlighting="XML"

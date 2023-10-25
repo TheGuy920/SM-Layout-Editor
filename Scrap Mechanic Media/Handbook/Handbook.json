@@ -1,0 +1,101 @@
+{
+	"HowToPlay":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_HOW_TO_PLAY}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_HowToPlay1.layout"
+		},
+		{
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_HowToPlay2.layout"
+		},
+		{
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_HowToPlay3.layout"
+		},
+		{
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_HowToPlay4.layout"
+		}
+	],
+	"Tutorial":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_HOW_TO_BUILD_A_VEHICLE}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Tutorial1.layout"
+		},
+		{
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Tutorial2.layout"
+		}
+	],
+	"Bearing":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_BEARING}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Bearing1.layout"
+		}
+	],
+	"Lift":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_LIFT}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Lift1.layout"
+		}
+	],
+	"ConnectTool":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_CONNECT_TOOL}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_ConnectTool1.layout"
+		}
+	],
+	"Seat": 
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_DRIVERS_SEAT}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Seat1.layout"
+		}
+	],
+	"Engine":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_GAS_ENGINE}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Engine1.layout"
+		}
+	],
+	"Thruster":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_THRUSTER}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Thruster1.layout"
+		}
+	],
+	"Triggers":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_TRIGGERS}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Triggers1.layout"
+		}
+	],
+	"Controller":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_CONTROLLER}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Controller1.layout"
+		},
+		{
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_Controller2.layout"
+		}
+	],
+	"LogicGate":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_LOGIC_GATE}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_LogicGate1.layout"
+		}
+	],
+	"FAQ":
+	[
+		{
+			"tooltip": "#{HANDBOOK_TOOLTIP_FREQUENTLY_ASKED_QUESTIONS}",
+			"layout": "$GAME_DATA/Gui/Layouts/Handbook/Handbook_FAQ1.layout"
+		}
+	]
+}

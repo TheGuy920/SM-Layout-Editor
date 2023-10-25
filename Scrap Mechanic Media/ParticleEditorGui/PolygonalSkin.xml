@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceSkin" name="PolygonalSkin" size="32 32" texture="line.png">
+		<BasisSkin type="PolygonalSkin" offset="0 0 32 32" align="Stretch">
+			<State name="normal" offset="0 0 32 32"/>
+		</BasisSkin>
+	</Resource>
+</MyGUI>

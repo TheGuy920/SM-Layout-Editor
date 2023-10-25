@@ -1,0 +1,9 @@
+{
+	"loadingScreenSettings":
+	{
+		"fadeToBlackEasing": "easeOutCubic",
+		"fadeToBlurEasing": "linear",
+
+		"fadeToBlackGame": 0.6
+	}
+}

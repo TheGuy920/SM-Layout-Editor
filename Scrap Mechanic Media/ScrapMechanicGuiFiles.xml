@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="List">
+	<List file="ScrapMekSkin.xml"/>
+	<List file="ScrapMekTemplate.xml"/>
+	<List file="Rotations.xml"/>
+	<List file="EditorTemplates.xml"/>
+	<List file="EditorSkin.xml"/>
+
+	<List file="ScrapMechanicPlugin.xml"/>
+</MyGUI>

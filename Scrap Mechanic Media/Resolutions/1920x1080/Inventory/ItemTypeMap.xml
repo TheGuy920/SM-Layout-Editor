@@ -1,0 +1,21 @@
+<MyGUI type="Resource" version="1.1">
+    <Resource name="ItemTypeSet" type="ResourceImageSet">
+        <Group name="ItemTypeColor" size="12 12" texture="gui_item_color_circle.png">
+            <Index name="part">
+                <Frame point="3 0" />
+            </Index>
+            <Index name="interactive">
+                <Frame point="21 0" />
+            </Index>
+            <Index name="block">
+                <Frame point="39 0" />
+            </Index>
+            <Index name="tool">
+                <Frame point="57 0" />
+            </Index>
+            <Index name="consumable">
+                <Frame point="75 0" />
+            </Index>
+        </Group>
+    </Resource>
+</MyGUI>

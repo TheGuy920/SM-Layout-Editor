@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource name="BackgroundPopup" size="90 90" texture="BGSpritesheet@1080.png" type="ResourceSkin">
+		<BasisSkin align="Left Top" offset="0 0 43 43" type="SubSkin">
+			<State name="normal" offset="51 3 43 43" />
+		</BasisSkin>
+		<BasisSkin align="HStretch Top" offset="43 0 3 43" type="SubSkin">
+			<State name="normal" offset="94 3 3 43" />
+		</BasisSkin>
+		<BasisSkin align="Right Top" offset="46 0 43 43" type="SubSkin">
+			<State name="normal" offset="97 3 43 43" />
+		</BasisSkin>
+		<BasisSkin align="Right VStretch" offset="46 43 43 3" type="SubSkin">
+			<State name="normal" offset="97 46 43 3" />
+		</BasisSkin>
+		<BasisSkin align="Right Bottom" offset="46 46 43 43" type="SubSkin">
+			<State name="normal" offset="97 49 43 43" />
+		</BasisSkin>
+		<BasisSkin align="HStretch Bottom" offset="43 46 3 43" type="SubSkin">
+			<State name="normal" offset="94 49 3 43" />
+		</BasisSkin>
+		<BasisSkin align="Left Bottom" offset="0 46 43 43" type="SubSkin">
+			<State name="normal" offset="51 49 43 43" />
+		</BasisSkin>
+		<BasisSkin align="Left VStretch" offset="0 43 43 3" type="SubSkin">
+			<State name="normal" offset="51 46 43 3" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="43 43 3 3" type="SubSkin">
+			<State name="normal" offset="94 46 3 3" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BackgroundPromptNarrow" size="520 300" texture="gui_backgrounds_promptnarrow_1920x1080.png" type="ResourceSkin">
+		<BasisSkin align="HStretch Top" offset="0 0 520 168" type="SubSkin">
+			<State name="normal" offset="0 0 520 168" />
+		</BasisSkin>
+		<BasisSkin align="HStretch Bottom" offset="0 166 520 133" type="SubSkin">
+			<State name="normal" offset="0 166 520 133" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="0 168 520 -1" type="SubSkin">
+			<State name="normal" offset="0 168 520 -1" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BackgroundPromptWide" size="720 300" texture="gui_backgrounds_promptwide_1920x1080.png" type="ResourceSkin">
+		<BasisSkin align="HStretch Top" offset="0 0 720 168" type="SubSkin">
+			<State name="normal" offset="0 0 720 168" />
+		</BasisSkin>
+		<BasisSkin align="HStretch Bottom" offset="0 166 720 133" type="SubSkin">
+			<State name="normal" offset="0 166 720 133" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="0 168 720 -1" type="SubSkin">
+			<State name="normal" offset="0 168 720 -1" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

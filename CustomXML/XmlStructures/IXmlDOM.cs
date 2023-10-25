@@ -18,6 +18,6 @@ namespace LayoutEditor.CustomXML
         string ToString(int _ = 0);
         Grid LoadGui(int _ = 0);
         void ChangeViewMode(XmlViewMode _);
-        Grid GetGrid();
+        Grid GridActor { get; }
     }
 }

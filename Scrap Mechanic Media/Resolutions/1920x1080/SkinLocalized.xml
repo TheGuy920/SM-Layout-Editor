@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceSkin" name="ButtonPlay" size="307 102" texture="gui_skin_localized_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 307 102" align="Stretch">
+            <State name="disabled" offset="1 1 307 102"/>
+            <State name="normal" offset="1 1 307 102"/>
+            <State name="highlighted" offset="1 104 307 102"/>
+            <State name="pushed" offset="1 104 307 102"/>
+        </BasisSkin>
+    </Resource>
+</MyGUI>

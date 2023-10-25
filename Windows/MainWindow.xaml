@@ -14,7 +14,9 @@
         ResizeMode="CanResizeWithGrip"
         SizeChanged="EntireWindowSizeChanged"
         PreviewMouseMove="EntireWindowMouseMove"
-        ContentRendered="EntireWindowContentRendered"        
+        ContentRendered="EntireWindowContentRendered"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        PreviewKeyUp="Window_PreviewKeyUp"
         WindowState="Normal">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -136,7 +138,9 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid Background="#1e1e1e" x:Name="EntireWindow">
-        <TabControl Margin="0,35,0,0" x:Name="NavigationWindow" Background="Transparent" BorderBrush="#FF3B3E46" BorderThickness="2" SelectedIndex="0">
+        <TabControl Margin="0,35,0,0" x:Name="NavigationWindow"
+                    Background="Transparent" BorderBrush="#FF3B3E46"
+                    BorderThickness="2" SelectedIndex="0">
             <TabItem x:Name="AddNewTab" Header="+"
                          Template="{StaticResource TabItemTemplate}"
                          PreviewMouseUp="AddNewPage"/>

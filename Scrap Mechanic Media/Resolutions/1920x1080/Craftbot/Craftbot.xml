@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource name="BackgroundCraftbot" size="1245 915" texture="CraftbotBG@1080.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 1245 915" type="SubSkin">
+			<State name="normal" offset="0 0 1245 915" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="BackgroundCraftbotTooltip" size="300 838" texture="gui_background_craftbot_tooltip.png" type="ResourceSkin">
+		<BasisSkin align="Stretch" offset="0 0 300 838" type="SubSkin">
+			<State name="normal" offset="0 0 300 838" />
+		</BasisSkin>
+	</Resource>
+	<Resource name="CraftbotTab" size="75 45" texture="CraftbotTabs@1080.png" type="ResourceSkin">
+		<BasisSkin align="Right VStretch" offset="51 0 24 45" type="SubSkin">
+			<State name="disabled" offset="51 6 24 45" />
+			<State name="normal" offset="51 6 24 45" />
+			<State name="highlighted" offset="51 57 24 45" />
+			<State name="pushed" offset="51 108 24 45" />
+			<State name="disabled_checked" offset="51 108 24 45" />
+			<State name="normal_checked" offset="51 108 24 45" />
+			<State name="highlighted_checked" offset="51 108 24 45" />
+			<State name="pushed_checked" offset="51 108 24 45" />
+		</BasisSkin>
+		<BasisSkin align="Left VStretch" offset="0 0 24 45" type="SubSkin">
+			<State name="disabled" offset="0 6 24 45" />
+			<State name="normal" offset="0 6 24 45" />
+			<State name="highlighted" offset="0 57 24 45" />
+			<State name="pushed" offset="0 108 24 45" />
+			<State name="disabled_checked" offset="0 108 24 45" />
+			<State name="normal_checked" offset="0 108 24 45" />
+			<State name="highlighted_checked" offset="0 108 24 45" />
+			<State name="pushed_checked" offset="0 108 24 45" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="24 0 27 45" type="SubSkin">
+			<State name="disabled" offset="24 6 27 45" />
+			<State name="normal" offset="24 6 27 45" />
+			<State name="highlighted" offset="24 57 27 45" />
+			<State name="pushed" offset="24 108 27 45" />
+			<State name="disabled_checked" offset="24 108 27 45" />
+			<State name="normal_checked" offset="24 108 27 45" />
+			<State name="highlighted_checked" offset="24 108 27 45" />
+			<State name="pushed_checked" offset="24 108 27 45" />
+		</BasisSkin>
+		<BasisSkin align="Stretch" offset="24 0 27 45" type="SimpleText">
+			<State colour="0.695313 0.695313 0.695313" name="disabled" shift="0" />
+			<State colour="0.695313 0.695313 0.695313" name="normal" shift="0" />
+			<State colour="0.695313 0.695313 0.695313" name="highlighted" shift="0" />
+			<State colour="0.128906 0.125 0.132813" name="pushed" shift="0" />
+			<State colour="0.128906 0.125 0.132813" name="disabled_checked" shift="0" />
+			<State colour="0.128906 0.125 0.132813" name="normal_checked" shift="0" />
+			<State colour="0.128906 0.125 0.132813" name="highlighted_checked" shift="0" />
+			<State colour="0.128906 0.125 0.132813" name="pushed_checked" shift="0" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

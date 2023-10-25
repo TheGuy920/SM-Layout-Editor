@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource name="CraftbotQueueUnlocked" type="ResourceImageSet">
+		<Group name="Count" size="1245 180" texture="CraftbotQueueUnlocked@1080.png">
+			<Index name="0">
+				<Frame point="0 0" />
+			</Index>
+			<Index name="1">
+				<Frame point="0 1380" />
+			</Index>
+			<Index name="2">
+				<Frame point="0 1185" />
+			</Index>
+			<Index name="3">
+				<Frame point="0 990" />
+			</Index>
+			<Index name="4">
+				<Frame point="0 795" />
+			</Index>
+			<Index name="5">
+				<Frame point="0 600" />
+			</Index>
+			<Index name="6">
+				<Frame point="0 405" />
+			</Index>
+			<Index name="7">
+				<Frame point="0 210" />
+			</Index>
+			<Index name="8">
+				<Frame point="0 15" />
+			</Index>
+		</Group>
+	</Resource>
+	<Resource name="CraftbotQueueActive" type="ResourceImageSet">
+		<Group name="Count" size="1245 180" texture="CraftbotQueueActive@1080.png">
+			<Index name="0">
+				<Frame point="0 0" />
+			</Index>
+			<Index name="1">
+				<Frame point="0 1380" />
+			</Index>
+			<Index name="2">
+				<Frame point="0 1185" />
+			</Index>
+			<Index name="3">
+				<Frame point="0 990" />
+			</Index>
+			<Index name="4">
+				<Frame point="0 795" />
+			</Index>
+			<Index name="5">
+				<Frame point="0 600" />
+			</Index>
+			<Index name="6">
+				<Frame point="0 405" />
+			</Index>
+			<Index name="7">
+				<Frame point="0 210" />
+			</Index>
+			<Index name="8">
+				<Frame point="0 15" />
+			</Index>
+		</Group>
+	</Resource>
+</MyGUI>

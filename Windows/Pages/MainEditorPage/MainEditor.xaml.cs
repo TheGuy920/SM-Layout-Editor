@@ -17,6 +17,7 @@ using System.Text;
 using LayoutEditor.CustomXML;
 using System.Diagnostics;
 using System.Collections.Generic;
+using DiffPlex.DiffBuilder.Model;
 
 namespace LayoutEditor.Windows.Pages
 {
@@ -25,20 +26,20 @@ namespace LayoutEditor.Windows.Pages
     /// </summary>
     public partial class MainEditor : Page
     {
-        public Point MouseStart = new(0,0);
+        public Point MouseStart = new(0, 0);
         private Point Resolution = new(1920, 1080);
         private double d_scale = 1;
         public double Scale
         {
-            get 
+            get
             {
-                return d_scale;
+                return this.d_scale;
             }
             set
             {
-                d_scale = value;
+                this.d_scale = value;
                 this.XmlDocumentHandler.ChangeScale(this, value);
-                ZoomDisplay.Text = (Math.Floor(d_scale * 100) / 100).ToString() + "x";
+                this.ZoomDisplay.Text = (Math.Floor(value * 100) / 100).ToString() + "x";
             }
         }
 
@@ -51,7 +52,7 @@ namespace LayoutEditor.Windows.Pages
         private readonly XmlDocumentHandler XmlDocumentHandler;
         private readonly JObject Library;
         private readonly string CurrentFileName = "Untitled.layout";
-        
+
         public MainEditor(string fileName = null)
         {
             this.InitializeComponent();
@@ -62,16 +63,21 @@ namespace LayoutEditor.Windows.Pages
             this.ViewBox.MouseMove += this.XmlDocumentHandler.MouseMove;
             this.XmlDocumentHandler.ChangesMade += this.VisualsChangedEvent;
             this.XmlDocumentHandler.ChangesSaved += this.VisualsSavedEvent;
+
+            fileName ??= "C:\\Users\\Matthew\\AppData\\Roaming\\Axolot Games\\Scrap Mechanic\\User\\User_76561198299556567\\Mods\\Challenge Mode in Creative With Mod Support\\Gui\\Layouts\\ChallengeModeMenuPack2.layout";
+
             if (fileName is not null)
             {
                 Stopwatch stopWatch = new();
                 stopWatch.Start();
-                this.XmlDocumentHandler.LoadFile(fileName);
+                this.CurrentFileName = fileName;
+                this.XmlDocumentHandler.LoadFile(fileName.Replace("ChallengeModeMenuPack2", "ChallengeModeMenuPack"));
+                MainWindow.Get.SetCurrentTabName(Path.GetFileNameWithoutExtension(this.CurrentFileName));
                 stopWatch.Stop();
-                Debug.WriteLine(stopWatch.ElapsedTicks);
+                Debug.WriteLine(stopWatch.ElapsedMilliseconds);
             }
         }
-        
+
         /// <summary>
         /// Event handler for when the resizing of the properties window has started
         /// </summary>
@@ -79,9 +85,13 @@ namespace LayoutEditor.Windows.Pages
         /// <param name="e"></param>
         private void ResizePropMouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.MouseStart = MouseUtil.GetMousePosition();
-            this.ResizingProperties = true;
+            if (e.ChangedButton.Equals(MouseButton.Left))
+            {
+                this.MouseStart = MouseUtil.GetMousePosition();
+                this.ResizingProperties = true;
+            }
         }
+
         /// <summary>
         /// Event handler for when the resizing of the editor window has started
         /// </summary>
@@ -89,9 +99,13 @@ namespace LayoutEditor.Windows.Pages
         /// <param name="e"></param>
         private void ResizeEditorMouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.MouseStart = MouseUtil.GetMousePosition();
-            this.ResizingEditor = true;
+            if (e.ChangedButton.Equals(MouseButton.Left))
+            {
+                this.MouseStart = MouseUtil.GetMousePosition();
+                this.ResizingEditor = true;
+            }
         }
+
         /// <summary>
         /// this is the huge (it does a lot of stuff) MouseMove event handler,
         /// that triggers when the mouse moves throughout the entire window of the appliation.
@@ -107,16 +121,17 @@ namespace LayoutEditor.Windows.Pages
                 {
                     // Clamp the the workspace and properties tab min/max size
                     var size = Math.Clamp(
-                        this.ViewBox.Margin.Right - e.GetPosition(this.ResizeProp).X,
-                        220,
-                        this.ActualWidth - 50);
+                        this.PropertiesBox.Width - e.GetPosition(this.ResizeProp).X,
+                        200,
+                        this.ActualWidth - 500);
                     // Move the viewbox
-                    this.ViewBox.SetMarginR(size);
+                    // this.ViewBox.SetMarginR(size);
                     // Move the properties window
-                    this.PropertiesBox.Width = size - 15;
+                    if (this.PropertiesBox.Width != size)
+                        this.PropertiesBox.Width = size;
                     // Move the actual drag button/bar
                     // ( the button in between the windows that controls this )
-                    this.ResizeProp.SetMarginR(size - 5);
+                    // this.ResizeProp.SetMarginR(size - 5);
                     // Clamp the workspace
                     this.ClampWorkspace();
                 }
@@ -124,13 +139,33 @@ namespace LayoutEditor.Windows.Pages
                 {
                     // Clamp the the workspace and properties tab min/max size
                     var size = Math.Clamp(
-                        this.UpperWorkspace.Margin.Bottom - e.GetPosition(ResizeEditor).Y,
-                        50,
-                        this.ActualHeight - 100);
+                        this.LowwerWorkspace.Height - e.GetPosition(this.ResizeEditor).Y,
+                        48,
+                        this.ActualHeight - 88) + 1;
                     // Change the this.UpperWorkspace height
-                    this.UpperWorkspace.SetMarginB(size);
+                    // this.UpperWorkspace.SetMarginB(size);
                     // Change the lowwerworkspace height
-                    this.LowwerWorkspace.Height = this.UpperWorkspace.Margin.Bottom - 15;
+                    if (this.LowwerWorkspace.Height != size)
+                        this.LowwerWorkspace.Height = size;
+
+                    if ((size < 50 && this.LowwerWorkspace.Height > 5) || size > this.ActualHeight - 90)
+                    {
+                        this.XMLViewer.Visibility = size < 50 ? Visibility.Collapsed : Visibility.Visible;
+                        this.UpperWorkspace.Visibility = size < 50 ? Visibility.Visible : Visibility.Collapsed;
+                        this.LowwerWorkspace.Height = size < 50 ? 5 : this.ActualHeight - 50;
+                    }
+                    else
+                    {
+                        if (this.XMLViewer.Visibility != Visibility.Visible)
+                        {
+                            this.XMLViewer.Visibility = Visibility.Visible;
+                        }
+                        if (this.UpperWorkspace.Visibility != Visibility.Visible)
+                        {
+                            this.UpperWorkspace.Visibility = Visibility.Visible;
+                        }
+                    }
+
                     // Clamp the workspace position
                     this.ClampWorkspace();
                 }
@@ -142,9 +177,12 @@ namespace LayoutEditor.Windows.Pages
                     this.WorkspaceCanvas.SetMarginLT(
                         Math.Clamp(this.WorkspaceCanvas.Margin.Left + diff.X, -(this.WorkspaceCanvas.ActualWidth * Scale - 90), this.ViewBox.ActualWidth - 90),
                         Math.Clamp(this.WorkspaceCanvas.Margin.Top + diff.Y, -(this.WorkspaceCanvas.ActualHeight * Scale - 60), this.ViewBox.ActualHeight - 60));
+
+                    this.XmlDocumentHandler.UpdateOverlay();
                 }
             }
         }
+
         private void VisualsChangedEvent(object sender = null, object args = null)
         {
             MainWindow.Get.SetCurrentTabName(Path.GetFileNameWithoutExtension(this.CurrentFileName) + "*");
@@ -156,24 +194,28 @@ namespace LayoutEditor.Windows.Pages
         private void VisualsSavedEvent(object sender = null, object args = null)
         {
             MainWindow.Get.SetCurrentTabName(Path.GetFileNameWithoutExtension(this.CurrentFileName));
+            
             if (!this.HasSavedChanges)
             {
                 if (!File.Exists(this.CurrentFileName))
                 {
-                    SaveFileDialog sd = new();
-                    sd.DefaultExt = "layout";
-                    sd.Filter = "Layout Files (*.layout)|*.layout";
-                    sd.AddExtension = true;
-                    sd.CheckPathExists = true;
-                    sd.FileName = Path.GetFileName(this.CurrentFileName);
-                    sd.OverwritePrompt = true;
-                    sd.Title = "Save File As";
-                    if(sd.ShowDialog() == true) this.XmlDocumentHandler.SaveAs(sd.FileName); else return;
+                    SaveFileDialog sd = new()
+                    {
+                        DefaultExt = "layout",
+                        Filter = "Layout Files (*.layout)|*.layout",
+                        AddExtension = true,
+                        CheckPathExists = true,
+                        FileName = Path.GetFileName(this.CurrentFileName),
+                        OverwritePrompt = true,
+                        Title = "Save File As"
+                    };
+                    if (sd.ShowDialog() == true) this.XmlDocumentHandler.SaveAs(sd.FileName); else return;
                 }
                 this.HasSavedChanges = true;
                 this.XmlDocumentHandler.SaveAs(this.CurrentFileName);
             }
         }
+
         /// <summary>
         /// Simple event handler for any key down, ONLY inside the viewbox
         /// </summary>
@@ -184,16 +226,54 @@ namespace LayoutEditor.Windows.Pages
             // Simple delete method for deleting the selected item
             if (e.Key == Key.Delete || e.Key == Key.Back)
             {
-                // this.RecursiveDelete(Workspace, ActiveElements);
-                // this.DeselectItem();
+                foreach (var child in this.XmlDocumentHandler.GetSelected())
+                    this.RecursiveDelete(this.WorkspaceCanvas, child);
+
+                this.XmlDocumentHandler.DeleteSelected();
             }
             else if (
-                ((e.Key == Key.RightCtrl || e.Key == Key.LeftCtrl) && Keyboard.IsKeyDown(Key.S)) ||
-                (e.Key == Key.S && (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))))
+                (CtrlKeyDown && Keyboard.IsKeyDown(Key.S)) ||
+                (e.Key == Key.S && CtrlKeyDown))
             {
                 this.VisualsSavedEvent();
             }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                    case Key.PageUp:
+                        this.XmlDocumentHandler.MoveSelected(new Point(0,-1));
+                        break;
+                    case Key.Left:
+                        this.XmlDocumentHandler.MoveSelected(new Point(-1, 0));
+                        break;
+                    case Key.Down:
+                    case Key.PageDown:
+                        this.XmlDocumentHandler.MoveSelected(new Point(0, 1));
+                        break;
+                    case Key.Right:
+                        this.XmlDocumentHandler.MoveSelected(new Point(1, 0));
+                        break;
+                    case Key.Z:
+                        if (!CtrlKeyDown)
+                            break;
+                        this.XmlDocumentHandler.Undo();
+                        break;
+                    case Key.Y:
+                        if (!CtrlKeyDown)
+                            break;
+                        this.XmlDocumentHandler.Redo();
+                        break;
+                }
+            }
         }
+
+        private static bool CtrlKeyDown => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+        public void GridPreviewKeyUp(object sender, KeyEventArgs e)
+        { }
+
         /// <summary>
         /// This is the event for the scoll wheel, ONLY when the mouse is inside the viewbox
         /// </summary>
@@ -201,9 +281,10 @@ namespace LayoutEditor.Windows.Pages
         /// <param name="e"></param>
         private void GridPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Delta != 0)
+            if (CtrlKeyDown && e.Delta != 0)
                 this.ChangeScale(Math.Clamp(Scale + ((float)e.Delta / 5000), 0.02, 5));
         }
+
         /// <summary>
         /// Changes Scale of main grid
         /// </summary>
@@ -224,6 +305,7 @@ namespace LayoutEditor.Windows.Pages
             // set new scale
             this.Scale = newScale;
         }
+
         /// <summary>
         /// This is the mouse down event for the viewbox, and only the viewbox
         /// </summary>
@@ -246,16 +328,19 @@ namespace LayoutEditor.Windows.Pages
                 this.OffClickDetection(sender, e);
             }
         }
+
         public void MenuItemClick(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
             this.XmlDocumentHandler.AddXmlElement(XmlTag.Widget, Enum.Parse<XmlType>(menuItem.Name));
         }
+
         public void OffClickDetection(object sender, MouseButtonEventArgs e)
         {
             // invoke the xmldochandler
             this.XmlDocumentHandler.DeselectAll();
         }
+
         /// <summary>
         /// This limits the maximium and minimum position (Left and Right) for the Workspace
         /// </summary>
@@ -276,6 +361,7 @@ namespace LayoutEditor.Windows.Pages
             if (!this.WorkspaceCanvas.Margin.Top.Equals(top))
                 this.WorkspaceCanvas.SetMarginT(top);
         }
+
         /// <summary>
         /// This limits the maximium and minimum position (Left and Right) for the Tabs
         /// </summary>
@@ -283,33 +369,64 @@ namespace LayoutEditor.Windows.Pages
         {
             // Clamp the the workspace and properties tab min/max size
             var size = Math.Clamp(
-                this.ViewBox.Margin.Right,
-                220,
-                this.ActualWidth - 50);
+                this.PropertiesBox.Width,
+                Math.Min(200, this.ActualWidth - 500),
+                this.ActualWidth - 500);
             // Move the viewbox
-            if(!this.ViewBox.Margin.Right.Equals(size))
-                this.ViewBox.SetMarginR(size);
+            //if(!this.ViewBox.Margin.Right.Equals(size))
+            //    this.ViewBox.SetMarginR(size);
             // Move the properties window
             if (!this.PropertiesBox.Width.Equals(size - 15))
                 this.PropertiesBox.Width = size - 15;
             // Move the actual drag button/bar
             // ( the button in between the windows that controls this )
-            if (!this.ResizeProp.Margin.Right.Equals(size - 5))
-                this.ResizeProp.SetMarginR(size - 5);
+            //if (!this.ResizeProp.Margin.Right.Equals(size - 5))
+            //    this.ResizeProp.SetMarginR(size - 5);
             // Clamp the the workspace and properties tab min/max size
+            
             size = Math.Clamp(
-                this.UpperWorkspace.Margin.Bottom,
-                50,
-                this.ActualHeight - 100);
+                this.LowwerWorkspace.Height,
+                48,
+                this.ActualHeight - 88) + 1;
             // Change the this.UpperWorkspace height
-            if (!this.UpperWorkspace.Margin.Bottom.Equals(size))
-                this.UpperWorkspace.SetMarginB(size);
+            //if (!this.UpperWorkspace.Margin.Bottom.Equals(size))
+            //    this.UpperWorkspace.SetMarginB(size);
             // Change the lowwerworkspace height
-            if (!this.LowwerWorkspace.Height.Equals(this.UpperWorkspace.Margin.Bottom - 15))
-                this.LowwerWorkspace.Height = this.UpperWorkspace.Margin.Bottom - 15;
+            if (!this.LowwerWorkspace.Height.Equals(size))
+                this.LowwerWorkspace.Height = size;
+            /*
+            if ((size < 50 && this.LowwerWorkspace.Height > 5) || size > this.ActualHeight - 90)
+            {
+                this.XMLViewer.Visibility = size < 50 ? Visibility.Collapsed : Visibility.Visible;
+                this.UpperWorkspace.Visibility = size < 50 ? Visibility.Visible : Visibility.Collapsed;
+                this.LowwerWorkspace.Height = size < 50 ? 5 : this.ActualHeight - 50;
+            }
+            else
+            {
+                if (this.XMLViewer.Visibility != Visibility.Visible)
+                {
+                    this.XMLViewer.Visibility = Visibility.Visible;
+                }
+                if (this.UpperWorkspace.Visibility != Visibility.Visible)
+                {
+                    this.UpperWorkspace.Visibility = Visibility.Visible;
+                }
+            }*/
+
+            if (this.UpperWorkspace.Visibility != Visibility.Visible)
+            {
+                this.LowwerWorkspace.Height = this.ActualHeight - 50;
+            }
+
+            if (this.XMLViewer.Visibility != Visibility.Visible)
+            {
+                this.LowwerWorkspace.Height = 5;
+            }
+
             // Clamp the workspace position
             this.ClampWorkspace();
         }
+
         /// <summary>
         /// This is the mouse up event for the viewbox, and only the viewbox
         /// </summary>
@@ -342,6 +459,7 @@ namespace LayoutEditor.Windows.Pages
                 }
             }
         }
+
         public void SetResolution(double width, double height, object optional = null)
         {
             this.Resolution = new(width, height);
@@ -383,8 +501,9 @@ namespace LayoutEditor.Windows.Pages
             Button button = sender as Button;
             this.XmlDocumentHandler.ChangeViewMode((XmlViewMode)Int32.Parse(button.Tag.ToString()));
         }
-        Dictionary<Key, KeyStates> KeyStates = new();
-        Dictionary<MouseButton, MouseButtonState> MouseStates = new();
+
+        readonly Dictionary<Key, KeyStates> KeyStates = new();
+        readonly Dictionary<MouseButton, MouseButtonState> MouseStates = new();
         private void ViewBoxMouseEnter(object sender, MouseEventArgs e)
         {
             this.IsInView = true;
@@ -416,6 +535,7 @@ namespace LayoutEditor.Windows.Pages
                 }
             }
         }
+
         /// <summary>
         /// This event is for when the mouse leaves the viewbox 
         /// although the mouse could still be in the application window
@@ -440,6 +560,20 @@ namespace LayoutEditor.Windows.Pages
                     this.MouseStates[m] = Mouse.PrimaryDevice.GetButtonState(m);
                 else
                     this.MouseStates.Add(m, Mouse.PrimaryDevice.GetButtonState(m));
+            }
+        }
+
+        private void UpperWorkspace_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.XmlDocumentHandler.UnSelectTextBox();
+        }
+
+        private void LowwerWorkspace_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (CtrlKeyDown)
+            {
+                this.XmlDocumentHandler.AddTextSize(e.Delta);
+                e.Handled = true;
             }
         }
     }

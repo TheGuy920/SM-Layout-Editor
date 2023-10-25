@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderXLarge_Wide">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="24" />
+		<Property key="LetterSpacing" value="1.33333333" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderLarge_Wide">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="16" />
+		<Property key="LetterSpacing" value="6.6666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderLarge_Medium">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="16" />
+		<Property key="LetterSpacing" value="2.6666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderLarge_Narrow">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="16" />
+		<Property key="LetterSpacing" value="0.6666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderMedium"> 
+		<Property key="Source" value="Shentox_Bold.otf" />
+		<Property key="Size" value="12" />
+		<Property key="LetterSpacing" value="2" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_SubHeader">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="10" />
+		<Property key="LetterSpacing" value="3" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_Header">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="9" />
+		<Property key="LetterSpacing" value="1.33333333" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderSmall">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="8" />
+		<Property key="LetterSpacing" value="1.33333333" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HeaderTiny">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="7" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_Tab">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="9" />
+		<Property key="LetterSpacing" value="1.33333333" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_TabSmall">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="8" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_TextLabel">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="9" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_Label">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="9" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_LabelSmall">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="8" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_LabelTiny">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="7" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_LabelMini">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="6" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_SliderLabel">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="5" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_SearchText">
+		<Property key="Source" value="Shentox_Regular.otf" />
+		<Property key="Size" value="10" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ToolTipText">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="8" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_TextLarge">
+		<Property key="Source" value="Inter_Medium.otf" />
+		<Property key="Size" value="12" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_Text">
+		<Property key="Source" value="Inter_Medium.otf" />
+		<Property key="Size" value="10" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_TextSmall">
+		<Property key="Source" value="Inter_Medium.otf" />
+		<Property key="Size" value="8" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_TextTiny">
+		<Property key="Source" value="Inter_Medium.otf" />
+		<Property key="Size" value="7" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ItemTitle">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="11" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_GameName">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="11" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ButtonLarge">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="13" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_Button">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="10" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ButtonSmall">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="8" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ButtonTiny">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="7" />
+		<Property key="LetterSpacing" value="0.66666667" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ButtonSmallBold">
+		<Property key="Source" value="Shentox_Bold.otf" />
+		<Property key="Size" value="8" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_NumberHuge">
+		<Property key="Source" value="Shentox_Regular.otf" />
+		<Property key="Size" value="21" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_NumberSmall">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="8" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_NumberTiny">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="7" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_NumberMini">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="6" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_UserName">
+		<Property key="Source" value="Shentox_Regular.otf" />
+		<Property key="Size" value="8" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_ListItem">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="9" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_HotbarBinding">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="6.5" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_IntlText">
+		<Property key="Source" value="NotoSans-Medium.ttf" />
+		<Property key="Size" value="18.000000" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="SM_Digital">
+		<Property key="Source" value="SMDigital.otf" />
+		<Property key="Size" value="18.000000" />
+	</Resource>
+
+	<Resource type="ResourceTrueTypeFont" name="X_Interactable_Timer_TimeUnit">
+		<Property key="Source" value="Shentox_Regular.otf" />
+		<Property key="Size" value="15" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_Interactable_Timer_TickCount">
+		<Property key="Source" value="Shentox_Medium.otf" />
+		<Property key="Size" value="11" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_Interactable_LogicGate_Category">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="11" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_MenuGamemodeMenu_GameMode">
+		<Property key="Source" value="Shentox_Bold.otf" />
+		<Property key="Size" value="25" />
+		<Property key="LetterSpacing" value="3.33333333" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_Hud_Alert">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="12" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_Hud_Interaction">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="10" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_Hud_PlayerName">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="11" />
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="X_Hud_ItemStack">
+		<Property key="Source" value="Shentox_SemiBold.otf" />
+		<Property key="Size" value="11" />
+	</Resource>
+
+	<Resource type="ResourceTrueTypeFont" name="HandbookTitle">
+		<Property key="Source" value="GRUPO3.otf" />
+		<Property key="Size" value="45.333333" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookSubTitle">
+		<Property key="Source" value="Futura.otf" />
+		<Property key="Size" value="12.000000" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookSubTitleItalic">
+		<Property key="Source" value="Futura-Oblique.otf" />
+		<Property key="Size" value="12.000000" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookPageCount">
+		<Property key="Source" value="Futura.otf" />
+		<Property key="Size" value="16.000000" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookDescriptionLarge">
+		<Property key="Source" value="Futura.otf" />
+		<Property key="Size" value="9.333333" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookDescriptionSmall">
+		<Property key="Source" value="Futura.otf" />
+		<Property key="Size" value="8.000000" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookInstructionLarge">
+		<Property key="Source" value="SovjetBoxBd_v0_9.otf" />
+		<Property key="Size" value="16.666667" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookInstructionMedium">
+		<Property key="Source" value="SovjetBoxBd_v0_9.otf" />
+		<Property key="Size" value="11.333333" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookInstructionSmall">
+		<Property key="Source" value="SovjetBoxBd_v0_9.otf" />
+		<Property key="Size" value="10.000000" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookLogicDescription">
+		<Property key="Source" value="Futura.otf" />
+		<Property key="Size" value="5.333333" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookFAQQuestion">
+		<Property key="Source" value="Futura-Bold.otf" />
+		<Property key="Size" value="10.666667" /> 
+	</Resource>
+	<Resource type="ResourceTrueTypeFont" name="HandbookFAQAnswer">
+		<Property key="Source" value="Futura.otf" />
+		<Property key="Size" value="12.000000" /> 
+	</Resource>
+</MyGUI>

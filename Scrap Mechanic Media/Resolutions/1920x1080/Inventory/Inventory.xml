@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceSkin" name="ItemColorLine" size="15 6" texture="gui_item_color_line.png">
+		<BasisSkin type="SubSkin" offset="12 0 3 6" align="Right VStretch">
+			<State name="normal" offset="12 3 3 6" />
+			<State name="part" offset="12 3 3 6" />
+			<State name="interactive" offset="12 15 3 6" />
+			<State name="block" offset="12 27 3 6" />
+			<State name="tool" offset="12 39 3 6" />
+			<State name="consumable" offset="12 51 3 6" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 0 3 6" align="Left VStretch">
+			<State name="normal" offset="0 3 3 6" />
+			<State name="part" offset="0 3 3 6" />
+			<State name="interactive" offset="0 15 3 6" />
+			<State name="block" offset="0 27 3 6" />
+			<State name="tool" offset="0 39 3 6" />
+			<State name="consumable" offset="0 51 3 6" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="3 0 9 6" align="Stretch">
+			<State name="normal" offset="3 3 9 6" />
+			<State name="part" offset="3 3 9 6" />
+			<State name="interactive" offset="3 15 9 6" />
+			<State name="block" offset="3 27 9 6" />
+			<State name="tool" offset="3 39 9 6" />
+			<State name="consumable" offset="3 51 9 6" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="InventoryTab" size="75 45" texture="InventoryTabs@1080.png">
+		<BasisSkin type="SubSkin" offset="51 0 24 45" align="Right VStretch">
+			<State name="disabled" offset="51 6 24 45" />
+			<State name="normal" offset="51 6 24 45" />
+			<State name="highlighted" offset="51 57 24 45" />
+			<State name="pushed" offset="51 108 24 45" />
+			<State name="disabled_checked" offset="51 108 24 45" />
+			<State name="normal_checked" offset="51 108 24 45" />
+			<State name="highlighted_checked" offset="51 108 24 45" />
+			<State name="pushed_checked" offset="51 108 24 45" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 0 24 45" align="Left VStretch">
+			<State name="disabled" offset="0 6 24 45" />
+			<State name="normal" offset="0 6 24 45" />
+			<State name="highlighted" offset="0 57 24 45" />
+			<State name="pushed" offset="0 108 24 45" />
+			<State name="disabled_checked" offset="0 108 24 45" />
+			<State name="normal_checked" offset="0 108 24 45" />
+			<State name="highlighted_checked" offset="0 108 24 45" />
+			<State name="pushed_checked" offset="0 108 24 45" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="24 0 27 45" align="Stretch">
+			<State name="disabled" offset="24 6 27 45" />
+			<State name="normal" offset="24 6 27 45" />
+			<State name="highlighted" offset="24 57 27 45" />
+			<State name="pushed" offset="24 108 27 45" />
+			<State name="disabled_checked" offset="24 108 27 45" />
+			<State name="normal_checked" offset="24 108 27 45" />
+			<State name="highlighted_checked" offset="24 108 27 45" />
+			<State name="pushed_checked" offset="24 108 27 45" />
+		</BasisSkin>
+		<BasisSkin type="SimpleText" offset="24 0 27 45" align="Stretch">
+			<State name="disabled" colour="0.695313 0.695313 0.695313" shift="0" />
+			<State name="normal" colour="0.695313 0.695313 0.695313" shift="0" />
+			<State name="highlighted" colour="0.996094 0.8125 0.273438" shift="0" />
+			<State name="pushed" colour="0.117188 0.117188 0.125" shift="0" />
+			<State name="disabled_checked" colour="0.117188 0.117188 0.125" shift="0" />
+			<State name="normal_checked" colour="0.117188 0.117188 0.125" shift="0" />
+			<State name="highlighted_checked" colour="0.117188 0.117188 0.125" shift="0" />
+			<State name="pushed_checked" colour="0.117188 0.117188 0.125" shift="0" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="ModPanelBackground" size="43 43" texture="BGSpritesheet@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 27 4" align="Left Top">
+			<State name="normal" offset="3 99 27 4" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="27 0 12 4" align="HStretch Top">
+			<State name="normal" offset="30 99 12 4" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="39 0 4 4" align="Right Top">
+			<State name="normal" offset="42 99 4 4" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="39 4 4 12" align="Right VStretch">
+			<State name="normal" offset="42 103 4 12" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="39 16 4 27" align="Right Bottom">
+			<State name="normal" offset="42 115 4 27" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="27 16 12 27" align="HStretch Bottom">
+			<State name="normal" offset="30 115 12 27" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 16 27 27" align="Left Bottom">
+			<State name="normal" offset="3 115 27 27" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 4 27 12" align="Left VStretch">
+			<State name="normal" offset="3 103 27 12" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="27 4 12 12" align="Stretch">
+			<State name="normal" offset="30 103 12 12" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="BackgroundInventoryToolTip" size="300 780" texture="gui_inventory_background_tooltip.png">
+        <BasisSkin type="SubSkin" offset="0 0 300 780" align="Stretch">
+            <State name="normal" offset="0 0 300 780" />
+        </BasisSkin>
+    </Resource>
+</MyGUI>

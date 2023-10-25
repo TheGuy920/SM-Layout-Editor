@@ -1,0 +1,9 @@
+﻿LANGUAGE_CODE en-US
+
+Q_TUTORIAL_GO_CRASHSITE Go to the crashed ship
+Q_TUTORIAL_FIND_BUCKET Find a bucket
+Q_TUTORIAL_FILL_BUCKET Fill bucket
+Q_TUTORIAL_PUTOUT_FIRE Put out the fire: 
+Q_TUTORIAL_FIND_BATTERY Find Master Battery
+Q_TUTORIAL_ACTIVATE_SHIP Activate ship
+Q_TUTORIAL_DOWNLOAD_INTEL Download intel

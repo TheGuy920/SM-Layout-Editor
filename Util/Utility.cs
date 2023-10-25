@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using LayoutEditor.CustomXML;
+using System.Text;
 
 namespace LayoutEditor
 {
@@ -23,7 +24,7 @@ namespace LayoutEditor
         View = 3,
         Library = 4
     }
-    class Utility
+    internal class Utility
     {
         public static T GetRegVal<T>(string path, string value)
         {
@@ -55,6 +56,14 @@ namespace LayoutEditor
                 string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
                 var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName));
                 using var reader = new XmlTextReader(stream);
+                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+            }
+            public static IHighlightingDefinition FormatHighlightingDefinition(string resourceName, string pattern, string format)
+            {
+                string ResourceFileName = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(str => str.EndsWith(resourceName));
+                var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceFileName));
+                string content = stream.ReadToEnd().Replace(pattern, format);
+                using var reader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(content)));
                 return HighlightingLoader.Load(reader, HighlightingManager.Instance);
             }
         }

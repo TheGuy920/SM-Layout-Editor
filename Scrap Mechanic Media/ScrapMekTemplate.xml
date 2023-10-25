@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource">
+	<Resource type="ResourceLayout" name="InventoryVScroll" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="25 50 5 125" name="Root">
+            <Property key="VerticalAlignment" value="true"/>
+            <UserString key="LE_TargetWidgetType" value="ScrollBar"/>
+            <Widget type="Widget" skin="PanelEmpty" position="0 0 5 120" align="Stretch" name="TrackPlace">
+                <Property key="NeedKey" value="false"/>
+                <Property key="InheritsPick" value="true"/>
+                <Widget type="Button" skin="VerticalScroll" position="0 0 5 0" align="VStretch Top" name="Track">
+                    <UserString key="MinTrackSize" value="10"/>
+                </Widget>
+            </Widget>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="DebugHSlider" version="3.2.0">
+        <Widget type="Widget" skin="WhiteSkin" position="0 0 100 15" name="Root">
+            <Property key="MoveToClick" value="true"/>
+            <Property key="VerticalAlignment" value="false"/>
+            <UserString key="LE_TargetWidgetType" value="ScrollBar"/>
+            <Widget type="Widget" skin="PanelEmpty" position="0 0 100 15" align="Stretch" name="TrackPlace">
+                <Property key="NeedKey" value="false"/>
+                <Property key="InheritsPick" value="true"/>
+                <Widget type="Button" skin="WhiteSkin"  position="35 0 50 15" align="Left VStretch" name="Track">
+		            <Property key="Colour" value="1.0 0.8 0.0" />
+                </Widget>
+                <Widget type="Widget" skin="PanelEmpty" position="0 0 35 15" align="Left VStretch" name="FirstPart"/>
+                <Widget type="Widget" skin="PanelEmpty" position="42 0 80 15" align="Left VStretch" name="SecondPart"/>
+            </Widget>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="SMEditBox" version="3.2.0">
+        <Widget type="Widget" skin="WhiteSkin" position="65 10 29 26" name="Root">
+            <UserString key="LE_TargetWidgetType" value="EditBox"/>
+            <Widget type="TextBox" skin="EditClientSkin" position="2 2 25 22" align="Stretch" name="Client">
+                <Property key="TextAlign" value="Left VCenter"/>
+                <Property key="FontName" value="Default"/>
+                <Property key="TextColour" value="1 1 1"/>
+                <Property key="Pointer" value="beam"/>
+            </Widget>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="SMButton" version="3.2.0">
+        <Widget type="Widget" skin="GenericButton" position="20 25 29 26" name="Root">
+            <Property key="FontName" value="SM_ButtonLarge"/>
+            <Property key="TextAlign" value="Center"/>
+            <UserString key="LE_TargetWidgetType" value="Button"/>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMWhiteButton" version="3.2.0">
+        <Widget type="Widget" skin="WhiteSkin" position="20 25 29 26" name="Root">
+            <Property key="FontName" value="SM_ButtonLarge"/>
+            <Property key="TextAlign" value="Center"/>
+            <UserString key="LE_TargetWidgetType" value="Button"/>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMSmallButton" version="3.2.0">
+        <Widget type="Widget" skin="GenericButton" position="20 25 29 26" name="Root">
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="TextAlign" value="Center"/>
+            <UserString key="LE_TargetWidgetType" value="Button"/>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="SMTextBox_NoBackground" version="3.2.0">
+        <Widget type="Widget" skin="TransparentTextBox" position="20 20 16 16" name="Root">
+            <Property key="TextAlign" value="Default"/>
+            <Property key="FontName" value="Default"/>
+            <Property key="TextColour" value="1 1 1"/>
+            <UserString key="LE_TargetWidgetType" value="TextBox"/>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMTextBox_Small_NoBackground" version="3.2.0">
+        <Widget type="Widget" skin="TransparentTextBox" position="20 20 16 16" name="Root">
+            <Property key="TextAlign" value="Default"/>
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="TextColour" value="1 1 1"/>
+            <UserString key="LE_TargetWidgetType" value="TextBox"/>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMListBoxItem" version="3.2.0">
+        <Widget type="Widget" skin="GenericButton" position="0 0 36 20" name="Root">
+            <Property key="FontName" value="SM_LabelSmall"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+            <UserString key="LE_TargetWidgetType" value="Button"/>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMListBox" version="3.2.0">
+        <Widget type="Widget" skin="InventoryBackground" position="5 5 55 55" name="Root">
+            <UserString key="LE_TargetWidgetType" value="ListBox"/>
+            <UserString key="HeightLine" value="30"/>
+            <UserString key="SkinLine" value="SMListBoxItem"/>
+            <Widget type="Widget" skin="PanelEmpty" position="3 3 39 49" align="Stretch" name="Client"/>
+            <Widget type="ScrollBar" skin="InventoryVScroll" position="44 3 10 54" align="Right VStretch" name="VScroll"/>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="SMTabHeaderButton" version="3.2.0">
+        <Widget type="Widget" skin="TabButton" position="20 25 52 23" name="Root">
+            <Property key="FontName" value="SM_LabelSmall"/>
+            <Property key="TextAlign" value="Center"/>
+            <UserString key="LE_TargetWidgetType" value="Button"/>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMTabControl" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="5 5 89 60" name="Root">
+            <UserString key="LE_TargetWidgetType" value="TabControl"/>
+            <UserString key="ButtonSkin" value="SMTabHeaderButton"/>
+            <Widget type="Widget" skin="InventoryBackground" position="0 21 89 39" align="Stretch">
+                <Widget type="Widget" skin="PanelEmpty" position="2 3 83 32" align="Stretch" name="TabItem"/>
+            </Widget>
+            <Widget type="Widget" skin="PanelEmpty" position="7 0 78 23" align="HStretch Top" name="HeaderPlace">
+                <Widget type="Widget" skin="PanelEmpty" position="52 0 26 23" name="Controls">
+                    <Widget type="Button" skin="ButtonRightSkin" position="14 4 12 14" name="Right"/>
+                    <Widget type="Button" skin="ButtonLeftSkin" position="1 4 12 14" name="Left"/>
+                </Widget>
+                <Widget type="Widget" skin="PanelEmpty" position="0 0 52 23" name="Empty"/>
+            </Widget>
+        </Widget>
+    </Resource>
+    <Resource type="ResourceLayout" name="SMEmptyScrollView" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="0 0 55 55" name="Root">
+            <UserString key="LE_TargetWidgetType" value="ScrollView"/>
+            <Widget type="Widget" skin="PanelEmpty" position="0 0 45 40" align="Stretch" name="Client"/>
+            <Widget type="ScrollBar" skin="InventoryVScroll" position="50 0 5 40" align="Right VStretch" name="VScroll"/>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="SMScrollView" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="5 5 55 55" name="Root">
+            <UserString key="LE_TargetWidgetType" value="ScrollView"/>
+            <Widget type="Widget" skin="PanelEmpty" position="3 3 32 32" align="Stretch" name="Client"/>
+            <Widget type="ScrollBar" skin="ScrollBarV" position="35 3 15 32" align="Right VStretch" name="VScroll"/>
+            <Widget type="ScrollBar" skin="ScrollBarH" position="3 35 32 15" align="HStretch Bottom" name="HScroll"/>
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="HyperTextLine">
+		<Widget type="Widget" skin="PanelEmpty" position="0 0 16 16" name="Root">
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="TileEditorHyperTextBox">
+		<Widget type="Widget" skin="PanelEmpty" position="0 0 16 16" name="Root">
+			<Property key="Spacer" value="4 4"/>
+			<Property key="DefaultFont" value="SM_TextSmall"/>
+			<Property key="BoldFont" value="SM_TextSmall"/>
+			<Property key="ItalicFont" value="SM_TextSmall"/>
+			<Property key="BoldItalicFont" value="SM_TextSmall"/>
+			<Property key="Header1Font" value="SM_Header"/>
+			<Property key="Header2Font" value="SM_Label"/>
+			<Property key="Header3Font" value="SM_LabelSmall"/>
+			<Property key="FontShadow" value="true"/>
+			<Widget type="ScrollViewPanel" skin="SMScrollView" position="0 0 16 16" align="Stretch" name="ScrollViewPanel">
+				<Property key="CanvasAlign" value="Default"/>
+				<Property key="VisibleHScroll" value="false"/>
+				<Property key="VisibleVScroll" value="false"/>
+				<Widget type="StackPanel" skin="PanelEmpty" position="0 0 16 16" align="Default" name="StackPanel"/>
+			</Widget>
+		</Widget>
+	</Resource>
+</MyGUI>

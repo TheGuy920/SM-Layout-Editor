@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceLayout" name="LogItemBox" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="0 0 519 585" name="Root">
+            <UserString key="LE_TargetWidgetType" value="ItemBox" />
+            <UserString key="DragLayer" value="DragAndDrop" />
+            <Widget type="Widget" skin="PanelEmpty" position="42 27 441 531" align="Stretch" name="Client" />
+            <Widget type="ScrollBar" skin="CraftbotVSlider" position="483 30 24 525" align="Right VStretch" name="VScroll" />
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="BeaconItemBox" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="0 0 330 714" name="Root">
+            <UserString key="LE_TargetWidgetType" value="ItemBox" />
+            <UserString key="DragLayer" value="DragAndDrop" />
+            <Widget type="Widget" skin="PanelEmpty" position="0 15 300 699" align="Stretch" name="Client" />
+            <Widget type="ScrollBar" skin="CraftbotVSlider" position="303 18 24 693" align="Right VStretch" name="VScroll" />
+        </Widget>
+    </Resource>
+	<Resource type="ResourceLayout" name="PhotoDescription" version="3.2.0">
+        <Widget type="Widget" skin="PanelEmpty" position="0 0 324 222" name="Root">
+			<UserString key="LE_TargetWidgetType" value="EditBox" />
+            <Widget type="TextBox" skin="EditClientSkin" position="0 0 285 222" align="Stretch" name="Client">
+				<Property key="Alpha" value="0.6" />
+			</Widget>
+            <Widget type="ScrollBar" skin="CraftbotVSlider" position="291 0 24 222" align="Right VStretch" name="VScroll" />
+        </Widget>
+    </Resource>
+</MyGUI>

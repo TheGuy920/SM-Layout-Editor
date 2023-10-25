@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceSkin" name="BackgroundContainerItemAmmunition" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="1 1 110 110"/>
+            <State name="normal" offset="1 1 110 110"/>
+            <State name="highlighted" offset="1 112 110 110"/>
+            <State name="pushed" offset="1 112 110 110"/>
+            <State name="disabled_checked" offset="1 112 110 110"/>
+            <State name="normal_checked" offset="1 112 110 110"/>
+            <State name="highlighted_checked" offset="1 112 110 110"/>
+            <State name="pushed_checked" offset="1 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundContainerItemBattery" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="112 1 110 110"/>
+            <State name="normal" offset="112 1 110 110"/>
+            <State name="highlighted" offset="112 112 110 110"/>
+            <State name="pushed" offset="112 112 110 110"/>
+            <State name="disabled_checked" offset="112 112 110 110"/>
+            <State name="normal_checked" offset="112 112 110 110"/>
+            <State name="highlighted_checked" offset="112 112 110 110"/>
+            <State name="pushed_checked" offset="112 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundContainerItemChemicals" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="223 1 110 110"/>
+            <State name="normal" offset="223 1 110 110"/>
+            <State name="highlighted" offset="223 112 110 110"/>
+            <State name="pushed" offset="223 112 110 110"/>
+            <State name="disabled_checked" offset="223 112 110 110"/>
+            <State name="normal_checked" offset="223 112 110 110"/>
+            <State name="highlighted_checked" offset="223 112 110 110"/>
+            <State name="pushed_checked" offset="223 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundContainerItemFertilizer" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="334 1 110 110"/>
+            <State name="normal" offset="334 1 110 110"/>
+            <State name="highlighted" offset="334 112 110 110"/>
+            <State name="pushed" offset="334 112 110 110"/>
+            <State name="disabled_checked" offset="334 112 110 110"/>
+            <State name="normal_checked" offset="334 112 110 110"/>
+            <State name="highlighted_checked" offset="334 112 110 110"/>
+            <State name="pushed_checked" offset="334 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundContainerItemGas" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="445 1 110 110"/>
+            <State name="normal" offset="445 1 110 110"/>
+            <State name="highlighted" offset="445 112 110 110"/>
+            <State name="pushed" offset="445 112 110 110"/>
+            <State name="disabled_checked" offset="445 112 110 110"/>
+            <State name="normal_checked" offset="445 112 110 110"/>
+            <State name="highlighted_checked" offset="445 112 110 110"/>
+            <State name="pushed_checked" offset="445 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundContainerItemSeeds" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="556 1 110 110"/>
+            <State name="normal" offset="556 1 110 110"/>
+            <State name="highlighted" offset="556 112 110 110"/>
+            <State name="pushed" offset="556 112 110 110"/>
+            <State name="disabled_checked" offset="556 112 110 110"/>
+            <State name="normal_checked" offset="556 112 110 110"/>
+            <State name="highlighted_checked" offset="556 112 110 110"/>
+            <State name="pushed_checked" offset="556 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundContainerItemWater" size="110 110" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 110" align="Stretch">
+            <State name="disabled" offset="667 1 110 110"/>
+            <State name="normal" offset="667 1 110 110"/>
+            <State name="highlighted" offset="667 112 110 110"/>
+            <State name="pushed" offset="667 112 110 110"/>
+            <State name="disabled_checked" offset="667 112 110 110"/>
+            <State name="normal_checked" offset="667 112 110 110"/>
+            <State name="highlighted_checked" offset="667 112 110 110"/>
+            <State name="pushed_checked" offset="667 112 110 110"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundFuelBattery" size="110 120" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 120" align="Stretch">
+            <State name="disabled" offset="1 223 110 120"/>
+            <State name="normal" offset="1 223 110 120"/>
+            <State name="highlighted" offset="112 223 110 120"/>
+            <State name="pushed" offset="112 223 110 120"/>
+            <State name="disabled_checked" offset="112 223 110 120"/>
+            <State name="normal_checked" offset="112 223 110 120"/>
+            <State name="highlighted_checked" offset="112 223 110 120"/>
+            <State name="pushed_checked" offset="112 223 110 120"/>
+        </BasisSkin>
+    </Resource>
+    <Resource type="ResourceSkin" name="BackgroundFuelGas" size="110 120" texture="gui_slots_container_1920x1080.png">
+        <BasisSkin type="SubSkin" offset="0 0 110 120" align="Stretch">
+            <State name="disabled" offset="223 223 110 120"/>
+            <State name="normal" offset="223 223 110 120"/>
+            <State name="highlighted" offset="334 223 110 120"/>
+            <State name="pushed" offset="334 223 110 120"/>
+            <State name="disabled_checked" offset="334 223 110 120"/>
+            <State name="normal_checked" offset="334 223 110 120"/>
+            <State name="highlighted_checked" offset="334 223 110 120"/>
+            <State name="pushed_checked" offset="334 223 110 120"/>
+        </BasisSkin>
+    </Resource>
+</MyGUI>

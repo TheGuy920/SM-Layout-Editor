@@ -1,0 +1,36 @@
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceImageSet" name="IconsLampSpritesheet">
+        <Group name="IconsLampSpritesheet" texture="gui_lamp_spritesheet.png" size="54 63">
+			<Index name="0">
+                <Frame point="0 0"/>
+            </Index>
+			<Index name="1">
+                <Frame point="54 0"/>
+            </Index>
+			<Index name="2">
+                <Frame point="108 0"/>
+            </Index>
+			<Index name="3">
+                <Frame point="162 0"/>
+            </Index>
+			<Index name="4">
+                <Frame point="216 0"/>
+            </Index>
+			<Index name="5">
+                <Frame point="270 0"/>
+            </Index>
+			<Index name="6">
+                <Frame point="324 0"/>
+            </Index>
+			<Index name="7">
+                <Frame point="378 0"/>
+            </Index>
+			<Index name="8">
+                <Frame point="432 0"/>
+            </Index>
+			<Index name="9">
+                <Frame point="486 0"/>
+            </Index>
+		</Group>
+    </Resource>
+</MyGUI>

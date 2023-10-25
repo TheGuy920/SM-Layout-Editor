@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceSkin" name="TextureBox" size="64 64" texture="white_gui.png">
+		<BasisSkin type="TextureSubSkin" offset="0 0 64 64" align="Stretch">
+            <State name="normal" offset="0 0 64 64"/>
+        </BasisSkin>
+    </Resource>
+
+    <Resource type="ResourceSkin" name="WhiteButton" size="100 100" texture="white_gui.png">
+        <BasisSkin type="SubSkin" offset="0 0 100 100" align="Stretch">
+            <State name="normal" offset="0 0 2 2"/>
+        </BasisSkin>
+        <BasisSkin type="SimpleText" offset="4 4 92 92" align="Stretch">
+            <State name="normal" colour="0 0 0" shift="0"/>
+        </BasisSkin>
+    </Resource>
+    
+</MyGUI>

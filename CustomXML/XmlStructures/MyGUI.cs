@@ -39,10 +39,11 @@ namespace LayoutEditor.CustomXML
         {
             StringBuilder xml = new();
             // Open Tag
-            xml.Append($"<MyGUI type=\"{XmlType.Layout}\" version=\"{Version}\">");
+            xml.Append($"<MyGUI type=\"{XmlType.Layout}\" version=\"{this.Version}\">");
             // Add Children
             foreach (Guid ChildGuid in this._Children)
-                xml.Append(this.Document[ChildGuid].ToString(1));
+                if (this.Document.TryGetValue(ChildGuid, out var item))
+                    xml.Append(item.ToString(1));
             // New Line
             xml.Append(Environment.NewLine);
             // Close Tag
@@ -51,7 +52,7 @@ namespace LayoutEditor.CustomXML
             return xml.ToString();
         }
         public Grid LoadGui(int _) => null;
-        public Grid GetGrid() => this.WorkSpaceBinding;
+        public Grid GridActor => this.WorkSpaceBinding;
         public void ChangeViewMode(XmlViewMode _) { }
     }
 }

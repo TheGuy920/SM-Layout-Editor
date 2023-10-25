@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="List">
+	<List file="$GAME_DATA/Gui/ScrapMekSkin.xml"/>
+	<List file="$GAME_DATA/Gui/ScrapMekTemplate.xml"/>
+	<List file="$GAME_DATA/Gui/IconMap.xml"/>
+	<List file="$GAME_DATA/Gui/ToolIconMap.xml"/>
+	<List file="$GAME_DATA/Gui/CustomizationIconMap.xml"/>
+	<List file="$GAME_DATA/Gui/Rotations.xml"/>
+	<List file="$GAME_DATA/Gui/MyGUI_Media/MyGUI_CommonSkins.xml"/>
+	<List file="$GAME_DATA/Gui/MyGUI_Media/MyGUI_BlackOrangeTheme.xml"/>
+	<List file="$GAME_DATA/Gui/MyGUI_Media/MyGUI_Layers.xml"/>
+	<List file="$GAME_DATA/Gui/GuiSettings.xml"/>
+	<List file="$GAME_DATA/Gui/EditorSkin.xml"/>
+	<List file="$GAME_DATA/Gui/EditorTemplates.xml"/>
+	<List file="PolygonalSkin.xml"/>
+</MyGUI>

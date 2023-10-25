@@ -15,6 +15,8 @@ using System.Windows.Threading;
 using LayoutEditor.Windows.Pages;
 using LayoutEditor.Utilities;
 using Microsoft.Win32;
+using System.Linq;
+using LayoutEditor.Font;
 
 namespace LayoutEditor
 {
@@ -28,11 +30,7 @@ namespace LayoutEditor
         public int ZoomSensitivity = 1;
         public int MinGridSizeX = 5;
         public int MinGridSizeY = 5;
-        public int GridSize
-        {
-            get;
-            set;
-        }
+        public int GridSize { get; set; }
 
         private MenuState WindowMenu = MenuState.Closed;
         private MenuItem prevItem = null;
@@ -46,35 +44,38 @@ namespace LayoutEditor
         private bool HasContentRendered = false;
         private ApplicationConfiguration _configuration;
         private readonly List<MainEditor> PageList;
-        
+        public readonly Dictionary<string, FontInfo> Fonts = new();
+        public readonly Dictionary<string, string> SMNamingMap = new();
+
 
         /// <summary>
         /// Initializaer for the thing and stuff
         /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             Get = this;
-            Closing += OnWindowClosing;
-            PageList = new();
+            this.Closing += OnWindowClosing;
+            this.PageList = new();
 
             // STEAM STUFF
 
-            SteamPath = Utility.GetRegVal<string>("Software\\Valve\\Steam", "SteamPath").ToValidPath();
-            Installed = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Installed");
-            Updating = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Updating");
-            Running = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Running");
-            SteamDisplayName = Utility.GetRegVal<string>("Software\\Valve\\Steam", "LastGameNameUsed");
-            SteamLanguage = Utility.GetRegVal<string>("Software\\Valve\\Steam", "Language").CapitilzeFirst();
+            this.SteamPath = Utility.GetRegVal<string>("Software\\Valve\\Steam", "SteamPath").ToValidPath();
+            this.Installed = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Installed");
+            this.Updating = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Updating");
+            this.Running = Utility.GetRegVal<bool>("Software\\Valve\\Steam\\Apps\\387990", "Running");
+            this.SteamDisplayName = Utility.GetRegVal<string>("Software\\Valve\\Steam", "LastGameNameUsed");
+            this.SteamLanguage = Utility.GetRegVal<string>("Software\\Valve\\Steam", "Language").CapitilzeFirst();
 
-            if (!Directory.Exists(Path.Combine(SteamPath, "steamapps", "common", "Scrap Mechanic"))) {
-                string[] fileContents = File.ReadAllText(Path.Combine(SteamPath, "steamapps", "libraryfolders.vdf")).Split("\"");
+            if (!Directory.Exists(Path.Combine(this.SteamPath, "steamapps", "common", "Scrap Mechanic")))
+            {
+                string[] fileContents = File.ReadAllText(Path.Combine(this.SteamPath, "steamapps", "libraryfolders.vdf")).Split("\"");
                 foreach (string path in fileContents)
                 {
                     string smPath = Path.Combine(path, "steamapps", "common", "Scrap Mechanic");
                     if (Directory.Exists(smPath))
                     {
-                        GamePath = smPath;
+                        this.GamePath = smPath;
                         break;
                     }
                 }
@@ -84,13 +85,16 @@ namespace LayoutEditor
                 throw new Exception("Scrap Mechanic Not Found");
             }
 
-            GamePath = GamePath.Replace("\\\\", "\\");
+            this.GamePath = this.GamePath.Replace("\\\\", "\\");
 
-            Debug.WriteLine(GamePath);
+            this.Fonts = FontInfo.LoadFontInformation(this.GamePath);
 
-            _ = LoadConfiguration(LoadToolBoxItems);
+            string[] lineItems = Utility.LoadInternalFile.TextFile("InterfaceTags.txt").Split(Environment.NewLine);
+            foreach (var line in lineItems)
+                if (line.IndexOf(' ') is int splitter && splitter >= 0)
+                    this.SMNamingMap.TryAdd($"#{{{line[..splitter].Trim()}}}", line[splitter..].Trim());
 
-            
+            _ = this.LoadConfiguration(LoadToolBoxItems);
         }
         /// <summary>
         /// Event handler for window resize
@@ -99,7 +103,8 @@ namespace LayoutEditor
         /// <param name="e"></param>
         private void EntireWindowSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (PageList != null && PageList.Count > 0) PageList.ForEach(p => p.ClampTabs());
+            if (this.PageList != null && this.PageList.Count > 0)
+                this.PageList.ForEach(p => p.ClampTabs());
         }
         private void ResolutionClick(object sender, RoutedEventArgs e)
         {
@@ -116,9 +121,9 @@ namespace LayoutEditor
 
                 Tuple<int, int> args = tuple as Tuple<int, int>;
 
-                SetResolution(args.Item1, args.Item2, additionalArgs);
+                this.SetResolution(args.Item1, args.Item2, additionalArgs);
 
-                foreach (MenuItem item in ResolutionSideMenu.Items)
+                foreach (MenuItem item in this.ResolutionSideMenu.Items)
                 {
                     if (item.Header.ToString().Contains(args.Item1 + "x" + args.Item2))
                     {
@@ -132,11 +137,11 @@ namespace LayoutEditor
                 MenuItem SelectedOption = sender as MenuItem;
 
                 if (prevItem != null)
-                    prevItem.Background = Brushes.Transparent;
+                    this.prevItem.Background = Brushes.Transparent;
 
                 var resoultion = SelectedOption.Header.ToString().Split(" ")[0].Split("x");
 
-                SetResolution(int.Parse(resoultion[0]), int.Parse(resoultion[1]));
+                this.SetResolution(int.Parse(resoultion[0]), int.Parse(resoultion[1]));
 
                 SelectedOption.Background = Brushes.LightBlue;
 
@@ -145,9 +150,9 @@ namespace LayoutEditor
         }
         private void SetResolution(int width, int height, object optional = null)
         {
-            if (PageList != null && PageList.Count > 0)
+            if (PageList != null && this.PageList.Count > 0)
             {
-                MainEditor currentPage = PageList[NavigationWindow.SelectedIndex];
+                MainEditor currentPage = PageList[this.NavigationWindow.SelectedIndex];
                 currentPage.SetResolution(width, height, optional);
             }
         }
@@ -155,27 +160,27 @@ namespace LayoutEditor
         {
             JObject json = JObject.Parse(Utility.LoadInternalFile.TextFile("MyGUI_Trace.json"));
             List<string> tbxi = new();
-            foreach (JProperty item in json["Widget"])
-            {
-                tbxi.Add(item.Name.ToString());
-            }
+            tbxi.AddRange(from JProperty item in json["Widget"]
+                          select item.Name.ToString());
             tbxi.Sort();
             foreach (string item in tbxi)
             {
-                MenuItem menuItem = new MenuItem();
-                menuItem.Name = item;
-                menuItem.Header = item;
+                MenuItem menuItem = new()
+                {
+                    Name = item,
+                    Header = item
+                };
                 menuItem.Click += MenuItemClick;
-                ToolBoxDropDown.Items.Add(menuItem);
+                this.ToolBoxDropDown.Items.Add(menuItem);
             }
-            AddNewPage(null, null);
+            this.AddNewPage(null, null);
         }
         private void MenuItemClick(object sender, RoutedEventArgs e)
         {
             // invoke page here
-            if (PageList != null && PageList.Count > 0)
+            if (PageList != null && this.PageList.Count > 0)
             {
-                MainEditor currentPage = PageList[NavigationWindow.SelectedIndex];
+                MainEditor currentPage = PageList[this.NavigationWindow.SelectedIndex];
                 currentPage.MenuItemClick(sender, e);
             }
         }
@@ -192,19 +197,21 @@ namespace LayoutEditor
 
         private void LoadFileClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.CheckFileExists = true;
+            OpenFileDialog dlg = new()
+            {
+                CheckFileExists = true
+            };
             if (dlg.ShowDialog() == true)
             {
                 TabItem tabItem = new() { IsSelected = true };
                 MainEditor np = new(dlg.FileName);
-                PageList.Add(np);
+                this.PageList.Add(np);
                 tabItem.Content = new Frame() { Content = np };
                 tabItem.Header = Path.GetFileNameWithoutExtension(dlg.FileName);
-                ControlTemplate ctmp = FindResource("NewTabItemTemplate") as ControlTemplate;
+                ControlTemplate ctmp = this.FindResource("NewTabItemTemplate") as ControlTemplate;
                 tabItem.Template = ctmp;
-                NavigationWindow.Items.Insert(NavigationWindow.Items.Count - 1, tabItem);
-                NavigationWindow.SelectedIndex = NavigationWindow.Items.Count - 2;
+                this.NavigationWindow.Items.Insert(this.NavigationWindow.Items.Count - 1, tabItem);
+                this.NavigationWindow.SelectedIndex = this.NavigationWindow.Items.Count - 2;
             }
         }
 
@@ -230,55 +237,55 @@ namespace LayoutEditor
 
         private async Task LoadConfiguration(Action FinishLoadCallBack = null)
         {
-            _configuration = JsonApplicationConfiguration.Load<ApplicationConfiguration>("LayoutEditor/Config", true, true);
-            
-            if(_configuration.Top > 0)
-                Top = _configuration.Top;
-            if (_configuration.Left > 0)
-                Left = _configuration.Left;
-            if (_configuration.WindowWidth > 0)
-                Width = _configuration.WindowWidth;
-            if (_configuration.WindowHeight > 0)
-                Height = _configuration.WindowHeight;
-            if(_configuration.MoveSensitivity > 0)
-                MoveSensitivity = _configuration.MoveSensitivity;
-            if (_configuration.ZoomSensitivity > 0)
-                ZoomSensitivity = _configuration.ZoomSensitivity;
-            WindowState = _configuration.WindowState;
+            this._configuration = JsonApplicationConfiguration.Load<ApplicationConfiguration>("LayoutEditor/Config", true, true);
 
-            if (_configuration.IsFirstStart)
-                _configuration.IsFirstStart = false;
+            if (this._configuration.Top > 0)
+                this.Top = this._configuration.Top;
+            if (this._configuration.Left > 0)
+                this.Left = this._configuration.Left;
+            if (this._configuration.WindowWidth > 0)
+                this.Width = this._configuration.WindowWidth;
+            if (this._configuration.WindowHeight > 0)
+                this.Height = this._configuration.WindowHeight;
+            if (this._configuration.MoveSensitivity > 0)
+                this.MoveSensitivity = this._configuration.MoveSensitivity;
+            if (this._configuration.ZoomSensitivity > 0)
+                this.ZoomSensitivity = this._configuration.ZoomSensitivity;
+            this.WindowState = this._configuration.WindowState;
 
-            while (!HasContentRendered) { await Task.Delay(100); }
+            if (this._configuration.IsFirstStart)
+                this._configuration.IsFirstStart = false;
 
-            if (_configuration.Resolution != null)
-                ResolutionClick(new Tuple<object, object>(_configuration.Resolution, _configuration.Workspace), null);
+            while (!this.HasContentRendered) { await Task.Delay(100); }
+
+            if (this._configuration.Resolution != null)
+                this.ResolutionClick(new Tuple<object, object>(this._configuration.Resolution, this._configuration.Workspace), null);
 
             FinishLoadCallBack.Invoke();
         }
         private void SaveConfiguration()
         {
-            _configuration.Left = Left;
-            _configuration.Top = Top;
-            _configuration.WindowWidth = Width;
-            _configuration.WindowHeight = Height;
-            _configuration.WindowState = WindowState;
+            this._configuration.Left = Left;
+            this._configuration.Top = Top;
+            this._configuration.WindowWidth = Width;
+            this._configuration.WindowHeight = Height;
+            this._configuration.WindowState = WindowState;
             //_configuration.Resolution = Resolution;
-            _configuration.GridSize = GridSize;
-            _configuration.MoveSensitivity = MoveSensitivity;
-            _configuration.ZoomSensitivity = ZoomSensitivity;
+            this._configuration.GridSize = GridSize;
+            this._configuration.MoveSensitivity = MoveSensitivity;
+            this._configuration.ZoomSensitivity = ZoomSensitivity;
 
             JsonApplicationConfiguration.Save("LayoutEditor/Config", _configuration, true);
         }
         private async void OnWindowClosing(object sender, CancelEventArgs args)
         {
-            SaveConfiguration();
+            this.SaveConfiguration();
 
             args.Cancel = true;
 
-            Closing -= OnWindowClosing;
-  
-            await Dispatcher.InvokeAsync(Close);
+            this.Closing -= this.OnWindowClosing;
+
+            await this.Dispatcher.InvokeAsync(Close);
         }
         private void OnShowAboutWindow(object sender, RoutedEventArgs e)
         {
@@ -286,8 +293,9 @@ namespace LayoutEditor
         }
         private void OnExitApplication(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.Close();
         }
+
         /// <summary>
         /// This closes the menu, when the mouse clicks off of the menu
         /// </summary>
@@ -296,22 +304,24 @@ namespace LayoutEditor
         private void MenuPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             // change states and visibilities
-            WindowMenu = MenuState.Closed;
-            OffClickDetection.Visibility = Visibility.Hidden;
+            this.WindowMenu = MenuState.Closed;
+            this.OffClickDetection.Visibility = Visibility.Hidden;
             // OffClickDetection is also used for items
             // it will remove the ActiveElement and reset other various varaibles
             // such as clearing properties menu, and removing the scaling overlay
             // invoke page here OffClickDetection
-            if (PageList != null && PageList.Count > 0)
+            if (this.PageList != null && this.PageList.Count > 0)
             {
-                MainEditor currentPage = PageList[NavigationWindow.SelectedIndex];
+                MainEditor currentPage = this.PageList[this.NavigationWindow.SelectedIndex];
                 currentPage.OffClickDetection(sender, e);
             }
         }
+
         private void EntireWindowContentRendered(object sender, EventArgs e)
         {
-            HasContentRendered = true;
+            this.HasContentRendered = true;
         }
+
         /// <summary>
         /// this is the huge (it does a lot of stuff) MouseMove event handler,
         /// that triggers when the mouse moves throughout the entire window of the appliation.
@@ -321,38 +331,35 @@ namespace LayoutEditor
         /// <param name="e"></param>
         private void EntireWindowMouseMove(object sender, MouseEventArgs e)
         {
-            if (PageList != null && PageList.Count > 0)
+            if (this.PageList != null && this.PageList.Count > 0)
             {
-                if (NavigationWindow.SelectedIndex >= 0 && NavigationWindow.SelectedIndex < PageList.Count)
+                if (this.NavigationWindow.SelectedIndex >= 0 && this.NavigationWindow.SelectedIndex < this.PageList.Count)
                 {
-                    PageList[NavigationWindow.SelectedIndex].WindowMouseMove(sender, e);
+                    this.PageList[this.NavigationWindow.SelectedIndex].WindowMouseMove(sender, e);
                 }
             }
         }
         private void ToolBarLoaded(object sender, RoutedEventArgs e)
         {
             ToolBar toolBar = sender as ToolBar;
-            var overflowGrid = toolBar.Template.FindName("OverflowGrid", toolBar) as FrameworkElement;
 
-            if (overflowGrid != null)
+            if (toolBar.Template.FindName("OverflowGrid", toolBar) is FrameworkElement overflowGrid)
                 overflowGrid.Visibility = Visibility.Collapsed;
 
-            var mainPanelBorder = toolBar.Template.FindName("MainPanelBorder", toolBar) as FrameworkElement;
-
-            if (mainPanelBorder != null)
+            if (toolBar.Template.FindName("MainPanelBorder", toolBar) is FrameworkElement mainPanelBorder)
                 mainPanelBorder.Margin = new Thickness();
         }
         private void AddNewPage(object sender, MouseButtonEventArgs e)
         {
             TabItem tabItem = new() { IsSelected = true };
             MainEditor np = new();
-            PageList.Add(np);
+            this.PageList.Add(np);
             tabItem.Content = new Frame() { Content = np };
             tabItem.Header = "Untitled";
-            ControlTemplate ctmp = FindResource("NewTabItemTemplate") as ControlTemplate;
+            ControlTemplate ctmp = this.FindResource("NewTabItemTemplate") as ControlTemplate;
             tabItem.Template = ctmp;
-            NavigationWindow.Items.Insert(NavigationWindow.Items.Count - 1, tabItem);
-            NavigationWindow.SelectedIndex = NavigationWindow.Items.Count - 2;
+            this.NavigationWindow.Items.Insert(this.NavigationWindow.Items.Count - 1, tabItem);
+            this.NavigationWindow.SelectedIndex = this.NavigationWindow.Items.Count - 2;
         }
         private void ClosePageMouseEnter(object sender, MouseEventArgs e)
         {
@@ -367,16 +374,34 @@ namespace LayoutEditor
         private void ClosePage(object sender, MouseButtonEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
-            PageList.RemoveAt(NavigationWindow.SelectedIndex);
-            NavigationWindow.Items.Remove(tb.TemplatedParent);
-            if (NavigationWindow.Items.Count - 1 == NavigationWindow.SelectedIndex)
-                NavigationWindow.SelectedIndex--;
+            this.PageList.RemoveAt(this.NavigationWindow.SelectedIndex);
+            this.NavigationWindow.Items.Remove(tb.TemplatedParent);
+            if (this.NavigationWindow.Items.Count - 1 == this.NavigationWindow.SelectedIndex)
+                this.NavigationWindow.SelectedIndex--;
         }
         public void SetCurrentTabName(string name)
         {
-            TabItem tbi = NavigationWindow.SelectedItem as TabItem;
+            TabItem tbi = this.NavigationWindow.SelectedItem as TabItem;
             if (tbi != AddNewTab && tbi != null)
                 tbi.Header = name;
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (this.PageList != null && this.PageList.Count > 0)
+            {
+                MainEditor currentPage = this.PageList[this.NavigationWindow.SelectedIndex];
+                currentPage.GridPreviewKeyDown(sender, e);
+            }
+        }
+
+        private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (this.PageList != null && this.PageList.Count > 0)
+            {
+                MainEditor currentPage = this.PageList[this.NavigationWindow.SelectedIndex];
+                currentPage.GridPreviewKeyUp(sender, e);
+            }
         }
     }
 }

@@ -1,0 +1,38 @@
+<MyGUI type="Resource" version="1.1">
+    <Resource type="ResourceImageSet" name="Upgrade">
+        <Group name="SteeringLevels" texture="gui_icon_steering_level.png" size="210 210">
+			<Index name="1">
+                <Frame point="0 0"/>
+            </Index>
+			<Index name="2">
+                <Frame point="210 0"/>
+            </Index>
+			<Index name="3">
+                <Frame point="420 0"/>
+            </Index>
+			<Index name="4">
+                <Frame point="630 0"/>
+            </Index>
+			<Index name="5">
+                <Frame point="840 0"/>
+            </Index>
+		</Group>
+		<Group name="SeatLevels" texture="gui_icon_seat_level.png" size="210 210">
+			<Index name="1">
+                <Frame point="0 0"/>
+            </Index>
+			<Index name="2">
+                <Frame point="210 0"/>
+            </Index>
+			<Index name="3">
+                <Frame point="420 0"/>
+            </Index>
+			<Index name="4">
+                <Frame point="630 0"/>
+            </Index>
+			<Index name="5">
+                <Frame point="840 0"/>
+            </Index>
+		</Group>
+    </Resource>
+</MyGUI>

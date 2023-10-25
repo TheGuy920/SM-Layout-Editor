@@ -66,7 +66,8 @@ namespace CustomExtensions
         /// <param name="top"></param>
         public static void SetMarginLT(this Canvas grid, double left, double top)
         {
-            grid.Margin = new Thickness(left, top, grid.Margin.Right, grid.Margin.Bottom);
+            if (grid.Margin.Left != left || grid.Margin.Top != top)
+                grid.Margin = new Thickness(left, top, grid.Margin.Right, grid.Margin.Bottom);
         }
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
@@ -75,8 +76,10 @@ namespace CustomExtensions
         /// <param name="height"></param>
         public static void SetWidthAndHeight(this Canvas cc, double width, double height)
         {
-            cc.Width = width;
-            cc.Height = height;
+            if (cc.Width != width)
+                cc.Width = width;
+            if (cc.Height != height)
+                cc.Height = height;
         }
         /// <summary>
         /// This sets the existing margin left to the new margin left
@@ -85,7 +88,8 @@ namespace CustomExtensions
         /// <param name="left"></param>
         public static void SetMarginL(this Canvas grid, double left)
         {
-            grid.Margin = new Thickness(left, grid.Margin.Top, grid.Margin.Right, grid.Margin.Bottom);
+            if (grid.Margin.Left != left)
+                grid.Margin = new Thickness(left, grid.Margin.Top, grid.Margin.Right, grid.Margin.Bottom);
         }
         /// <summary>
         /// This sets the existing margin top to the new margin top
@@ -94,7 +98,8 @@ namespace CustomExtensions
         /// <param name="top"></param>
         public static void SetMarginT(this Canvas grid, double top)
         {
-            grid.Margin = new Thickness(grid.Margin.Left, top, grid.Margin.Right, grid.Margin.Bottom);
+            if (grid.Margin.Top != top)
+                grid.Margin = new Thickness(grid.Margin.Left, top, grid.Margin.Right, grid.Margin.Bottom);
         }
 
 // ==================================== GRIDS ====================================
@@ -127,9 +132,17 @@ namespace CustomExtensions
         /// <param name="grid"></param>
         /// <param name="left"></param>
         /// <param name="top"></param>
-        public static void SetMarginLT(this Grid grid, Thickness? b)
+        public static bool SetMarginLT(this Grid grid, Thickness? b)
         {
-            grid.Margin = new Thickness(b?.Left ?? 0, b?.Top ?? 0, grid.Margin.Right, grid.Margin.Bottom);
+            if (!b.HasValue)
+                return false;
+
+            if (grid.Margin.Top != b.Value.Top || grid.Margin.Left != b.Value.Left)
+            {
+                grid.Margin = new Thickness(b.Value.Left, b.Value.Top, grid.Margin.Right, grid.Margin.Bottom);
+                return true;
+            }
+            return false;
         }
         /// <summary>
         /// This sets the existing margin bottom and right to the new margin bottom and right
@@ -192,10 +205,20 @@ namespace CustomExtensions
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public static void SetWidthAndHeight(this Grid grid, Thickness b)
+        public static bool SetWidthAndHeight(this Grid grid, Thickness b)
         {
-            grid.Width = b.Right;
-            grid.Height = b.Bottom;
+            bool changed = false;
+            if (grid.Width != b.Right)
+            {
+                grid.Width = b.Right;
+                changed = true;
+            }
+            if (grid.Height != b.Bottom)
+            {
+                grid.Height = b.Bottom;
+                changed = true;
+            }
+            return changed;
         }
         /// <summary>
         /// This sets the existing width and height to the new width and height
@@ -237,8 +260,9 @@ namespace CustomExtensions
             a.Bottom += b.Bottom;
             return a;
         }
+
         /// <summary>
-        /// This sets the existing width and height to the new width and heigh
+        /// This adds the width and height * factor to the existing
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -250,6 +274,21 @@ namespace CustomExtensions
             a.Bottom += b.Bottom * factor;
             return a;
         }
+
+        /// <summary>
+        /// This truncates the LTRB to the nearest decimal place
+        /// </summary>
+        /// <param name="decimal_places">the number of decimal places to truncate to</param>
+        public static Thickness Truncate(this Thickness a, int decimal_places)
+        {
+            double factor = Math.Pow(10, decimal_places);
+            a.Left = Math.Floor(a.Left * factor) / 100;
+            a.Top = Math.Floor(a.Top * factor) / 100;
+            a.Right = Math.Floor(a.Right * factor) / 100;
+            a.Bottom = Math.Floor(a.Bottom * factor) / 100;
+            return a;
+        }
+
         /// <summary>
         /// takes the smaller of the left and top margin values indivisually
         /// </summary>
@@ -398,10 +437,10 @@ namespace CustomExtensions
         }
 
 // ================================= XML DOCUMENT ==================================
-        public static string PrettyXml(this XmlDocument doc, bool strip_id = true)
+        public static string PrettyXml(this XElement xml/*this XDocument doc*/, bool strip_id = true)
         {
             var stringBuilder = new StringBuilder();
-            XElement xml = XElement.Parse(doc.OuterXml);
+            //XElement xml = XElement.Parse(doc.OuterXml);
             if (xml != null)
             {
                 XmlWriterSettings settings = new()
@@ -438,37 +477,60 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top + top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin left and top to the new margin left and top
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="left"></param>
         /// <param name="top"></param>
-        public static void AddMarginLT(this XmlOverlay grid, double left, double top)
+        public static bool AddMarginLT(this XmlOverlay grid, double left, double top)
         {
-            grid.Margin = new Thickness(grid.Margin.Left + left, grid.Margin.Top + top, grid.Margin.Right, grid.Margin.Bottom);
+            if (left != 0 || top != 0)
+            {
+                grid.Margin = new Thickness(grid.Margin.Left + left, grid.Margin.Top + top, grid.Margin.Right, grid.Margin.Bottom);
+                return true;
+            }
+            return false;
         }
+
+
         /// <summary>
         /// This sets the existing margin left and top to the new margin left and top
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="left"></param>
         /// <param name="top"></param>
-        public static void AddMarginLT(this XmlOverlay grid, ActualSize size)
+        public static bool AddMarginLT(this XmlOverlay grid, ActualSize size)
         {
-            grid.Margin = new Thickness(grid.Margin.Left + size.Left, grid.Margin.Top + size.Top, grid.Margin.Right, grid.Margin.Bottom);
+            if (size.Left != 0 || size.Top != 0)
+            {
+                grid.Margin = new Thickness(grid.Margin.Left + size.Left, grid.Margin.Top + size.Top, grid.Margin.Right, grid.Margin.Bottom);
+                return true;
+            }
+            return false;
         }
+
         /// <summary>
         /// This sets the existing margin left and top to the new margin left and top
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="left"></param>
         /// <param name="top"></param>
-        public static void SetSize(this XmlOverlay grid, ActualSize size)
+        public static bool SetSize(this XmlOverlay grid, ActualSize size)
         {
-            grid.AddMarginLT(size);
-            grid.Width = size.Width;
-            grid.Height = size.Height;
+            var o1 = grid.AddMarginLT(size);
+            if (grid.Width != size.Width)
+            {
+                grid.Width = size.Width;
+                o1 = true;
+            }
+            if (grid.Height != size.Height)
+            {
+                grid.Height = size.Height;
+                o1 = true;
+            }
+            return o1;
         }
 
 // ================================ MOUSE UTIL =====================================

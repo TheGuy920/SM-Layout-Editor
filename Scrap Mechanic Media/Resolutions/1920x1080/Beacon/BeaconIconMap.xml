@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+    <Resource name="BeaconIconMap" type="ResourceImageSet">
+        <Group name="BeaconIconMap" size="66 66" texture="BeaconIcons@1080.png">
+            <Index name="0">
+                <Frame point="6 0" />
+            </Index>
+            <Index name="1">
+                <Frame point="78 0" />
+            </Index>
+            <Index name="2">
+                <Frame point="150 0" />
+            </Index>
+            <Index name="3">
+                <Frame point="222 0" />
+            </Index>
+            <Index name="4">
+                <Frame point="294 0" />
+            </Index>
+            <Index name="5">
+                <Frame point="366 0" />
+            </Index>
+            <Index name="6">
+                <Frame point="438 0" />
+            </Index>
+            <Index name="7">
+                <Frame point="510 0" />
+            </Index>
+            <Index name="8">
+                <Frame point="582 0" />
+            </Index>
+            <Index name="9">
+                <Frame point="654 0" />
+            </Index>
+            <Index name="10">
+                <Frame point="726 0" />
+            </Index>
+            <Index name="11">
+                <Frame point="798 0" />
+            </Index>
+            <Index name="12">
+                <Frame point="870 0" />
+            </Index>
+            <Index name="13">
+                <Frame point="942 0" />
+            </Index>
+            <Index name="14">
+                <Frame point="1014 0" />
+            </Index>
+            <Index name="15">
+                <Frame point="1086 0" />
+            </Index>
+            <Index name="16">
+                <Frame point="1158 0" />
+            </Index>
+            <Index name="17">
+                <Frame point="1230 0" />
+            </Index>
+            <Index name="18">
+                <Frame point="1302 0" />
+            </Index>
+            <Index name="19">
+                <Frame point="1374 0" />
+            </Index>
+            <Index name="20">
+                <Frame point="1446 0" />
+            </Index>
+            <Index name="21">
+                <Frame point="1518 0" />
+            </Index>
+            <Index name="22">
+                <Frame point="1590 0" />
+            </Index>
+            <Index name="23">
+                <Frame point="1662 0" />
+            </Index>
+        </Group>
+    </Resource>
+</MyGUI>

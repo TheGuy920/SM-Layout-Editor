@@ -1,0 +1,246 @@
+<MyGUI type="Resource">
+	<!-- TODO: Replace usages -->
+	<Font name="HandbookTitle">
+	</Font>
+	<Font name="HandbookSubTitle">
+	</Font>
+	<Font name="HandbookSubTitleItalic">
+	</Font>
+	<Font name="HandbookPageCount">
+		<Data type="String" value="0123456789/"/>
+	</Font>
+	<Font name="HandbookDescriptionLarge">
+	</Font>
+	<Font name="HandbookDescriptionSmall">
+	</Font>
+	<Font name="HandbookInstructionLarge">
+	</Font>
+	<Font name="HandbookInstructionMedium">
+	</Font>
+	<Font name="HandbookInstructionSmall">
+	</Font>
+	<Font name="HandbookLogicDescription">
+	</Font>
+	<Font name="HandbookFAQQuestion">
+	</Font>
+	<Font name="HandbookFAQAnswer">
+	</Font>
+
+
+	<Font name="SM_Header">
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_BACKPACK"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_FACE"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_GLOVES"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_HAIR"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_HAIR_FACIAL"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_HATS"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_LEGS"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_SHOES"/>
+		<Data type="Tag" value="CHARACTER_CUSTOMIZATION_CATEGORY_TORSO"/>
+		<!-- customization item descriptions -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_ItemTitle">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_TextTiny">
+		<!-- item descriptions -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_TextSmall">
+		<!-- chat messages -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_Text">
+		<!-- popup messages -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_UserName">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_SearchText">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_ToolTipText">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_ButtonSmallBold">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_ListItem">
+		<!-- Challenge names -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_HeaderLarge_Medium">
+		<!-- Popup manager predefined messages -->
+		<Data type="Tag" value="WARNING_TUNNELING_TITLE"/>
+		<Data type="Tag" value="ERRMSG_TITLE_FAILED_TO_LOAD_WORLD"/>
+		<Data type="Tag" value="ERRMSG_TITLE_CONNECTION_FAILED"/>
+		<Data type="Tag" value="ERRMSG_TITLE_CONNECTION_LOST"/>
+		<Data type="Tag" value="ERRMSG_TITLE_ERROR"/>
+		<Data type="Tag" value="ERRMSG_TITLE_WARNING"/>
+		<Data type="Tag" value="WARNING"/>
+
+		<!-- Ok messages -->
+		<Data type="Tag" value="ERRMSG_TITLE_ALERT"/>
+		<Data type="Tag" value="ERRMSG_TITLE_SORRY"/>
+
+		<!-- Loading bar messages -->
+		<Data type="Tag" value="STEAM_WORKSHOP_DOWNLOADING"/>
+		<Data type="Tag" value="STEAM_WORKSHOP_SHARING"/>
+		<Data type="Tag" value="STEAM_WORKSHOP_UPDATING"/>
+		<Data type="Tag" value="STEAM_WORKSHOP_UPLOADING"/>
+
+		<!-- Input messages -->
+		<Data type="Tag" value="CONTAINER_AMOUNT"/>
+		<Data type="Tag" value="CONTROLLER_TEXTSIGN_ENTER_TEXT"/>
+
+		<!-- YN Messages -->
+		<Data type="Tag" value="MENU_YN_MESSAGE_RESTORE_TITLE_1"/>
+		<Data type="Tag" value="MENU_YN_MESSAGE_RESTORE_TITLE_2"/>
+		<Data type="Tag" value="MENU_YN_TITLE_ARE_YOU_SURE"/>
+		<Data type="Tag" value="MENU_YN_MESSAGE_DELETE_BLUEPRINT"/>
+		<Data type="Tag" value="MENU_YN_TITLE_DELETE_GAME"/>
+		<Data type="Tag" value="MENU_INGAME_EXIT"/>
+		<Data type="Tag" value="CHALLENGE_RESTART"/>
+		<Data type="Tag" value="DELETE"/>
+
+		<!-- YNC Messages -->
+		<Data type="Tag" value="CHALLENGE_BUILDER_SAVE_BEFORE_EXIT"/>
+
+		<!-- Key actions -->
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_MOVE_FORWARD"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_MOVE_BACKWARD"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_STRAFE_LEFT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_STRAFE_RIGHT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_JUMP"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_CRAWL"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_SPRINT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_USE"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_INVENTORY"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_SECONDARY"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_PRIMARY"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ROTATION_NEXT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ROTATION_PREVIOUS"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_LIFT_UP"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_LIFT_DOWN"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_NEXT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_PREVIOUS"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_1"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_2"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_3"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_4"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_5"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_6"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_7"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_8"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_9"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_10"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_NEXT_PAGE"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_PREVIOUS_PAGE"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_SELECT_1"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_SELECT_2"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_SELECT_3"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_RESET"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ZOOM_IN"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ZOOM_OUT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_CHAT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HANDBOOK"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_LOGBOOK"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_CANCEL"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_TINKER"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_FORCE_BUILD"/>
+	</Font>
+	<Font name="SM_Button">
+		<Data type="Tag" value="MENU_YN_CANCEL"/>
+	</Font>
+	<Font name="SM_ButtonTiny">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_TextLabel">
+		<!-- tone bot notes -->
+		<Data type="String" value="CDEFGABcdefgabc#0123456789"/>
+
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_MOVE_FORWARD"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_MOVE_BACKWARD"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_STRAFE_LEFT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_STRAFE_RIGHT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_JUMP"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_CRAWL"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_SPRINT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_USE"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_INVENTORY"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_SECONDARY"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_PRIMARY"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ROTATION_NEXT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ROTATION_PREVIOUS"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_LIFT_UP"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_LIFT_DOWN"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_NEXT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_PREVIOUS"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_1"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_2"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_3"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_4"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_5"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_6"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_7"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_8"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_9"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_ITEM_10"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_NEXT_PAGE"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_PREVIOUS_PAGE"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_SELECT_1"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_SELECT_2"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HOTBAR_SELECT_3"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_RESET"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ZOOM_IN"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_ZOOM_OUT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_CHAT"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_HANDBOOK"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_LOGBOOK"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_CANCEL"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_TINKER"/>
+		<Data type="Tag" value="MENU_OPTIONS_CONTROLS_FORCE_BUILD"/>
+	
+		<!-- mod box: mod name, creator name -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_LabelTiny">
+		<!-- editor font -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_LabelMini">
+		<Data type="String" value="0123456789"/>
+	</Font>
+	<Font name="SM_SliderLabel">
+		<Data type="String" value="0123456789"/>
+	</Font>
+	<Font name="SM_NumberMini">
+		<Data type="String" value="0123456789*"/>
+	</Font>
+	<Font name="SM_HotbarBinding">
+		<!-- key bindings -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="X_Hud_ItemStack">
+		<Data type="String" value="0123456789"/>
+	</Font>
+	<Font name="X_Hud_PlayerName">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="X_Hud_Interaction">
+		<!-- interaction texts, key bindings -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="X_Hud_Alert">
+		<!-- interaction texts, key bindings -->
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_IntlText">
+		<Data type="Override" value="Allow all"/>
+	</Font>
+	<Font name="SM_Digital">
+		<Data type="String" value="0123456789:"/>
+	</Font>
+</MyGUI>

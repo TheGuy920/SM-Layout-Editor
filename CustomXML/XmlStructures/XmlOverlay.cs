@@ -17,6 +17,7 @@ namespace LayoutEditor.CustomXML
     {
         public new bool IsEnabled = true;
         private readonly List<Button> OverlayButtons = new();
+        public event EventHandler DisplayItemChanged;
         public List<XmlDOM> BindingPair { get; private set; }
         private double Scale = 1;
         private double GridSize = 1;
@@ -64,11 +65,13 @@ namespace LayoutEditor.CustomXML
                     }
                 }
             }
-            if (this.BindingPair.Count is 0) this.Visibility = Visibility.Collapsed;
-            else this.Visibility = Visibility.Visible;
+            if (this.BindingPair.Count is 0)
+                this.Visibility = Visibility.Collapsed;
+            else
+                this.Visibility = Visibility.Visible;
         }
 
-        private void UpdateSize(object sender = null, SizeChangedEventArgs e = null)
+        internal void UpdateSize(bool sender = false)
         {
             if (this.IsEnabled)
             {
@@ -90,18 +93,21 @@ namespace LayoutEditor.CustomXML
                             main.ActualHeight * this.Scale
                         );
 
-                        MarginSize.MinMargin(TargetSize);
-                        ActualSize.MaxMargin(TargetSize);
+                        MarginSize.MinMargin(TargetSize.Truncate(2));
+                        ActualSize.MaxMargin(TargetSize.Truncate(2));
                     }
 
-                    this.SetMarginLT(MarginSize);
+                    var change2 = this.SetMarginLT(MarginSize.Truncate(2));
 
                     ActualSize = new(0, 0,
                         (ActualSize.Left - MarginSize.Left) + ActualSize.Right,
                         (ActualSize.Top - MarginSize.Top) + ActualSize.Bottom
                         );
 
-                    this.SetWidthAndHeight(ActualSize);
+                    var change1 = this.SetWidthAndHeight(ActualSize.Truncate(2));
+
+                    if ((change1 || change2) && sender is not true)
+                        this.DisplayItemChanged?.Invoke(null, EventArgs.Empty);
                 }
             }
         }
@@ -125,7 +131,7 @@ namespace LayoutEditor.CustomXML
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(90, GridUnitType.Star) });
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(7, GridUnitType.Pixel) });
             // Border
-            Border rec = new() { BorderBrush = Brushes.LightBlue, BorderThickness = new(3), Background = null, Margin = new(-8.5), ClipToBounds = false };
+            Border rec = new() { BorderBrush = Brushes.LightBlue, BorderThickness = new(1), Background = null, Margin = new(-8.5), ClipToBounds = false };
             // Column and row (span)
             Grid.SetRow(rec, 1);
             Grid.SetColumn(rec, 1);
@@ -134,21 +140,22 @@ namespace LayoutEditor.CustomXML
             // Add border
             this.Children.Add(rec);
             // row and column list
-            ReadOnlySpan<int> ColumnList = new int[] { 0, 1, 3, 3, 3, 1, 0, 0 };
-            ReadOnlySpan<int> RowList = new int[] { 0, 0, 0, 1, 3, 3, 3, 1 };
+            ReadOnlySpan<int> ColumnList = new int[] { 0, 1, 2, 2, 2, 1, 0, 0 };
+            ReadOnlySpan<int> RowList = new int[] { 0, 0, 0, 1, 2, 2, 2, 1 };
+            int fac = 5;
             // buttnn margin list
             ReadOnlySpan<Thickness> BorderList = new Thickness[]
             {
-                new(-2.5, -2.5, 0, 0),
-                new(0, -2.5, 0, 0),
-                new(0, -2.5, -2.5, 0),
-                new(0, 0, -2.5, 0),
-                new(0, 0, -2.5, -2.5),
-                new(0, 0, 0, -2.5),
-                new(-2.5, 0, 0, -2.5),
-                new(-2.5, 0, 0, 0)
+                new(-2.5 * fac, -2.5 * fac, 0, 0),
+                new(0, -2.5 * fac, 0, 0),
+                new(0, -2.5 * fac, -2.5 * fac, 0),
+                new(0, 0, -2.5 * fac, 0),
+                new(0, 0, -2.5 * fac, -2.5 * fac),
+                new(0, 0, 0, -2.5 * fac),
+                new(-2.5 * fac, 0, 0, -2.5 * fac),
+                new(-2.5 * fac, 0, 0, 0)
             };
-            ReadOnlySpan<Brush> ColorList = new[]{ Brushes.White, Brushes.Transparent };
+            ReadOnlySpan<Brush> ColorList = new[]{ Brushes.White, Brushes.White };
             // cursor list
             ReadOnlySpan<Cursor> CursorList = new Cursor[] { Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW, Cursors.SizeWE };
             // Add scale Buttons
@@ -163,6 +170,8 @@ namespace LayoutEditor.CustomXML
                     Background = ColorList[i % 2],
                     Cursor = CursorList[i % 4],
                     Margin = BorderList[i],
+                    Height = 5,
+                    Width = 5,
                     Tag = i + 1
                 };
                 button.PreviewMouseDown += this.MouseDown;
@@ -181,6 +190,7 @@ namespace LayoutEditor.CustomXML
                 this.UpdateSize();
             }
         }
+
         public void Hide()
         {
             if (this.IsEnabled)
@@ -189,11 +199,13 @@ namespace LayoutEditor.CustomXML
                 this.IsEnabled = false;
             }
         }
+
         public void ChangeScale(object sender, double e)
         {
             this.Scale = e;
-            if (this.IsEnabled && this.BindingPair.Count > 0) this.UpdateSize();
+            this.UpdateSize(true);
         }
+
         public new void MouseMove(Point mouse_start, MouseEventArgs e, bool mouse_down)
         {
             if (this.IsScalingSelf)
@@ -272,7 +284,8 @@ namespace LayoutEditor.CustomXML
                     });
                 });
 
-                this.SetSize(NewSize);
+                if (this.SetSize(NewSize))
+                    this.DisplayItemChanged.Invoke(null, EventArgs.Empty);
             }
             else if (BindingPair.Count > 0 && mouse_down)
             {
@@ -284,10 +297,22 @@ namespace LayoutEditor.CustomXML
                         Left = Diff.X / this.Scale,
                         Top = Diff.Y / this.Scale
                     });
-                    this.AddMarginLT(Diff.X, Diff.Y);
+                    if (this.AddMarginLT(Diff.X, Diff.Y))
+                        this.DisplayItemChanged.Invoke(null, EventArgs.Empty);
                 });
             }
         }
+
+        public void MoveByPixels(Point diff)
+        {
+            this.UpdatePairs(new()
+            {
+                Left = diff.X / this.Scale,
+                Top = diff.Y / this.Scale
+            });
+            this.AddMarginLT(diff.X, diff.Y);
+        }
+
         private void UpdatePairs(ActualSize diff)
         {
             this.BindingPair.ForEach(dom =>
@@ -295,11 +320,13 @@ namespace LayoutEditor.CustomXML
                 dom.UpdateSizeByPixels(diff);
             });
         }
+
         public new void MouseUp(object sender, MouseButtonEventArgs e)
         {
             // Set scaling boolean
             this.IsScalingSelf = false;
         }
+
         private new void MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && e.MiddleButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed)

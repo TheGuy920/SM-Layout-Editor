@@ -1,0 +1,68 @@
+{
+	"resolutionList": [
+		{
+			"w": 1280,
+			"h": 720,
+			"folder": "$GAME_DATA/Gui/Resolutions/1280x720"
+			
+		},
+		{
+			"w": 1920,
+			"h": 1080,
+			"folder": "$GAME_DATA/Gui/Resolutions/1920x1080"
+		},
+		{
+			"w": 2560,
+			"h": 1440,
+			"folder": "$GAME_DATA/Gui/Resolutions/2560x1440"
+		},
+		{
+			"w": 3840,
+			"h": 2160,
+			"folder": "$GAME_DATA/Gui/Resolutions/3840x2160"
+		}
+	],
+	"resources": [
+		"Effects.xml",
+		"Skin.xml",
+		"BlurrySkin.xml",
+		"Keybinds/KeybindsSkin.xml",
+		"SkinLocalized.xml",
+		"Templates.xml",
+		"BlurryBackgrounds.xml",
+		"ButtonsLarge.xml",
+		"Quest/QuestpinsSkin.xml",
+		"HideoutTradeItemMap.xml",
+		"ContainerSlots.xml",
+		"IconsLarge.xml",
+		"BG/BG.xml",
+		"PopUp/PopUp.xml",
+		"Seat/SeatLevels.xml",
+		"Seat/SteerAngles.xml",
+		"Inventory/Inventory.xml",
+		"Inventory/ItemTypeMap.xml",
+		"ToolTip/ToolTip.xml",
+		"Tutorial/TutorialBgBottom.xml",
+		"Tutorial/TutorialBgMain.xml",
+		"Beacon/BeaconIconMap.xml",
+		"Beacon/BeaconSkin.xml",
+		"ChallengeMode/VictoryBanner.xml",
+		"ChallengeMode/OutfitUnlock.xml",
+		"Craftbot/CraftbotQueue.xml",
+		"Craftbot/Craftbot.xml",
+		"SequenceController/SequenceControllerRotation.xml",
+		"LightController/IconsLampSpritesheet.xml",
+		"Dressbot/DressbotSkins.xml",
+		"Lift/Lift.xml",
+		"Lift/Lift_Templates.xml",
+		"Logbook/Logbook.xml",
+		"Logbook/LogbookItemMap.xml",
+		"Logbook/Logbook_Templates.xml",
+		"Logbook/WaypointIconMap.xml",
+		"LogicGate/LogicGateDescriptionDots.xml",
+		"LogicGate/LogicGateDescriptionLamps.xml",
+		"LogicGate/LogicGateIcons.xml",
+		"LogicGate/LogicGateSkin.xml",
+		"MainMenu/MainMenu.xml"
+	]
+}

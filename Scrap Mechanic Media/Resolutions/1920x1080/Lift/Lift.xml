@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceSkin" name="BackgroundLiftImport" size="1641 180" texture="BGLiftLoad@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 1641 108" align="HStretch Top">
+			<State name="normal" offset="0 0 1641 108" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 120 1641 60" align="HStretch Bottom">
+			<State name="normal" offset="0 120 1641 60" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 108 1641 12" align="Stretch">
+			<State name="normal" offset="0 108 1641 12" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="BackgroundPanel" size="60 60" texture="BGLiftBlue@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 15 15" align="Left Top">
+			<State name="normal" offset="0 0 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="15 0 30 15" align="HStretch Top">
+			<State name="normal" offset="15 0 30 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="45 0 15 15" align="Right Top">
+			<State name="normal" offset="45 0 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="45 15 15 30" align="Right VStretch">
+			<State name="normal" offset="45 15 15 30" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="45 45 15 15" align="Right Bottom">
+			<State name="normal" offset="45 45 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="15 45 30 15" align="HStretch Bottom">
+			<State name="normal" offset="15 45 30 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 45 15 15" align="Left Bottom">
+			<State name="normal" offset="0 45 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 15 15 30" align="Left VStretch">
+			<State name="normal" offset="0 15 15 30" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="15 15 30 30" align="Stretch">
+			<State name="normal" offset="15 15 30 30" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="LiftTab" size="75 45" texture="LiftTabs@1080.png">
+		<BasisSkin type="SubSkin" offset="51 0 24 45" align="Right VStretch">
+			<State name="disabled" offset="51 6 24 45" />
+			<State name="normal" offset="51 6 24 45" />
+			<State name="highlighted" offset="51 57 24 45" />
+			<State name="pushed" offset="51 108 24 45" />
+			<State name="disabled_checked" offset="51 108 24 45" />
+			<State name="normal_checked" offset="51 108 24 45" />
+			<State name="highlighted_checked" offset="51 108 24 45" />
+			<State name="pushed_checked" offset="51 108 24 45" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 0 24 45" align="Left VStretch">
+			<State name="disabled" offset="0 6 24 45" />
+			<State name="normal" offset="0 6 24 45" />
+			<State name="highlighted" offset="0 57 24 45" />
+			<State name="pushed" offset="0 108 24 45" />
+			<State name="disabled_checked" offset="0 108 24 45" />
+			<State name="normal_checked" offset="0 108 24 45" />
+			<State name="highlighted_checked" offset="0 108 24 45" />
+			<State name="pushed_checked" offset="0 108 24 45" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="24 0 27 45" align="Stretch">
+			<State name="disabled" offset="24 6 27 45" />
+			<State name="normal" offset="24 6 27 45" />
+			<State name="highlighted" offset="24 57 27 45" />
+			<State name="pushed" offset="24 108 27 45" />
+			<State name="disabled_checked" offset="24 108 27 45" />
+			<State name="normal_checked" offset="24 108 27 45" />
+			<State name="highlighted_checked" offset="24 108 27 45" />
+			<State name="pushed_checked" offset="24 108 27 45" />
+		</BasisSkin>
+		<BasisSkin type="SimpleText" offset="24 0 27 45" align="Stretch">
+			<State name="disabled" colour="0.695313 0.695313 0.695313" shift="0" />
+			<State name="normal" colour="0.695313 0.695313 0.695313" shift="0" />
+			<State name="highlighted" colour="0.695313 0.695313 0.695313" shift="0" />
+			<State name="pushed" colour="0.996094 0.8125 0.273438" shift="0" />
+			<State name="disabled_checked" colour="0.996094 0.8125 0.273438" shift="0" />
+			<State name="normal_checked" colour="0.996094 0.8125 0.273438" shift="0" />
+			<State name="highlighted_checked" colour="0.996094 0.8125 0.273438" shift="0" />
+			<State name="pushed_checked" colour="0.996094 0.8125 0.273438" shift="0" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="LiftGrid" size="639 621" texture="BGLiftGrid@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 639 621" align="Stretch">
+			<State name="normal" offset="0 0 639 621" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="LiftInput" size="45 45" texture="BGLiftInput@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 15 15" align="Left Top">
+			<State name="normal" offset="0 0 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="15 0 15 15" align="HStretch Top">
+			<State name="normal" offset="15 0 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="30 0 15 15" align="Right Top">
+			<State name="normal" offset="30 0 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="30 15 15 15" align="Right VStretch">
+			<State name="normal" offset="30 15 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="30 30 15 15" align="Right Bottom">
+			<State name="normal" offset="30 30 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="15 30 15 15" align="HStretch Bottom">
+			<State name="normal" offset="15 30 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 30 15 15" align="Left Bottom">
+			<State name="normal" offset="0 30 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 15 15 15" align="Left VStretch">
+			<State name="normal" offset="0 15 15 15" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="15 15 15 15" align="Stretch">
+			<State name="normal" offset="15 15 15 15" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="BackgroundLiftExport" size="1191 180" texture="BGLiftSave@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 1191 108" align="HStretch Top">
+			<State name="normal" offset="0 0 1191 108" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 120 1191 60" align="HStretch Bottom">
+			<State name="normal" offset="0 120 1191 60" />
+		</BasisSkin>
+		<BasisSkin type="SubSkin" offset="0 108 1191 12" align="Stretch">
+			<State name="normal" offset="0 108 1191 12" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="LiftCameraButton" size="45 45" texture="ButtonLiftPhoto@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 45 45" align="Stretch">
+			<State name="normal" offset="6 0 45 45" />
+			<State name="highlighted" offset="57 0 45 45" />
+			<State name="pushed" offset="108 0 45 45" />
+		</BasisSkin>
+	</Resource>
+	<Resource type="ResourceSkin" name="LiftSteamButton" size="45 45" texture="ButtonLiftSteam@1080.png">
+		<BasisSkin type="SubSkin" offset="0 0 45 45" align="Stretch">
+			<State name="normal" offset="6 0 45 45" />
+			<State name="highlighted" offset="57 0 45 45" />
+			<State name="pushed" offset="108 0 45 45" />
+		</BasisSkin>
+	</Resource>
+</MyGUI>

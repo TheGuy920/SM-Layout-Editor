@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64</Platforms>
+    <StartupObject>LayoutEditor.App</StartupObject>
+	<LangVersion>preview</LangVersion>
+	<TargetFramework>net7.0-windows</TargetFramework>
+	<EnablePreviewFeatures>True</EnablePreviewFeatures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="packages\**" />
+    <EmbeddedResource Remove="packages\**" />
+    <None Remove="packages\**" />
+    <Page Remove="packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Json\MyGUI_Trace.json" />
+    <None Remove="Library.json" />
+    <None Remove="CustomXML\XmlRendering\HightlightingRules.xshd" />
+    <None Remove="Scrap Mechanic Media\Fonts\ManualFontDataInput.xml" />
+    <None Remove="Scrap Mechanic Media\Language\English\Fonts.xml" />
+    <None Remove="Scrap Mechanic Media\Language\English\InterfaceTags.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scrap Mechanic Media\Language\English\.vscode\settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Json\MyGUI_Trace.json" />
+    <EmbeddedResource Include="Library.json" />
+    <EmbeddedResource Include="Scrap Mechanic Media\Fonts\ManualFontDataInput.xml" />
+    <EmbeddedResource Include="Scrap Mechanic Media\Language\English\Fonts.xml" />
+    <EmbeddedResource Include="Scrap Mechanic Media\Language\English\InterfaceTags.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdonisUI" Version="1.17.1" />
+    <PackageReference Include="DiffPlex" Version="1.7.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="NJsonSchema" Version="10.8.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CustomXML\XmlRendering\HightlightingRules.xshd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="E:\Documents\GitHub\AvalonEdit\ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Windows\MainWindow.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>
