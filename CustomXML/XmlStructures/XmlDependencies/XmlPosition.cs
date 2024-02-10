@@ -41,7 +41,7 @@ namespace LayoutEditor.CustomXML
         {
             List<ColumnDefinition> columns = [];
             
-            double Right =  Math.Max(1f - (this.Left + this.Width), 0);
+            double Right =  Math.Max(1f - (this.Left.Min(0) + this.Width), 0);
             columns.Add(new ColumnDefinition() { Width = new GridLength(this.Left.Min(0), GridUnitType.Star) });
             columns.Add(new ColumnDefinition() { Width = new GridLength(this.Width, GridUnitType.Star) });
             columns.Add(new ColumnDefinition() { Width = new GridLength(Right, GridUnitType.Star) });
@@ -53,7 +53,7 @@ namespace LayoutEditor.CustomXML
         {
             List<RowDefinition> rows = [];
             
-            double Bottom = Math.Max(1f - (this.Top + this.Height), 0);
+            double Bottom = Math.Max(1f - (this.Top.Min(0) + this.Height), 0);
             rows.Add(new RowDefinition() { Height = new GridLength(this.Top.Min(0), GridUnitType.Star) });
             rows.Add(new RowDefinition() { Height = new GridLength(this.Height, GridUnitType.Star) });
             rows.Add(new RowDefinition() { Height = new GridLength(Bottom, GridUnitType.Star) });

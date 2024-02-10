@@ -20,7 +20,7 @@ using System.Xml.Linq;
 namespace CustomExtensions
 {
     // Extension methods must be defined in a static class.
-    public static class MarginExtensions
+    internal static class AllExtensions
     {
         #region BUTTONS
 
@@ -279,6 +279,28 @@ namespace CustomExtensions
             a.Top += b.Top;
             a.Right += b.Right;
             a.Bottom += b.Bottom;
+            return a;
+        }
+        
+        /// <summary>
+        /// This sets the margin Left value
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="L"></param>
+        public static Thickness SetMarginL(this Thickness a, double L)
+        {
+            a.Left = L;
+            return a;
+        }
+        
+        /// <summary>
+        /// This sets the margin Top value
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="T"></param>
+        public static Thickness SetMarginT(this Thickness a, double T)
+        {
+            a.Top = T;
             return a;
         }
 

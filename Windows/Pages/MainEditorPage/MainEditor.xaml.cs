@@ -504,8 +504,8 @@ namespace LayoutEditor.Windows.Pages
             this.XmlDocumentHandler.ChangeViewMode((XmlViewMode)Int32.Parse(button.Tag.ToString()));
         }
         private bool IsInViewBox = false;
-        readonly Dictionary<Key, KeyStates> KeyStates = new();
-        readonly Dictionary<MouseButton, MouseButtonState> MouseStates = new();
+        readonly Dictionary<Key, KeyStates> KeyStates = [];
+        readonly Dictionary<MouseButton, MouseButtonState> MouseStates = [];
         private void ViewBoxMouseEnter(object sender, MouseEventArgs e) => this.IsInViewBox = true;
         private void ViewBoxMouseLeave(object sender, MouseEventArgs e) => this.IsInViewBox = false;
         private void WindowMouseEnter(object sender, MouseEventArgs e)

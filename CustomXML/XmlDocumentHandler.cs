@@ -32,7 +32,7 @@ namespace LayoutEditor.CustomXML
         private double Scale = 1;
         private double GridSize = 1;
         private Point? MouseStart;
-        private XmlViewMode CurrentViewMode = XmlViewMode.Wire;
+        private XmlViewMode CurrentViewMode = XmlViewMode.Color;
         private readonly Task LoadGuiThread;
         private readonly float Version = 1.0f;
         private readonly XmlTextHandler TextHandler;
@@ -307,6 +307,8 @@ namespace LayoutEditor.CustomXML
             {
                 ((this.RootGrid.Parent as Canvas).Parent as Grid).Children.Add(this.Overlay);
             });
+
+            this.ChangeViewMode(this.CurrentViewMode);
 
             this.VisualsChanged();
         }

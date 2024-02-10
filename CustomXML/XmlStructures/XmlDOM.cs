@@ -1,11 +1,14 @@
 ﻿using CustomExtensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -41,7 +44,7 @@ namespace LayoutEditor.CustomXML
         private int Depth = 0;
 
         private readonly Dictionary<Guid, IXmlDOM> Document;
-        
+
         /// <summary>
         /// Creates a new DOM element of the XmlDOM structure
         /// </summary>
@@ -287,7 +290,7 @@ namespace LayoutEditor.CustomXML
         public void LoadImage(string name)
         {
             FileInfo imageFile = new DirectoryInfo(MainWindow.Get.GamePath).GetFiles(Path.GetFileName(name), SearchOption.AllDirectories).FirstOrDefault();
-            
+
             if (imageFile != default && imageFile is not null)
             {
                 using var image = SixLabors.ImageSharp.Image.Load(imageFile.FullName);
@@ -348,6 +351,12 @@ namespace LayoutEditor.CustomXML
                 this.ColumnDefinitions.Add(i);
             foreach (var i in this.Position.GetHeight())
                 this.RowDefinitions.Add(i);
+
+            if (this.Position.Left < 0)
+                this.GridActor.SetMarginL(this.Position.Left);
+            if (this.Position.Top < 0)
+                this.GridActor.SetMarginT(this.Position.Top);
+
             // set thing
             //if (!this.Type.Equals(XmlType.TextBox)) // !this.Type.Equals(XmlType.Button)
             //    this.GridActor.Background = BrushDepth[depth % BrushDepth.Length];
@@ -360,9 +369,11 @@ namespace LayoutEditor.CustomXML
             this.SelfOutline.MouseDown += MouseDown_;
             if (this.Type.Equals(XmlType.TextBox))
                 this.SelfOutline.BorderBrush = Brushes.Transparent;
+            
             this.GridActor.Children.Add(this.SelfOutline);
             // Create Child Grid Container
             Grid ChildrenContainer = new();
+            
             // Column and row (span)            
             Grid.SetColumn(ChildrenContainer, 0);
             Grid.SetRow(ChildrenContainer, 0);
@@ -371,6 +382,7 @@ namespace LayoutEditor.CustomXML
             // Add children to child container
             foreach (Guid child in this.ChildrenId)
                 ChildrenContainer.Children.Add(this.Document[child].LoadGui(depth + 1));
+            
             // Add/Set Children
             this.GridActor.Children.Add(ChildrenContainer);
             this.Children.Add(this.GridActor);
@@ -384,7 +396,7 @@ namespace LayoutEditor.CustomXML
 
         private static readonly Brush[] BrushWire = [Brushes.Transparent];
         private static readonly Brush[][] ViewMode = [BrushWire, BrushDepth, BrushWire];
-        
+
         void IXmlDOM.ChangeViewMode(XmlViewMode viewMode)
         {
             if (this.Type.Equals(XmlType.TextBox))
@@ -435,26 +447,33 @@ namespace LayoutEditor.CustomXML
         {
             Grid Parent = this.Document[this.ParentId.Value].GridActor;
             Grid Actor = this.GridActor;
-            
+
             ActualSize TargetSize = Actor.GetActualSize(this.GetDisplayLT()) + diff;
             Point Divisor = new(Parent.ActualWidth, Parent.ActualHeight);
             var tpos = TargetSize.Divide(Divisor);
             this.Position = new(tpos);
-            
+
+            Debug.WriteLine($"TargetSize: {TargetSize} | Divisor: {Divisor} | Position: {this.Position}");
+
             // clear
             this.ColumnDefinitions.Clear();
             this.RowDefinitions.Clear();
-            
+
             // Set Width/Height percentages
             foreach (var i in this.Position.GetWidth())
                 this.ColumnDefinitions.Add(i);
             foreach (var i in this.Position.GetHeight())
                 this.RowDefinitions.Add(i);
+
+            if (this.Position.Left < 0)
+                this.SetMarginL(this.Position.Left);
+            if (this.Position.Top < 0)
+                this.SetMarginT(this.Position.Top);
         }
 
         private Point GetDisplayLT() => this.GridActor.TranslatePoint(new(0, 0), this);
-        
-        public Grid GridActor { get; private set; } = new ()
+
+        public Grid GridActor { get; private set; } = new()
         {
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch
@@ -524,6 +543,20 @@ namespace LayoutEditor.CustomXML
             return null;
         }
 
+        private bool SetPropertyItem(string key, object value)
+        {
+            object? keyFound = this.GetPropertyItem(key);
+            if (keyFound is null)
+                return false;
+
+            if (this.Properties.TryGetValue(key, out var _))
+                this.Properties[key] = value.ToStringLowerInvariant();
+            else
+                this.Attributes[key] = ((string Name, string Value))value;
+
+            return true;
+        }
+
         public IEnumerable<FrameworkElement> BuildPropertiesItem()
         {
             StackPanel main = new()
@@ -532,12 +565,12 @@ namespace LayoutEditor.CustomXML
                 Tag = this.Guid.ToString()
             };
 
-            StackPanel s = new()
+            StackPanel titleStackPanel = new()
             {
                 Orientation = Orientation.Horizontal
             };
 
-            s.Children.Add(new TextBlock()
+            titleStackPanel.Children.Add(new TextBlock()
             {
                 Foreground = Brushes.White,
                 Margin = new Thickness(5, 2, 5, 2),
@@ -545,7 +578,7 @@ namespace LayoutEditor.CustomXML
                 Text = this.Type.ToString()
             });
 
-            yield return s;
+            yield return titleStackPanel;
 
             Dictionary<string, string[]> AttributeList = [];
             foreach (var item in json["Widget"][Type.ToString()]["Attributes"].Cast<JProperty>())
@@ -554,173 +587,158 @@ namespace LayoutEditor.CustomXML
                 AttributeList.Add(item.Name, [.. content]);
             }
 
-            foreach (var item in AttributeList)
+            foreach (var (attrName, attrValue) in AttributeList)
             {
-                if (item.Key.Contains("Colour") && AttributeList.ContainsKey("Color"))
+                if (attrName.Contains("Colour") && AttributeList.ContainsKey("Color"))
                     continue;
 
-                if (!item.Key.Equals("type") && !item.Key.Equals("position"))
+                DockPanel Attribute = new();
+
+                if (attrName.Equals("type") || attrName.Equals("position"))
                 {
-                    object cValue = this.GetPropertyItem(item.Key);
-                    bool isChecked = cValue != null;
-                    if (!isChecked) cValue = item.Value;
-
-                    DockPanel Attribute = new();
-
-                    int w = 125;
-                    string k = item.Key;
-
-                    if (!item.Key.Equals("position_real"))
-                    {
-                        CheckBox _cb = new() { IsChecked = isChecked, Margin = new Thickness(5, 2, 5, 2) };
-                        _cb.Checked += EnableProperty;
-                        _cb.Unchecked += DisableProperty;
-                        Attribute.Children.Add(_cb);
-                        w -= 25;
-
-                    }
-                    else { k = "Position Real"; }
-
-                    Attribute.Children.Add(new TextBlock()
-                    {
-                        Foreground = Brushes.White,
-                        Width = w,
-                        Margin = new Thickness(5, 2, 5, 2),
-                        TextWrapping = TextWrapping.Wrap,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Text = k
-                    });
-
-                    switch (item.Key.ToLower())
-                    {
-                        case "position":
-                        case "position_real":
-                            string[] parts = this.Position.ToString().Split(' ');
-                            var stck = new StackPanel() { Orientation = Orientation.Vertical };
-                            foreach (var part in parts)
-                                stck.Children.Add(this.NumberInputBuilder([float.Parse(part)], -100, 100, 1));
-                            Attribute.Children.Add(stck);
-                            break;
-                        case "name":
-                        default:
-                            if (item.Value.Length > 1 && !item.Key.Equals("name") || item.Key.Equals("skin"))
-                            {
-                                ComboBox cb = new()
-                                {
-                                    Foreground = Brushes.Black,
-                                    Margin = new Thickness(5, 2, 5, 2)
-                                };
-                                var ary = item.Value;
-                                int index = -1;
-                                int cind = 0;
-                                var clist = this.Attributes.Values.Select(p => p.Value);
-                                foreach (string value in ary)
-                                {
-                                    if (clist.Contains(value))
-                                        index = cind;
-                                    cb.Items.Add(new ComboBoxItem() { Content = value });
-                                    cind++;
-                                }
-                                if (isChecked && index < 0 && int.TryParse(cValue.ToString(), out index)) { }
-
-                                cb.SelectedIndex = index;
-
-                                cb.SelectionChanged += SelectionChanged;
-                                Attribute.Children.Add(cb);
-                            }
-                            else
-                            {
-                                if (!isChecked)
-                                    cValue = "";
-                                var tb = new TextBox()
-                                {
-                                    Foreground = Brushes.Black,
-                                    Margin = new Thickness(5, 2, 5, 2),
-                                    Text = this.Attributes.TryGetValue(item.Key, out var n) ? n.Value : cValue.ToString()
-                                };
-                                tb.TextChanged += TextChanged;
-                                Attribute.Children.Add(tb);
-                            }
-                            break;
-                    }
-
-                    if (item.Key.Equals("position_real"))
-                    {
-                        //main.Children.Insert(1, Attribute);
-                    }
-                    else
-                    {
-                        //main.Children.Add(Attribute);
-                    }
-
                     yield return Attribute;
-                }
-            }
-
-            if ((json["Widget"][this.Type.ToString()] as JObject).ContainsKey("Property"))
-            {
-                Dictionary<string, object> PropertyList = new();
-                foreach (var item in json["Widget"][Type.ToString()]["Property"].Cast<JProperty>())
-                {
-                    string str = "";
-                    if (item.Value.Type == JTokenType.String)
-                    {
-                        str = item.Value.ToString();
-                        PropertyList.Add(item.Name, str);
-                    }
-                    else
-                    {
-                        JArray jry = item.Value as JArray;
-                        if (jry.Count == 1 || jry.Count == 2 && (
-                            jry[0].ToString().ToLower().Contains("int") ||
-                            jry[0].ToString().ToLower().Contains("float")
-                            ) && (
-                            jry[1].ToString().ToLower().Contains("int") ||
-                            jry[1].ToString().ToLower().Contains("float")
-                            ))
-                        {
-                            string sk = jry[0].ToString().ToLower().Trim();
-                            if (jry.Count > 1 && jry[1].ToString().ToLower().Trim().Length > sk.Length)
-                                sk = jry[1].ToString().ToLower().Trim();
-
-                            switch (sk)
-                            {
-                                case "float":
-                                    PropertyList.Add(item.Name, 0f);
-                                    break;
-                                case "float, float, float, float":
-                                    PropertyList.Add(item.Name, new float[4]);
-                                    break;
-                                case "float, float, float":
-                                    PropertyList.Add(item.Name, new float[3]);
-                                    break;
-                                case "bool":
-                                    PropertyList.Add(item.Name, true);
-                                    break;
-                                default:
-                                    PropertyList.Add(item.Name, string.Empty);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            PropertyList.Add(item.Name, string.Empty);
-                        }
-                    }
+                    continue;
                 }
 
-                foreach (var item in PropertyList)
+                object defaultAttrValue = this.GetPropertyItem(attrName);
+                bool isChecked = defaultAttrValue != null;
+                defaultAttrValue = isChecked ? defaultAttrValue : attrName;
+
+                int defaultWidth = 125;
+                string friendlyName = attrName;
+
+                if (!attrName.Equals("position_real"))
                 {
-                    Debug.WriteLine(item.Key);
-                    if (item.Key.Contains("Colour") && PropertyList.ContainsKey("Color"))
-                        continue;
-                    object cValue = this.GetPropertyItem(item.Key);
-                    bool isChecked = cValue != null;
-                    if (!isChecked) cValue = item.Value;
-                    DockPanel Attribute = new();
                     CheckBox _cb = new() { IsChecked = isChecked, Margin = new Thickness(5, 2, 5, 2) };
                     _cb.Checked += EnableProperty;
                     _cb.Unchecked += DisableProperty;
+                    Attribute.Children.Add(_cb);
+                    defaultWidth -= 25;
+                }
+                else { friendlyName = "Position Real"; }
+
+                Attribute.Children.Add(new TextBlock()
+                {
+                    Foreground = Brushes.White,
+                    Width = defaultWidth,
+                    Margin = new Thickness(5, 2, 5, 2),
+                    TextWrapping = TextWrapping.Wrap,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Text = friendlyName
+                });
+
+                (FrameworkElement AttrPanel, Action<FrameworkElement> Hook) Container = attrName.ToLowerInvariant() switch
+                {
+                    "position" or "position_real" => (new StackPanel() { Orientation = Orientation.Vertical }, (ctrl) =>
+                        Array.ForEach(this.Position.ToString().Split(' '), p => (ctrl as StackPanel).Children.Add(
+                            this.NumberInputBuilder([float.Parse(p)], -100, 100, 1)))
+                    ),
+                    "name" => (new TextBox()
+                    {
+                        Foreground = Brushes.Black,
+                        Margin = new Thickness(5, 2, 5, 2),
+                        Text = this.Attributes.TryGetValue(attrName, out var n) ? n.Value : (isChecked ? defaultAttrValue.ToString() : string.Empty)
+                    }, (ctrl) => (ctrl as TextBox).TextChanged += TextChanged),
+                    "skin" or _ => (new ComboBox()
+                    {
+                        Foreground = Brushes.Black,
+                        Margin = new Thickness(5, 2, 5, 2)
+                    }, (ctrl) =>
+                    {
+                        var cb = ctrl as ComboBox;
+                        var clist = this.Attributes.Values.Select(p => p.Value);
+                        int index = Array.LastIndexOf(attrValue, attrValue.LastOrDefault(clist.Contains, null));
+                        Array.ForEach(attrValue, v => cb.Items.Add(new ComboBoxItem() { Content = v }));
+
+                        if (isChecked && index < 0)
+                            _ = int.TryParse(defaultAttrValue.ToString(), out index);
+
+                        cb.SelectedIndex = index;
+                        cb.SelectionChanged += SelectionChanged;
+                    })
+                };
+
+                if (Container.AttrPanel is not null)
+                {
+                    Container.Hook?.Invoke(Container.AttrPanel);
+                    Attribute.Children.Add(Container.AttrPanel);
+                }
+
+                // if (attrName.Equals("position_real"))
+                //    main.Children.Insert(1, Attribute);
+                // else
+                //    main.Children.Add(Attribute);
+
+                yield return Attribute;
+            }
+
+            if (json["Widget"][this.Type.ToString()] is JObject jType && jType.ContainsKey("Property"))
+            {
+                Dictionary<string, object> PropertyList = [];
+
+                foreach (var widgetJProp in json["Widget"][Type.ToString()]["Property"].Cast<JProperty>())
+                {
+                    if (widgetJProp.Value.Type == JTokenType.String)
+                    {
+                        PropertyList.Add(widgetJProp.Name, widgetJProp.Value.ToString());
+                        continue;
+                    }
+
+                    if (widgetJProp.Value is not JArray jtypeArray)
+                        continue;
+
+                    string typeIndex1 = jtypeArray[0].ToStringLowerInvariant().Trim();
+                    string typeIndex2 = jtypeArray.Count > 1 ? jtypeArray[1].ToStringLowerInvariant().Trim() : string.Empty;
+
+                    bool typeIndexIsNum = typeIndex1.Contains("int", "float") && typeIndex2.Contains("int", "float");
+                    if (jtypeArray.Count == 0 || jtypeArray.Count > 2 || !typeIndexIsNum)
+                    {
+                        PropertyList.Add(widgetJProp.Name, string.Empty);
+                        continue;
+                    }
+
+                    string dtype = typeIndex1;
+                    if (jtypeArray.Count > 1 && typeIndex2.Length > dtype.Length)
+                        dtype = typeIndex2;
+
+                    switch (dtype)
+                    {
+                        case "float":
+                            PropertyList.Add(widgetJProp.Name, 0f);
+                            break;
+                        case "float, float, float, float":
+                            PropertyList.Add(widgetJProp.Name, new float[4]);
+                            break;
+                        case "float, float, float":
+                            PropertyList.Add(widgetJProp.Name, new float[3]);
+                            break;
+                        case "bool":
+                            PropertyList.Add(widgetJProp.Name, true);
+                            break;
+                        default:
+                            PropertyList.Add(widgetJProp.Name, string.Empty);
+                            break;
+                    }
+                    
+                }
+
+                foreach (var (propName, propValue) in PropertyList)
+                {
+                    DockPanel Attribute = new();
+                    if (propName.Contains("Colour") && PropertyList.ContainsKey("Color"))
+                    {
+                        yield return Attribute;
+                        continue;
+                    }
+
+                    object propDefaultValue = this.GetPropertyItem(propName);
+                    bool isChecked = propDefaultValue != null;
+                    propDefaultValue = isChecked ? propDefaultValue : propValue;
+
+                    CheckBox _cb = new() { IsChecked = isChecked, Margin = new Thickness(5, 2, 5, 2) };
+                    _cb.Checked += EnableProperty;
+                    _cb.Unchecked += DisableProperty;
+
                     Attribute.Children.Add(_cb);
                     Attribute.Children.Add(new TextBlock()
                     {
@@ -729,92 +747,55 @@ namespace LayoutEditor.CustomXML
                         Width = 100,
                         TextWrapping = TextWrapping.Wrap,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Text = item.Key
+                        Text = propName
                     });
-                    if (item.Value is string)
-                    {
 
-                        var tb = new TextBox()
+                    float[] parsedColors = propValue is float[] pvFLarry ? pvFLarry : propValue is float pvFL ? [pvFL] : [];
+                    byte[] colors = isChecked ? [.. parsedColors.Select(f => f * byte.MaxValue).Cast<byte>()] : [255, 255, 255];
+
+                    // populates the attribute panel with the correct input type
+                    (FrameworkElement AttrPanel, Action<FrameworkElement> Hook) Container = propValue switch
+                    {
+                        string => (new TextBox()
                         {
                             Foreground = Brushes.Black,
                             Margin = new Thickness(5, 2, 5, 2),
                             HorizontalAlignment = HorizontalAlignment.Stretch,
-                            Text = cValue.ToString()
-                        };
-                        tb.TextChanged += TextChanged;
-                        Attribute.Children.Add(tb);
-                    }
-                    else if (item.Value is bool)
-                    {
-                        ComboBox cb = new()
+                            Text = propDefaultValue.ToString()
+                        }, tb => (tb as TextBox).TextChanged += TextChanged),
+                        bool selectedIndex => (new ComboBox()
                         {
                             Foreground = Brushes.Black,
                             Margin = new Thickness(5, 2, 5, 2),
-                            HorizontalAlignment = HorizontalAlignment.Stretch
-                        };
-                        cb.Items.Add(new ComboBoxItem() { Content = "true" });
-                        cb.Items.Add(new ComboBoxItem() { Content = "false" });
-
-                        cb.SelectedIndex = -1;
-
-                        if (isChecked && cValue.ToString().ToLower().Equals("true"))
-                        {
-                            cb.SelectedIndex = 0;
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            SelectedIndex = selectedIndex ? 0 : 1
+                        }, ctrl => {
+                            ComboBox cb = ctrl as ComboBox;
+                            cb.Items.Add(new ComboBoxItem() { Content = "true" });
+                            cb.Items.Add(new ComboBoxItem() { Content = "false" });
+                            cb.SelectionChanged += SelectionChanged;
                         }
-                        else if (cValue.ToString().ToLower().Equals("false"))
+                        ),
+                        float or float[] => propName.ToLowerInvariant() switch
                         {
-                            cb.SelectedIndex = 1;
-                        }
-
-                        cb.SelectionChanged += SelectionChanged;
-                        Attribute.Children.Add(cb);
-                    }
-                    else if (item.Value is float or float[])
-                    {
-                        string z = item.Key.ToLower();
-                        if (z.Equals("color") || z.Equals("colour") ||
-                            z.Equals("textcolour") || z.Equals("textcolor") ||
-                            z.Equals("textshadowcolour") || z.Equals("textshadowcolor"))
-                        {
-                            byte[] colors = new byte[3] { 255, 255, 255 };
-                            if (isChecked)
-                            {
-                                colors = Array.ConvertAll(cValue.ToString().Split(" "), s =>
-                                {
-                                    return (byte)(float.Parse(s) * 255);
-                                });
-                            }
-
-                            ColorPicker cp = new()
+                            "color" or "colour" or "textcolour" or "textcolor" or "textshadowcolour" or "textshadowcolor" => (new ColorPicker()
                             {
                                 Foreground = Brushes.Black,
                                 SelectedColor = Color.FromRgb(colors[0], colors[1], colors[2]),
                                 Margin = new Thickness(5, 2, 5, 2)
-                            };
-                            cp.SelectedColorChanged += SelectedColorChanged;
-                            Attribute.Children.Add(cp);
-                        }
-                        else
-                        {
-                            float min = 0;
-                            float max = 999999999;
+                            }, ctrl => (ctrl as ColorPicker).SelectedColorChanged += SelectedColorChanged),
+                            "alpha" or _ => (NumberInputBuilder(parsedColors, 0, 999999999, parsedColors.Length), null)
+                        },
+                        _ => (null, null)
+                    };
 
-                            if (item.Key.ToLower().Equals("alpha"))
-                                continue;
-
-                            float[] kpls = Array.Empty<float>();
-
-                            if (item.Value as float? == null)
-                                kpls = Array.ConvertAll(cValue.ToString().Split(" "), s => float.Parse(s));
-                            else
-                                kpls = new[] { float.Parse(cValue.ToString()) };
-
-                            Attribute.Children.Add(NumberInputBuilder(kpls, min, max, kpls.Length));
-                        }
+                    if (Container.AttrPanel is not null)
+                    {
+                        Container.Hook?.Invoke(Container.AttrPanel);
+                        Attribute.Children.Add(Container.AttrPanel);
                     }
 
                     yield return Attribute;
-                    //main.Children.Add(Attribute);
                 }
             }
         }
@@ -823,19 +804,19 @@ namespace LayoutEditor.CustomXML
         {
             ColorPicker cp = sender as ColorPicker;
             DockPanel propertyType = cp.Parent as DockPanel;
-            string index = (propertyType.Children[1] as TextBlock).Text;/*
-            if (properties.ContainsKey(index))
+            string index = (propertyType.Children[1] as TextBlock).Text;
+
+            if (this.GetPropertyItem(index) is not null)
             {
-                properties[index] = $"{cp.SelectedColor.Value.R / 255f} {cp.SelectedColor.Value.G / 255f} {cp.SelectedColor.Value.B / 255f}";
-                properties["Alpha"] = cp.SelectedColor.Value.A / 255f;
-                (propertyType.Children[0] as CheckBox).IsChecked = true;
+                this.SetPropertyItem(index, $"{cp.SelectedColor.Value.R / 255f} {cp.SelectedColor.Value.G / 255f} {cp.SelectedColor.Value.B / 255f}");
             }
             else
             {
-                properties.Add(index, $"{cp.SelectedColor.Value.R / 255f} {cp.SelectedColor.Value.G / 255f} {cp.SelectedColor.Value.B / 255f}");
-                properties["Alpha"] = cp.SelectedColor.Value.A / 255f;
-                (propertyType.Children[0] as CheckBox).IsChecked = true;
-            }*/
+                this.Properties.Add(index, $"{cp.SelectedColor.Value.R / 255f} {cp.SelectedColor.Value.G / 255f} {cp.SelectedColor.Value.B / 255f}");
+            }
+
+            this.SetPropertyItem("Alpha", cp.SelectedColor.Value.A / 255f);
+            (propertyType.Children[0] as CheckBox).IsChecked = true;
             //CallBackList[GUID].Invoke();
         }
 
@@ -882,18 +863,18 @@ namespace LayoutEditor.CustomXML
         {
             SingleUpDown numberBox = sender as SingleUpDown;
             StackPanel nbp = numberBox.Parent as StackPanel;
-            DockPanel propertyType = nbp.Parent as DockPanel;/*
-            string index = (propertyType.Children[1] as TextBlock).Text;
-            if (properties.ContainsKey(index))
-            {
-                properties[index] = numberBox.Value;
-                (propertyType.Children[0] as CheckBox).IsChecked = true;
-            }
+            DockPanel propertyType = nbp.Parent as DockPanel;
+            string index = (propertyType.Children[0] as TextBlock).Text;
+
+
+            if (this.GetPropertyItem(index) is not null)
+                this.SetPropertyItem(index, numberBox.Value);
             else
-            {
-                properties.Add(index, numberBox.Value);
-                (propertyType.Children[0] as CheckBox).IsChecked = true;
-            }*/
+                this.Properties.Add(index, numberBox.Value.ToStringLowerInvariant());
+            
+            if (propertyType.Children[0] is CheckBox cb)
+                cb.IsChecked = true;
+            
             //CallBackList[GUID].Invoke();
         }
 
@@ -902,53 +883,47 @@ namespace LayoutEditor.CustomXML
             Regex regex = NumberMatch();
             e.Handled = regex.IsMatch(e.Text);
         }
+
         private void TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
             DockPanel propertyType = textBox.Parent as DockPanel;
-            string index = (propertyType.Children[1] as TextBlock).Text;/*
-            if (properties.ContainsKey(index))
-            {
-                properties[index] = textBox.Text;
-                (propertyType.Children[0] as CheckBox).IsChecked = true;
-            }
+            string index = (propertyType.Children[1] as TextBlock).Text;
+            
+            if (this.GetPropertyItem(index) is not null)
+                this.SetPropertyItem(index, textBox.Text);
             else
-            {
-                properties.Add(index, textBox.Text);
-                (propertyType.Children[0] as CheckBox).IsChecked = true;
-            }*/
+                this.Properties.Add(index, textBox.Text);
+
+            (propertyType.Children[0] as CheckBox).IsChecked = true;
             //CallBackList[GUID].Invoke();
         }
+
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
             DockPanel propertyType = comboBox.Parent as DockPanel;
-            string index = (propertyType.Children[1] as TextBlock).Text;/*
-            if (properties.ContainsKey(index))
-            {
-                if (e != null)
-                {
-                    properties[index] = (e.AddedItems[0] as ComboBoxItem).Content.ToString();
-                    (propertyType.Children[0] as CheckBox).IsChecked = true;
-                }
-            }
+            string index = (propertyType.Children[1] as TextBlock).Text;
+            if (e is null)
+                return;
+
+            if (this.GetPropertyItem(index) is not null)
+                this.SetPropertyItem(index, (e.AddedItems[0] as ComboBoxItem).Content.ToString());
             else
-            {
-                if (e != null)
-                {
-                    properties.Add(index, (e.AddedItems[0] as ComboBoxItem).Content.ToString());
-                    (propertyType.Children[0] as CheckBox).IsChecked = true;
-                }
-            }*/
+                this.Properties.Add(index, (e.AddedItems[0] as ComboBoxItem).Content.ToString());
+            
+
+            (propertyType.Children[0] as CheckBox).IsChecked = true;
             //CallBackList[GUID].Invoke();
         }
+
         private void DisableProperty(object sender, RoutedEventArgs e)
         {
             CheckBox comboBox = sender as CheckBox;
             DockPanel propertyType = comboBox.Parent as DockPanel;
-            string index = (propertyType.Children[1] as TextBlock).Text;/*
-            if (properties.ContainsKey(index))
-                properties.Remove(index);*/
+            string index = (propertyType.Children[1] as TextBlock).Text;
+            //if (this.GetPropertyItem(index) is not null)
+            //    properties.Remove(index);
             //CallBackList[GUID].Invoke();
         }
 
@@ -958,29 +933,21 @@ namespace LayoutEditor.CustomXML
             DockPanel propertyType = comboBox.Parent as DockPanel;
 
             if (propertyType.Children[2] is TextBox)
-            {
                 TextChanged(propertyType.Children[2], null);
-            }
             else if (propertyType.Children[2] is ComboBox)
-            {
                 SelectionChanged(propertyType.Children[2], null);
-            }
+            
 
         }
 
         public void UpdateItemProperties(string GUID, string property, string value)
-        {/*
-
-            if (properties.ContainsKey(property))
-            {
-                properties[property] = value;
-            }
+        {
+            if (this.GetPropertyItem(property) is not null)
+                this.SetPropertyItem(property, value);
             else
-            {
-                properties.Add(property, value);
-            }
-            */
+                this.Properties.Add(property, value);
         }
+
         [GeneratedRegex("[^0-9]+")]
         private static partial Regex NumberMatch();
     }

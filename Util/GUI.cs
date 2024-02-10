@@ -161,7 +161,6 @@ namespace LayoutEditor.GUI
                     }
 
                     string dtype = typeIndex1;
-
                     if (jtypeArray.Count > 1 && typeIndex2.Length > dtype.Length)
                         dtype = typeIndex2;
 
@@ -481,10 +480,7 @@ namespace LayoutEditor.GUI
             return g;
         }
 
-        public static JObject GetXmlElementList()
-        {
-            return ElementList;
-        }
+        public static JObject GetXmlElementList() => ElementList;
 
         public static Grid GetParentUntil(Grid child, Grid stop)
         {
