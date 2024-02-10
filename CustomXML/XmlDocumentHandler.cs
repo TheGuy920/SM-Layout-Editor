@@ -27,6 +27,7 @@ namespace LayoutEditor.CustomXML
         private Guid RootXml;
         private Grid RootGrid;
         private Canvas RootCanvas;
+        private StackPanel PropertiesWindow;
         private Rectangle RootBorder;
         private double Scale = 1;
         private double GridSize = 1;
@@ -43,13 +44,14 @@ namespace LayoutEditor.CustomXML
         public event EventHandler<object> ChangesMade;
         public event EventHandler<object> ChangesSaved;
 
-        public XmlDocumentHandler(ref TextEditor textEditor, ref Canvas Workspace)
+        public XmlDocumentHandler(ref TextEditor textEditor, ref Canvas Workspace, ref StackPanel prop)
         {
             this.RootCanvas = Workspace;
+            this.PropertiesWindow = prop;
             this.BuildCanvas();
-            this.Document = new();
+            this.Document = [];
             this.Overlay = new(1);
-            this.MouseUpEvent = new();
+            this.MouseUpEvent = [];
             this.RootCanvas.LayoutUpdated += this.WorkspaceLayoutUpdated;
             this.TextHandler = new(ref textEditor, this.TextChanged);
             this.LoadGuiThread = new(this.LoadGui);
@@ -100,6 +102,7 @@ namespace LayoutEditor.CustomXML
         }
 
         private bool ScaleUpdated = false;
+
         public void ChangeScale(object sender, double e)
         {
             // set Scale
@@ -158,11 +161,20 @@ namespace LayoutEditor.CustomXML
                 // this.UpdateXML();
             }
         }
+
         private bool UpdateMouseStart = false;
+
         private void MouseDown(object sender, MouseButtonEventArgs e)
         {
             XmlDOM dom = sender as XmlDOM;
             this.MouseUpEvent.Add(dom);
+
+            if (!this.Overlay.BindingPair.Contains(dom))
+            {
+                this.PropertiesWindow.Children.Clear();
+                foreach (var item in dom.PropertyItems)
+                    this.PropertiesWindow.Children.Add(item);
+            }
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 this.Overlay.BindToDOM(dom, true);
@@ -176,7 +188,8 @@ namespace LayoutEditor.CustomXML
             this.UnSelectTextBox();
         }
 
-        bool tick = false;
+        private bool tick = false;
+
         public void MouseMove(object sender, MouseEventArgs e)
         {
             if (this.UpdateMouseStart)
@@ -204,6 +217,7 @@ namespace LayoutEditor.CustomXML
         public void DeselectAll()
         {
             this.Overlay.BindToDOM(null);
+            this.PropertiesWindow.Children.Clear();
         }
 
         private void WorkspaceLayoutUpdated(object sender, EventArgs e)
@@ -284,7 +298,7 @@ namespace LayoutEditor.CustomXML
 
             int start = new Random().Next(0, 100);
 
-            foreach (Guid child_guid in this.Document[this.RootXml]._Children)
+            foreach (Guid child_guid in this.Document[this.RootXml].ChildrenId)
                 this.RootGrid.Dispatcher.Invoke(() => {
                     this.RootGrid.Children.Add(this.Document[child_guid].LoadGui(start));
                 });
@@ -392,7 +406,7 @@ namespace LayoutEditor.CustomXML
         {
             this.CurrentViewMode = viewMode;
             var root = this.Document[this.RootXml];
-            foreach (Guid child_guid in root._Children)
+            foreach (Guid child_guid in root.ChildrenId)
                 if (this.Document.TryGetValue(child_guid, out var item))
                     this.RootGrid.Dispatcher.Invoke(item.ChangeViewMode,viewMode);
         }
@@ -409,8 +423,8 @@ namespace LayoutEditor.CustomXML
         {
             // Add all children to their parents
             foreach (IXmlDOM Item in this.Document.Values)
-                if (Item._Parent.HasValue)
-                    this.Document[Item._Parent.Value]._Children.Add(Item.Guid);
+                if (Item.ParentId.HasValue)
+                    this.Document[Item.ParentId.Value].ChildrenId.Add(Item.Guid);
         }
 
         public XmlDOM AddXmlElement(XmlTag tag, XmlType type, Guid? parent = null)

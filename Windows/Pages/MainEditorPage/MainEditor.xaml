@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="MainEditor" Loaded="PageLoaded">
-    <Grid PreviewMouseUp="EntireAppPreviewMouseUp" MouseLeave="ViewBoxMouseLeave" MouseEnter="ViewBoxMouseEnter">
+    <Grid PreviewMouseUp="EntireAppPreviewMouseUp" MouseLeave="WindowMouseLeave" MouseEnter="WindowMouseEnter">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -21,13 +21,14 @@
                 <Button Content="C" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="1"/>
             <Button Content="D" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="2"/>
         </StackPanel>
-        <Grid x:Name="UpperWorkspace" Grid.Row="2" Margin="0,0,0,15" VerticalAlignment="Stretch" PreviewKeyDown="GridPreviewKeyDown" MouseDown="UpperWorkspace_MouseDown">
+        <Grid x:Name="UpperWorkspace" Grid.Row="2" Margin="0,0,0,15" VerticalAlignment="Stretch" MouseDown="UpperWorkspace_MouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid x:Name="ViewBox" Background="Transparent" Grid.Column="0" Margin="5,5,10,0"
-              PreviewMouseWheel="GridPreviewMouseWheel" ClipToBounds="True" MouseDown="GridMouseDown">
+                  MouseLeave="ViewBoxMouseLeave" MouseEnter="ViewBoxMouseEnter"
+              PreviewMouseWheel="GridPreviewMouseWheel" ClipToBounds="True" MouseDown="GridMouseDown" PreviewKeyDown="GridPreviewKeyDown">
                 <Rectangle Canvas.Left="10" Canvas.Top="10">
                     <Rectangle.Fill>
                         <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute">
@@ -86,7 +87,7 @@
                 x:Name="XMLViewer"
                 FontFamily="Consolas"
                 SyntaxHighlighting="XML"
-                FontSize="10pt" Background="Transparent"/>
+                FontSize="18" Background="Transparent"/>
         </Grid>
     </Grid>
 </Page>

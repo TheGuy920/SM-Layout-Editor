@@ -49,11 +49,13 @@
 			<Begin>&lt;</Begin>
 			<End>&gt;</End>
 			<RuleSet>
+				<Rule color="XmlTag">^[\w]+</Rule>
+				<Rule color="XmlIrrelevant">^\/</Rule>
+				<Rule color="XmlTag">^[\w\/]+</Rule>
 				<Rule color="XmlIrrelevant">(?!")[\W]*(id=".{8}-.{4}-.{4}-.{4}-.{12})</Rule>
 				<Rule color="AttributeName">([\s]+[\w]+(?=(\s*=\s*".*"( |\/|>|\?))))</Rule>
 				<Rule color="Quotes">"</Rule>
 				<Rule color="XmlIrrelevant">\/(\s|\n)*$</Rule>
-				<Rule color="XmlTag">^[\w\/]+</Rule>
 				<Rule color="AttributeValue">(?&lt;=")([^"]+)(?=")</Rule>
 				<Rule color="XmlIrrelevant">(=)</Rule>
 				<Rule color="WrongFormat">(.|\n)</Rule>

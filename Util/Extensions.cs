@@ -8,6 +8,7 @@ using LayoutEditor.Windows.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,8 +22,7 @@ namespace CustomExtensions
     // Extension methods must be defined in a static class.
     public static class MarginExtensions
     {
-
-// ==================================== BUTTONS ====================================
+        #region BUTTONS
 
         /// <summary>
         /// This adds the existing margin for the button to a new margin
@@ -46,6 +46,7 @@ namespace CustomExtensions
         {
             button.Margin = new Thickness(button.Margin.Left, button.Margin.Top, right, button.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin top to the new margin top
         /// </summary>
@@ -56,7 +57,9 @@ namespace CustomExtensions
             button.Margin = new Thickness(button.Margin.Left, button.Margin.Top, button.Margin.Right, bottom);
         }
 
-// ==================================== CANVAS ===================================
+        #endregion
+
+        #region CANVAS
 
         /// <summary>
         /// This sets the existing margin left and top to the new margin left and top
@@ -69,6 +72,7 @@ namespace CustomExtensions
             if (grid.Margin.Left != left || grid.Margin.Top != top)
                 grid.Margin = new Thickness(left, top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
         /// </summary>
@@ -81,6 +85,7 @@ namespace CustomExtensions
             if (cc.Height != height)
                 cc.Height = height;
         }
+
         /// <summary>
         /// This sets the existing margin left to the new margin left
         /// </summary>
@@ -91,6 +96,7 @@ namespace CustomExtensions
             if (grid.Margin.Left != left)
                 grid.Margin = new Thickness(left, grid.Margin.Top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin top to the new margin top
         /// </summary>
@@ -102,7 +108,9 @@ namespace CustomExtensions
                 grid.Margin = new Thickness(grid.Margin.Left, top, grid.Margin.Right, grid.Margin.Bottom);
         }
 
-// ==================================== GRIDS ====================================
+        #endregion
+
+        #region GRIDS
 
         /// <summary>
         /// This adds the existing margin for the grid to a new margin
@@ -116,6 +124,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left + left, grid.Margin.Top + top, grid.Margin.Right + right, grid.Margin.Bottom + bottom);
         }
+
         /// <summary>
         /// This sets the existing margin left and top to the new margin left and top
         /// </summary>
@@ -126,6 +135,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(left, top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin left and top to the new margin left and top
         /// </summary>
@@ -144,6 +154,7 @@ namespace CustomExtensions
             }
             return false;
         }
+
         /// <summary>
         /// This sets the existing margin bottom and right to the new margin bottom and right
         /// </summary>
@@ -154,6 +165,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top, right, bottom);
         }
+
         /// <summary>
         /// This sets the existing margin left to the new margin left
         /// </summary>
@@ -163,6 +175,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(left, grid.Margin.Top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin top to the new margin top
         /// </summary>
@@ -172,6 +185,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left, top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin right to the new margin right
         /// </summary>
@@ -181,6 +195,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top, right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin right to the new margin right
         /// </summary>
@@ -190,6 +205,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left, grid.Margin.Top, grid.Margin.Right, bottom);
         }
+
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
         /// </summary>
@@ -200,6 +216,7 @@ namespace CustomExtensions
             grid.Width = width;
             grid.Height = height;
         }
+
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
         /// </summary>
@@ -220,6 +237,7 @@ namespace CustomExtensions
             }
             return changed;
         }
+
         /// <summary>
         /// This sets the existing width and height to the new width and height
         /// </summary>
@@ -233,7 +251,9 @@ namespace CustomExtensions
             return $"{_left} {_top} {_height} {_width}";
         }
 
-// ==================================== THICKNESS ======================================= 
+        #endregion
+
+        #region THICKNESS
 
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
@@ -247,6 +267,7 @@ namespace CustomExtensions
             a.Right += b.Right;
             a.Bottom += b.Bottom;
         }
+
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
         /// </summary>
@@ -352,7 +373,9 @@ namespace CustomExtensions
             }
         }
 
-// ==================================== SCROLLVIEWER ==================================== 
+        #endregion
+
+        #region SCROLLVIEWER
 
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
@@ -365,7 +388,9 @@ namespace CustomExtensions
             scrollViewer.Height = height;
         }
 
-// ====================================== FLOAT ========================================= 
+        #endregion
+
+        #region FLOAT
 
         /// <summary>
         /// Moves decimal so there is no more decimal
@@ -378,16 +403,30 @@ namespace CustomExtensions
             return f;
         }
 
-// ==================================== STRING ====================================
+        #endregion
 
-        public static string CapitilzeFirst(this string s)
-        {
-            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s);
-        }
-        public static string ToValidPath(this string s)
-        {
-            return System.IO.Path.GetFullPath(CapitilzeFirst(s).Replace("/", "\\"));
-        }
+        #region DOUBLE
+
+        /// <summary>
+        /// Returns the double with a minimum value
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="lowerClamp"></param>
+        /// <returns></returns>
+        public static double Min(this double self, double lowerClamp) => self < lowerClamp ? lowerClamp : self;
+
+        #endregion
+
+        #region STRING
+
+        public static bool Contains(this string source, params string[] values) => values.Any(source.Contains);
+
+        public static string ToStringLowerInvariant(this object o) => o.ToString().ToLowerInvariant();
+
+        public static string CapitilzeFirst(this string s) => System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s);
+
+        public static string ToValidPath(this string s) => System.IO.Path.GetFullPath(CapitilzeFirst(s).Replace("/", "\\"));
+
         public static string DecodeHtmlEntities(this string m)
         {
             m = m.Replace("&", "&amp;");
@@ -398,7 +437,9 @@ namespace CustomExtensions
             return m;
         }
 
-// ================================= CONTENT CONTROL================================
+        #endregion
+
+        #region CONTENT CONTROL
 
         /// <summary>
         /// This sets the existing width and height to the new width and heigh
@@ -423,6 +464,7 @@ namespace CustomExtensions
         {
             cc.Margin = new Thickness(left, top, right, bottom);
         }
+
         /// <summary>
         /// This sets the margin to a new margin
         /// </summary>
@@ -436,7 +478,10 @@ namespace CustomExtensions
             cc.Margin = m;
         }
 
-// ================================= XML DOCUMENT ==================================
+        #endregion
+
+        #region XML Document 
+
         public static string PrettyXml(this XElement xml/*this XDocument doc*/, bool strip_id = true)
         {
             var stringBuilder = new StringBuilder();
@@ -457,7 +502,9 @@ namespace CustomExtensions
             return stringBuilder.ToString();
         }
 
-// ================================ XmlOverlay =====================================
+        #endregion
+
+        #region XmlOverlay
 
         /// <summary>
         /// This sets the existing margin left to the new margin left
@@ -468,6 +515,7 @@ namespace CustomExtensions
         {
             grid.Margin = new Thickness(grid.Margin.Left + left, grid.Margin.Top, grid.Margin.Right, grid.Margin.Bottom);
         }
+
         /// <summary>
         /// This sets the existing margin top to the new margin top
         /// </summary>
@@ -491,6 +539,7 @@ namespace CustomExtensions
                 grid.Margin = new Thickness(grid.Margin.Left + left, grid.Margin.Top + top, grid.Margin.Right, grid.Margin.Bottom);
                 return true;
             }
+
             return false;
         }
 
@@ -533,7 +582,10 @@ namespace CustomExtensions
             return o1;
         }
 
-// ================================ MOUSE UTIL =====================================
+        #endregion
+
+        #region MOUSE
+
         public static Vector GetMouseMovement(this MainEditor env, bool resetPosition = false, bool MoveSensitivity = false, bool Scale = false, bool GridSize = false)
         {
             Vector returnVec = MouseUtil.GetMousePosition() - env.MouseStart;
@@ -547,6 +599,7 @@ namespace CustomExtensions
                 env.MouseStart = MouseUtil.GetMousePosition();
             return returnVec;
         }
+
         public static MouseButtonState GetButtonState(this MouseDevice Mouse, MouseButton Button)
         {
             return Button switch
@@ -559,19 +612,30 @@ namespace CustomExtensions
                 _ => MouseButtonState.Released,
             };
         }
-// ================================== POINT =======================================
+
+        #endregion
+
+        #region POINT
+
         public static Point Subtract(this Point first, Point second)
         {
             return new(first.X - second.X, first.Y - second.Y);
         }
+
         public static Point Divide(this Point first, double divisor)
         {
             return new(first.X / divisor, first.Y / divisor);
         }
-// ================================= ActualSize ===================================
+
+        #endregion
+
+        #region ActualSize
+
         public static ActualSize GetActualSize(this Grid g, Point LeftTop = default)
         {
             return new(g.ActualWidth, g.ActualHeight, LeftTop.X, LeftTop.Y);
         }
+
+        #endregion
     }
 }

@@ -9,6 +9,10 @@ using System.Windows.Media;
 using System.Xml;
 using System.Text.RegularExpressions;
 using Xceed.Wpf.Toolkit;
+using System.Linq;
+using CustomExtensions;
+using Microsoft.VisualBasic;
+using System.Reflection;
 
 namespace LayoutEditor.GUI
 {
@@ -16,209 +20,189 @@ namespace LayoutEditor.GUI
     {
         private static readonly JObject json = JObject.Parse(Utility.LoadInternalFile.TextFile("MyGUI_Trace.json"));
         private static JObject ElementList = null;
-        private static readonly Dictionary<string, Action> CallBackList = new();
-        public static JObject getTrace()
-        {
-            return json;
-        }
+        private static readonly Dictionary<string, Action> CallBackList = [];
+        public static JObject Trace => json;
+
         public static Border BuildPropertiesItem(string GUID)
         {
-            string type = (string)ElementList[GUID]["type"];
-
+            // Init base container
+            string widgetType = (string)ElementList[GUID]["type"];
             StackPanel main = new() {
                 Orientation = Orientation.Vertical,
                 Tag = GUID
             };
-            
-            StackPanel s = new() {
+
+            // Title
+            StackPanel titleStackPanel = new() {
                 Orientation = Orientation.Horizontal
             };
-            
-            s.Children.Add(new TextBlock() {
+            titleStackPanel.Children.Add(new TextBlock() {
                 Foreground = Brushes.White,
                 Margin = new Thickness(5, 2, 5, 2),
                 FontSize = 24,
-                Text = type
+                Text = widgetType
             });
-            
-            main.Children.Add(s);
+            main.Children.Add(titleStackPanel);
 
-            Dictionary<string, string[]> AttributeList = new();
-            foreach (JProperty item in json["Widget"][type]["Attributes"])
+            // Attributes
+            Dictionary<string, string[]> AttributeList = [];
+            foreach (var item in json["Widget"][widgetType]["Attributes"].Cast<JProperty>())
             {
-                List<string> content = new();
-                foreach (string value in item.Value)
-                {
-                    content.Add(value);
-                }
-                AttributeList.Add(item.Name, content.ToArray());
+                List<string> content = [.. item.Value.Cast<string>()];
+                AttributeList.Add(item.Name, [.. content]);
             }
-            foreach (var item in AttributeList)
+
+            foreach (var (attrName, attrValue) in AttributeList)
             {
-                if (!item.Key.Equals("type") && !item.Key.Equals("position"))
+                if (!attrName.Equals("type") && !attrName.Equals("position"))
                 {
-                    object cValue = item.Value[0];
+                    string defaultAttrValue = attrValue[0];
                     bool isChecked = false;
-                    if (ElementList.ContainsKey(GUID))
+
+                    if (ElementList.TryGetValue(GUID, StringComparison.InvariantCultureIgnoreCase, out var gvalue)
+                        && gvalue is JObject jvalue
+                        && jvalue.TryGetValue(attrName, StringComparison.InvariantCultureIgnoreCase, out var stringValue))
                     {
-                        if ((ElementList[GUID] as JObject).ContainsKey(item.Key))
-                        {
-                            cValue = ElementList[GUID][item.Key];
-                            isChecked = true;
-                        }
+                        defaultAttrValue = stringValue.ToString();
+                        isChecked = true;
                     }
 
                     DockPanel Attribute = new();
 
-                    int w = 125;
+                    int defaultWidth = 125;
 
-                    if (!item.Key.Equals("position_real"))
+                    if (!attrName.Equals("position_real"))
                     {
                         CheckBox _cb = new() { IsChecked = isChecked, Margin = new Thickness(5, 2, 5, 2) };
                         _cb.Checked += EnableProperty;
                         _cb.Unchecked += DisableProperty;
                         Attribute.Children.Add(_cb);
-                        w -= 25;
+                        defaultWidth -= 25;
                     }
 
                     Attribute.Children.Add(new TextBlock()
                     {
                         Foreground = Brushes.White,
-                        Width = w,
+                        Width = defaultWidth,
                         Margin = new Thickness(5, 2, 5, 2),
                         TextWrapping = TextWrapping.Wrap,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Text = item.Key
-                    });                    
+                        Text = attrName
+                    });
 
-                    switch (item.Key.ToLower())
+                    (FrameworkElement AttrPanel, Action<FrameworkElement> Hook) Container = attrName.ToLowerInvariant() switch
                     {
-                        case "position":
-                        case "position_real":
-                            Attribute.Children.Add(new TextBlock()
-                            {
-                                Foreground = Brushes.White,
-                                Background = new SolidColorBrush(Color.FromRgb(36, 35, 41)),
-                                TextAlignment = TextAlignment.Center,
-                                Margin = new Thickness(5, 2, 5, 2),
-                                FontSize = 18,
-                                Padding = new Thickness(5),
-                                Text = cValue.ToString()
-                            });
-                            break;
-                        case "name":
-                        default:
-                            if (item.Value.Length > 1 && !item.Key.Equals("name") || item.Key.Equals("skin"))
-                            {
-                                ComboBox cb = new()
-                                {
-                                    Foreground = Brushes.Black,
-                                    Margin = new Thickness(5, 2, 5, 2)
-                                };
-                                foreach (string value in item.Value)
-                                {
-                                    cb.Items.Add(new ComboBoxItem() { Content = value });
-                                }
-                                int index = -1;
-                                if(isChecked && int.TryParse(cValue.ToString(), out index)) { }
-                                cb.SelectedIndex = index;
+                        "position" or "position_real" => (new TextBlock()
+                        {
+                            Foreground = Brushes.White,
+                            Background = new SolidColorBrush(Color.FromRgb(36, 35, 41)),
+                            TextAlignment = TextAlignment.Center,
+                            Margin = new Thickness(5, 2, 5, 2),
+                            FontSize = 18,
+                            Padding = new Thickness(5),
+                            Text = defaultAttrValue
+                        }, null),
+                        "name" => (new TextBox()
+                        {
+                            Foreground = Brushes.Black,
+                            Margin = new Thickness(5, 2, 5, 2),
+                            Text = isChecked ? defaultAttrValue : string.Empty
+                        }, ctrl => (ctrl as TextBox).TextChanged += TextChanged),
+                        "skin" or _ => (new ComboBox()
+                        {
+                            Foreground = Brushes.Black,
+                            Margin = new Thickness(5, 2, 5, 2),
+                            SelectedIndex = int.TryParse(defaultAttrValue, out int index) ? index : -1
+                        }, ctrl => {
+                            ComboBox cb = ctrl as ComboBox;
+                            Array.ForEach(attrValue, value => cb.Items.Add(new ComboBoxItem() { Content = value }));
+                            cb.SelectionChanged += SelectionChanged;
+                        })
+                    };
 
-                                cb.SelectionChanged += SelectionChanged;
-                                Attribute.Children.Add(cb);
-                            }
-                            else
-                            {
-                                if (!isChecked)
-                                    cValue = "";
-                                var tb = new TextBox()
-                                {
-                                    Foreground = Brushes.Black,
-                                    Margin = new Thickness(5, 2, 5, 2),
-                                    Text = cValue.ToString()
-                                };
-                                tb.TextChanged += TextChanged;
-                                Attribute.Children.Add(tb);
-                            }
-                            break;
+                    if (Container.AttrPanel is not null)
+                    {
+                        Container.Hook?.Invoke(Container.AttrPanel);
+                        Attribute.Children.Add(Container.AttrPanel);
                     }
-                    if (item.Key.Equals("position_real"))
-                    {
+
+
+                    if (attrName.Equals("position_real"))
                         main.Children.Insert(1, Attribute);
-                    }
                     else
-                    {
                         main.Children.Add(Attribute);
-                    }
+                    
                 }
             }
-            if ((json["Widget"][type] as JObject).ContainsKey("Property"))
-            {
-                Dictionary<string, object> PropertyList = new();
-                foreach (JProperty item in json["Widget"][type]["Property"])
-                {
-                    
-                    string str = "";
-                    if (item.Value.Type == JTokenType.String)
-                    {
-                        str = item.Value.ToString();
-                        PropertyList.Add(item.Name, str);
-                    }
-                    else
-                    {
-                        JArray jry = item.Value as JArray;
-                        if (jry.Count == 1 || jry.Count == 2 && (
-                            jry[0].ToString().ToLower().Contains("int") ||
-                            jry[0].ToString().ToLower().Contains("float")
-                            ) && (
-                            jry[1].ToString().ToLower().Contains("int") ||
-                            jry[1].ToString().ToLower().Contains("float")
-                            ))
-                        {
-                            string sk = jry[0].ToString().ToLower().Trim();
-                            if(jry.Count > 1 && jry[1].ToString().ToLower().Trim().Length > sk.Length)
-                                sk = jry[1].ToString().ToLower().Trim();
 
-                            switch (sk)
-                            {
-                                case "float":
-                                    PropertyList.Add(item.Name, 0f);
-                                    break;
-                                case "float, float, float, float":
-                                    PropertyList.Add(item.Name, new float[4]);
-                                    break;
-                                case "float, float, float":
-                                    PropertyList.Add(item.Name, new float[3]);
-                                    break;
-                                case "bool":
-                                    PropertyList.Add(item.Name, true);
-                                    break;
-                                default:
-                                    PropertyList.Add(item.Name, string.Empty);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            PropertyList.Add(item.Name, string.Empty);
-                        }
+            if (json["Widget"][widgetType] is JObject jType && jType.ContainsKey("Property"))
+            {
+                Dictionary<string, object> PropertyList = [];
+
+                foreach (var widgetJProp in json["Widget"][widgetType]["Property"].Cast<JProperty>())
+                {
+                    if (widgetJProp.Value.Type == JTokenType.String)
+                    {
+                        PropertyList.Add(widgetJProp.Name, widgetJProp.Value.ToString());
+                        continue;
+                    }
+
+                    if (widgetJProp.Value is not JArray jtypeArray)
+                        continue;
+
+                    string typeIndex1 = jtypeArray[0].ToStringLowerInvariant().Trim();
+                    string typeIndex2 = jtypeArray[1].ToStringLowerInvariant().Trim();
+
+                    bool typeIndexIsNum = typeIndex1.Contains("int", "float") && typeIndex2.Contains("int", "float");
+                    if (jtypeArray.Count == 0 || jtypeArray.Count > 2 || !typeIndexIsNum)
+                    {
+                        PropertyList.Add(widgetJProp.Name, string.Empty);
+                        continue;
+                    }
+
+                    string dtype = typeIndex1;
+
+                    if (jtypeArray.Count > 1 && typeIndex2.Length > dtype.Length)
+                        dtype = typeIndex2;
+
+                    switch (dtype)
+                    {
+                        case "float":
+                            PropertyList.Add(widgetJProp.Name, 0f);
+                            break;
+                        case "float, float, float, float":
+                            PropertyList.Add(widgetJProp.Name, new float[4]);
+                            break;
+                        case "float, float, float":
+                            PropertyList.Add(widgetJProp.Name, new float[3]);
+                            break;
+                        case "bool":
+                            PropertyList.Add(widgetJProp.Name, true);
+                            break;
+                        default:
+                            PropertyList.Add(widgetJProp.Name, string.Empty);
+                            break;
                     }
                 }
-                foreach (var item in PropertyList)
+
+                foreach (var (propName, propValue) in PropertyList)
                 {
-                    object cValue = item.Value;
+                    string propStrValue = propValue.ToString();
                     bool isChecked = false;
-                    if (ElementList.ContainsKey(GUID))
+                    
+                    if (ElementList.TryGetValue(GUID, StringComparison.InvariantCultureIgnoreCase, out var gvalue)
+                        && gvalue is JObject jvalue
+                        && jvalue.TryGetValue(propName, StringComparison.InvariantCultureIgnoreCase, out var stringValue))
                     {
-                        if ((ElementList[GUID] as JObject).ContainsKey(item.Key))
-                        {
-                            cValue = ElementList[GUID][item.Key];
-                            isChecked = true;
-                        }
+                        propStrValue = stringValue.ToString();
+                        isChecked = true;
                     }
+
                     DockPanel Attribute = new();
                     CheckBox _cb = new() { IsChecked = isChecked, Margin = new Thickness(5, 2, 5, 2) };
                     _cb.Checked += EnableProperty;
                     _cb.Unchecked += DisableProperty;
+                    
                     Attribute.Children.Add(_cb);
                     Attribute.Children.Add(new TextBlock()
                     {
@@ -227,93 +211,57 @@ namespace LayoutEditor.GUI
                         Width = 100,
                         TextWrapping = TextWrapping.Wrap,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Text = item.Key
+                        Text = propName
                     });
-                    if (item.Value is string)
-                    {
 
-                        var tb = new TextBox()
+                    float[] parsedColors = propValue is float[] pvFLarry ? pvFLarry : propValue is float pvFL ? [pvFL] : [];
+                    byte[] colors = isChecked ? [.. parsedColors.Select(f => f * byte.MaxValue).Cast<byte>()] : [255, 255, 255];
+
+                    // populates the attribute panel with the correct input type
+                    (FrameworkElement AttrPanel, Action<FrameworkElement> Hook) Container = propValue switch
+                    {
+                        string => (new TextBox()
                         {
                             Foreground = Brushes.Black,
                             Margin = new Thickness(5, 2, 5, 2),
                             HorizontalAlignment = HorizontalAlignment.Stretch,
-                            Text = cValue.ToString()
-                        };
-                        tb.TextChanged += TextChanged;
-                        Attribute.Children.Add(tb);
-                    }
-                    else if (item.Value is bool)
-                    {
-                        ComboBox cb = new()
+                            Text = propStrValue
+                        }, tb => (tb as TextBox).TextChanged += TextChanged),
+                        bool selectedIndex => (new ComboBox()
                         {
                             Foreground = Brushes.Black,
                             Margin = new Thickness(5, 2, 5, 2),
-                            HorizontalAlignment = HorizontalAlignment.Stretch
-                        };
-                        cb.Items.Add(new ComboBoxItem() { Content = "true" });
-                        cb.Items.Add(new ComboBoxItem() { Content = "false" });
-
-                        cb.SelectedIndex = -1;
-
-                        if (isChecked && cValue.ToString().ToLower().Equals("true"))
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            SelectedIndex = selectedIndex ? 0 : 1
+                        }, ctrl => {
+                            ComboBox cb = ctrl as ComboBox;
+                            cb.Items.Add(new ComboBoxItem() { Content = "true" });
+                            cb.Items.Add(new ComboBoxItem() { Content = "false" });
+                            cb.SelectionChanged += SelectionChanged;
+                        }),
+                        float or float[] => propName.ToLowerInvariant() switch
                         {
-                            cb.SelectedIndex = 0;
-                        }
-                        else if (cValue.ToString().ToLower().Equals("false"))
-                        {
-                            cb.SelectedIndex = 1;
-                        }
-
-                        cb.SelectionChanged += SelectionChanged;
-                        Attribute.Children.Add(cb);
-                    }
-                    else if (item.Value is float or float[])
-                    {
-                        string z = item.Key.ToLower();
-                        if (z.Equals("color") || z.Equals("colour") ||
-                            z.Equals("textcolour") || z.Equals("textcolor") ||
-                            z.Equals("textshadowcolour") || z.Equals("textshadowcolor"))
-                        {
-                            byte[] colors = new byte[3]{ 255, 255, 255 };
-                            if (isChecked)
-                            {
-                                colors = Array.ConvertAll(cValue.ToString().Split(" "), s =>
-                                {
-                                    Debug.WriteLine(s);
-                                    return (byte)(float.Parse(s) * 255);
-                                });
-                            }
-
-                            ColorPicker cp = new()
+                            "color" or "colour" or "textcolour" or "textcolor" or "textshadowcolour" or "textshadowcolor" => (new ColorPicker()
                             {
                                 Foreground = Brushes.Black,
-                                SelectedColor = Color.FromRgb(colors[0] , colors[1], colors[2]),
+                                SelectedColor = Color.FromRgb(colors[0], colors[1], colors[2]),
                                 Margin = new Thickness(5, 2, 5, 2)
-                            };
-                            cp.SelectedColorChanged += SelectedColorChanged;
-                            Attribute.Children.Add(cp);
-                        }
-                        else
-                        {
-                            float min = 0;
-                            float max = 999999999;
+                            }, ctrl => (ctrl as ColorPicker).SelectedColorChanged += SelectedColorChanged),
+                            "alpha" or _ => (NumberInputBuilder(parsedColors, 0, 999999999, parsedColors.Length), null)
+                        },
+                        _ => (null, null)
+                    };
 
-                            if (item.Key.ToLower().Equals("alpha"))
-                                continue;
-
-                            float[] kpls = Array.Empty<float>();
-
-                            if (item.Value as float? == null)
-                                kpls = Array.ConvertAll(cValue.ToString().Split(" "), s => float.Parse(s));
-                            else
-                                kpls = new[] { float.Parse(cValue.ToString()) };
-
-                            Attribute.Children.Add(NumberInputBuilder(kpls, min, max, kpls.Length));
-                        }
+                    if (Container.AttrPanel is not null)
+                    {
+                        Container.Hook?.Invoke(Container.AttrPanel);
+                        Attribute.Children.Add(Container.AttrPanel);
                     }
+
                     main.Children.Add(Attribute);
                 }
             }
+
             return new Border()
             {
                 BorderBrush = Brushes.Gray,
@@ -328,9 +276,11 @@ namespace LayoutEditor.GUI
             ColorPicker cp = sender as ColorPicker;
             DockPanel propertyType = cp.Parent as DockPanel;
             StackPanel MainParent = propertyType.Parent as StackPanel;
+            
             string GUID = MainParent.Tag.ToString();
             JObject properties = ElementList[GUID] as JObject;
             string index = (propertyType.Children[1] as TextBlock).Text;
+            
             if (properties.ContainsKey(index))
             {
                 properties[index] = $"{cp.SelectedColor.Value.R / 255f} {cp.SelectedColor.Value.G / 255f} {cp.SelectedColor.Value.B / 255f}";
@@ -343,6 +293,7 @@ namespace LayoutEditor.GUI
                 properties["Alpha"] = cp.SelectedColor.Value.A / 255f;
                 (propertyType.Children[0] as CheckBox).IsChecked = true;
             }
+
             CallBackList[GUID].Invoke();
         }
 
@@ -372,10 +323,12 @@ namespace LayoutEditor.GUI
             SingleUpDown numberBox = sender as SingleUpDown;
             StackPanel nbp = numberBox.Parent as StackPanel;
             DockPanel propertyType = nbp.Parent as DockPanel;
+
             StackPanel MainParent = propertyType.Parent as StackPanel;
             string GUID = MainParent.Tag.ToString();
             JObject properties = ElementList[GUID] as JObject;
             string index = (propertyType.Children[1] as TextBlock).Text;
+            
             if (properties.ContainsKey(index))
             {
                 properties[index] = numberBox.Value;
@@ -386,6 +339,7 @@ namespace LayoutEditor.GUI
                 properties.Add(index, numberBox.Value);
                 (propertyType.Children[0] as CheckBox).IsChecked = true;
             }
+
             CallBackList[GUID].Invoke();
         }
 
@@ -394,14 +348,17 @@ namespace LayoutEditor.GUI
             Regex regex = NumberMatch();
             e.Handled = regex.IsMatch(e.Text);
         }
+
         private static void TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
             DockPanel propertyType = textBox.Parent as DockPanel;
             StackPanel MainParent = propertyType.Parent as StackPanel;
+
             string GUID = MainParent.Tag.ToString();
             JObject properties = ElementList[GUID] as JObject;
             string index = (propertyType.Children[1] as TextBlock).Text;
+
             if (properties.ContainsKey(index))
             {
                 properties[index] = textBox.Text;
@@ -412,44 +369,46 @@ namespace LayoutEditor.GUI
                 properties.Add(index, textBox.Text);
                 (propertyType.Children[0] as CheckBox).IsChecked = true;
             }
+
             CallBackList[GUID].Invoke();
         }
+
         private static void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
             DockPanel propertyType = comboBox.Parent as DockPanel;
             StackPanel MainParent = propertyType.Parent as StackPanel;
+
             string GUID = MainParent.Tag.ToString();
             JObject properties = ElementList[GUID] as JObject;
             string index = (propertyType.Children[1] as TextBlock).Text;
+
+            if (e is null)
+                return;
+
             if (properties.ContainsKey(index))
-            {
-                if (e != null)
-                {
-                    properties[index] = (e.AddedItems[0] as ComboBoxItem).Content.ToString();
-                    (propertyType.Children[0] as CheckBox).IsChecked = true;
-                }
-            }
+                properties[index] = (e.AddedItems[0] as ComboBoxItem).Content.ToString();
             else
-            {
-                if (e != null)
-                {
-                    properties.Add(index, (e.AddedItems[0] as ComboBoxItem).Content.ToString());
-                    (propertyType.Children[0] as CheckBox).IsChecked = true;
-                }
-            }
+                properties.Add(index, (e.AddedItems[0] as ComboBoxItem).Content.ToString());
+
+            (propertyType.Children[0] as CheckBox).IsChecked = true;
+
             CallBackList[GUID].Invoke();
         }
+
         private static void DisableProperty(object sender, RoutedEventArgs e)
         {
             CheckBox comboBox = sender as CheckBox;
             DockPanel propertyType = comboBox.Parent as DockPanel;
             StackPanel MainParent = propertyType.Parent as StackPanel;
+
             string GUID = MainParent.Tag.ToString();
             JObject properties = ElementList[GUID] as JObject;
             string index = (propertyType.Children[1] as TextBlock).Text;
+            
             if (properties.ContainsKey(index))
                 properties.Remove(index);
+
             CallBackList[GUID].Invoke();
         }
 
@@ -459,35 +418,26 @@ namespace LayoutEditor.GUI
             DockPanel propertyType = comboBox.Parent as DockPanel;
 
             if (propertyType.Children[2] is TextBox)
-            {
                 TextChanged(propertyType.Children[2], null);
-            }
             else if (propertyType.Children[2] is ComboBox)
-            {
                 SelectionChanged(propertyType.Children[2], null);
-            }
-            
         }
 
         public static void UpdateItemProperties(string GUID, string property, string value)
         {
-            if (ElementList[GUID] != null)
-            {
-                JObject properties = ElementList[GUID] as JObject;
-                if (properties.ContainsKey(property))
-                {
-                    properties[property] = value;
-                }
-                else
-                {
-                    properties.Add(property, value);
-                }
-            }
+            if (ElementList[GUID] is not JObject properties)
+                return;
+                
+            if (properties.ContainsKey(property))
+                properties[property] = value;
+            else
+                properties.Add(property, value);
+            
         }
 
         public static Grid BuildToolBoxItem(string type, MainWindow App, MouseButtonEventHandler B_PreviewMouseDown, MouseButtonEventHandler B_PreviewMouseUp)
         {
-            ElementList ??= new();
+            ElementList ??= [];
 
             string GUID = Guid.NewGuid().ToString();
 
@@ -525,56 +475,52 @@ namespace LayoutEditor.GUI
             g.Children.Add(b);
             g.Children.Add(new Grid());
 
-            JObject j = new()
-            {
-                { "type", type }
-            };
+            JObject j = new() { { "type", type } };
             ElementList.Add(GUID, j);
-            //CallBackList.Add(GUID, UpdatedProperties);
+            // CallBackList.Add(GUID, UpdatedProperties);
             return g;
         }
+
         public static JObject GetXmlElementList()
         {
             return ElementList;
         }
+
         public static Grid GetParentUntil(Grid child, Grid stop)
         {
-            if (child.Equals(stop))
+            if (child.Parent is not Grid g)
                 return null;
-            Grid ret = child.Parent as Grid;
-            if (ret != null)
-                if (ret.Equals(stop))
-                    return null;
-            return ret;
+
+            if (g.Equals(stop) || child.Equals(stop))
+                return null;
+
+            return g;
         }
+
         public static XmlElement GetElementById(XmlElement root, string id)
         {
             if (root.GetAttribute("_xx_unique_guid").Equals(id))
-            {
                 return root;
-            }
-            if (root.HasChildNodes)
+
+            if (!root.HasChildNodes)
+                return null;
+            
+            foreach (var node in root.ChildNodes)
             {
-                foreach (var node in root.ChildNodes)
-                {
-                    if (node is XmlElement)
-                    {
-                        XmlElement xlm = node as XmlElement;
-                        if (xlm.GetAttribute("_xx_unique_guid").Equals(id))
-                        {
-                            return xlm;
-                        }
-                        if (xlm.HasChildNodes)
-                        {
-                            XmlElement ret = GetElementById(xlm, id);
-                            if (ret != null)
-                            {
-                                return ret;
-                            }
-                        }
-                    }
-                }
+                if (node is not XmlElement xlm)
+                    continue;
+
+                if (xlm.GetAttribute("_xx_unique_guid").Equals(id))
+                    return xlm;
+
+                if (!xlm.HasChildNodes)
+                    continue;
+
+                XmlElement ret = GetElementById(xlm, id);
+                if (ret is not null)
+                    return ret;
             }
+
             return null;
         }
 

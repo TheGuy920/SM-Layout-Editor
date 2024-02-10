@@ -3,7 +3,9 @@ using CustomExtensions;
 using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
+using DiffPlex.Model;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Search;
@@ -63,22 +65,30 @@ namespace LayoutEditor.CustomXML
             };
             this.XmlEditor.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
             this.CurrentXmlFoldingManager = FoldingManager.Install(this.XmlEditor.TextArea, Brushes.WhiteSmoke, MainWindow.Get.EntireWindow.Background, Brushes.DarkSlateGray);
-            this.XmlEditor.TextArea.Options.HighlightCurrentLine = false;
+            this.XmlEditor.TextArea.Options.HighlightCurrentLine = true;
+            this.XmlEditor.TextArea.TextView.CurrentLineBorder = new Pen() { Brush = new SolidColorBrush(Color.FromArgb(16, 255, 255, 255)) };
+            this.XmlEditor.TextArea.TextView.LinkTextForegroundBrush = Brushes.Blue;
+            this.XmlEditor.TextArea.Options.EnableHyperlinks = true;
+            this.XmlEditor.TextArea.Options.IndentationSize = 4;
+            this.XmlEditor.TextArea.Options.HideCursorWhileTyping = false;
             this.XmlEditor.TextArea.Options.EnableTextDragDrop = true;
+            this.XmlEditor.TextArea.Options.ShowSpaces = false;
+            this.XmlEditor.TextArea.TextView.NonPrintableCharacterBrush = Brushes.DimGray;
+            this.XmlEditor.TextArea.Options.ConvertTabsToSpaces = true;
             this.XmlEditor.TextChanged += TextChanged;
             this.XmlEditor.TextArea.SelectionBrush = new SolidColorBrush(Color.FromArgb(128, 51, 153, 255));
             this.XmlEditor.TextArea.SelectionForeground = null;
             this.XmlEditor.TextArea.SelectionCornerRadius = 0;
             this.XmlEditor.TextArea.SelectionBorder = new Pen() { Brush = Brushes.Transparent, Thickness = 0 };
             this.XmlEditor.SyntaxHighlighting = Utility.LoadInternalFile.HighlightingDefinition("HightlightingRules.xshd");
-            // this.XmlEditor.SyntaxHighlighting = Utility.LoadInternalFile.FormatHighlightingDefinition("HightlightingRules.xshd", "<!--REPLACE-->", this.FontTagBuilder());
+            //this.XmlEditor.SyntaxHighlighting = Utility.LoadInternalFile.FormatHighlightingDefinition("HightlightingRules.xshd", "<!--REPLACE-->", this.FontTagBuilder());
             this.CurrentXmlFoldingStrategy.UpdateFoldings(this.CurrentXmlFoldingManager, this.XmlEditor.Document);
         }
 
         private string FontTagBuilder()
         {
             StringBuilder builder = new();
-            /*
+            
             foreach (var key in MainWindow.Get.Fonts.Keys.OrderDescending())
             {
                 var font = MainWindow.Get.Fonts[key];
@@ -93,8 +103,21 @@ namespace LayoutEditor.CustomXML
                 if (line.Split(' ')[0] is string name && line.Trim().Length > 2 && !current.Contains(name))
                     builder.AppendLine($"<Rule color=\"SMFormat\">\\#\\{{{name}\\}}</Rule>");
             
-            */
+            
             return builder.ToString();
+        }
+
+        private void ShowCompletion(IEnumerable<string> suggestions)
+        {
+            CompletionWindow completionWindow = new(this.XmlEditor.TextArea);
+            IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+
+            foreach (var suggestion in suggestions)
+            {
+                data.Add(new AutoFill(suggestion));
+            }
+
+            completionWindow.Show();
         }
 
         public void Undo() => this.XmlEditor.Undo();

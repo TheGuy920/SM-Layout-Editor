@@ -16,7 +16,7 @@ namespace LayoutEditor.CustomXML
     public class XmlOverlay : Grid
     {
         public new bool IsEnabled = true;
-        private readonly List<Button> OverlayButtons = new();
+        private readonly List<Button> OverlayButtons = [];
         public event EventHandler DisplayItemChanged;
         public List<XmlDOM> BindingPair { get; private set; }
         private double Scale = 1;
@@ -28,7 +28,7 @@ namespace LayoutEditor.CustomXML
         public XmlOverlay(double GridSize)
         {
             this.GridSize = GridSize;
-            this.BindingPair = new();
+            this.BindingPair = [];
             this.Init();
         }
 
@@ -131,7 +131,7 @@ namespace LayoutEditor.CustomXML
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(90, GridUnitType.Star) });
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(7, GridUnitType.Pixel) });
             // Border
-            Border rec = new() { BorderBrush = Brushes.LightBlue, BorderThickness = new(1), Background = null, Margin = new(-8.5), ClipToBounds = false };
+            Border rec = new() { BorderBrush = Brushes.LightBlue, BorderThickness = new(3), Background = null, Margin = new(-8.5), ClipToBounds = false };
             // Column and row (span)
             Grid.SetRow(rec, 1);
             Grid.SetColumn(rec, 1);
@@ -181,6 +181,7 @@ namespace LayoutEditor.CustomXML
                 this.Children.Add(button);
             }
         }
+        
         public void Show()
         {
             if (!this.IsEnabled)
@@ -240,7 +241,9 @@ namespace LayoutEditor.CustomXML
                 }
                 else
                 {
-                    if (ctrl && !shift) factor = 0.5;
+                    if (ctrl && !shift)
+                        factor = 0.5;
+
                     switch (this.ScaleMode)
                     {
                         case 1:
@@ -287,16 +290,19 @@ namespace LayoutEditor.CustomXML
                 if (this.SetSize(NewSize))
                     this.DisplayItemChanged.Invoke(null, EventArgs.Empty);
             }
-            else if (BindingPair.Count > 0 && mouse_down)
+            // Not scaling => moving
+            else if (this.BindingPair.Count > 0 && mouse_down)
             {
                 this.Dispatcher.Invoke(() =>
                 {
                     Point Diff = (Point)(e.GetPosition(this) - mouse_start);
+                    
                     this.UpdatePairs(new()
                     {
                         Left = Diff.X / this.Scale,
                         Top = Diff.Y / this.Scale
                     });
+
                     if (this.AddMarginLT(Diff.X, Diff.Y))
                         this.DisplayItemChanged.Invoke(null, EventArgs.Empty);
                 });
@@ -310,6 +316,7 @@ namespace LayoutEditor.CustomXML
                 Left = diff.X / this.Scale,
                 Top = diff.Y / this.Scale
             });
+
             this.AddMarginLT(diff.X, diff.Y);
         }
 

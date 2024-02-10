@@ -57,7 +57,7 @@ namespace LayoutEditor.Windows.Pages
         {
             this.InitializeComponent();
             this.Library = JObject.Parse(Utility.LoadInternalFile.TextFile("Library.json"));
-            this.XmlDocumentHandler = new(ref this.XMLViewer, ref this.WorkspaceCanvas);
+            this.XmlDocumentHandler = new(ref this.XMLViewer, ref this.WorkspaceCanvas, ref this.Properties);
             this.ViewBox.MouseLeave += this.XmlDocumentHandler.MouseLeave;
             this.ViewBox.MouseEnter += this.XmlDocumentHandler.MouseEnter;
             this.ViewBox.MouseMove += this.XmlDocumentHandler.MouseMove;
@@ -223,17 +223,18 @@ namespace LayoutEditor.Windows.Pages
         /// <param name="e"></param>
         public void GridPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (!this.IsInViewBox)
+                return;
+            
             // Simple delete method for deleting the selected item
             if (e.Key == Key.Delete || e.Key == Key.Back)
             {
                 foreach (var child in this.XmlDocumentHandler.GetSelected())
-                    this.RecursiveDelete(this.WorkspaceCanvas, child);
+                    RecursiveDelete(this.WorkspaceCanvas, child);
 
                 this.XmlDocumentHandler.DeleteSelected();
             }
-            else if (
-                (CtrlKeyDown && Keyboard.IsKeyDown(Key.S)) ||
-                (e.Key == Key.S && CtrlKeyDown))
+            else if (CtrlKeyDown && IsKeyDown(Key.S, e.Key))
             {
                 this.VisualsSavedEvent();
             }
@@ -269,7 +270,8 @@ namespace LayoutEditor.Windows.Pages
             }
         }
 
-        private static bool CtrlKeyDown => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+        private static bool IsKeyDown(Key target, Key? eventKey = null) => Keyboard.IsKeyDown(target) || eventKey?.Equals(target) == true;
+        private static bool CtrlKeyDown => IsKeyDown(Key.LeftCtrl) || IsKeyDown(Key.RightCtrl);
 
         public void GridPreviewKeyUp(object sender, KeyEventArgs e)
         { }
@@ -444,7 +446,7 @@ namespace LayoutEditor.Windows.Pages
             this.XmlDocumentHandler.MouseUp(sender, e);
         }
 
-        private void RecursiveDelete(UIElement elemt, UIElement target)
+        private static void RecursiveDelete(UIElement elemt, UIElement target)
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(elemt); i++)
             {
@@ -455,7 +457,7 @@ namespace LayoutEditor.Windows.Pages
                 }
                 else if (child is Grid)
                 {
-                    this.RecursiveDelete(child as Grid, target);
+                    RecursiveDelete(child as Grid, target);
                 }
             }
         }
@@ -501,10 +503,12 @@ namespace LayoutEditor.Windows.Pages
             Button button = sender as Button;
             this.XmlDocumentHandler.ChangeViewMode((XmlViewMode)Int32.Parse(button.Tag.ToString()));
         }
-
+        private bool IsInViewBox = false;
         readonly Dictionary<Key, KeyStates> KeyStates = new();
         readonly Dictionary<MouseButton, MouseButtonState> MouseStates = new();
-        private void ViewBoxMouseEnter(object sender, MouseEventArgs e)
+        private void ViewBoxMouseEnter(object sender, MouseEventArgs e) => this.IsInViewBox = true;
+        private void ViewBoxMouseLeave(object sender, MouseEventArgs e) => this.IsInViewBox = false;
+        private void WindowMouseEnter(object sender, MouseEventArgs e)
         {
             this.IsInView = true;
             //Dictionary<Key, KeyStates> _KeyStates = new();
@@ -542,7 +546,7 @@ namespace LayoutEditor.Windows.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ViewBoxMouseLeave(object sender, MouseEventArgs e)
+        private void WindowMouseLeave(object sender, MouseEventArgs e)
         {
             this.IsInView = false;
             foreach (Key k in Enum.GetValues(typeof(Key)))
