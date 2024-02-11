@@ -18,7 +18,7 @@
         <StackPanel x:Name="ViewMode" Grid.Row="0" Orientation="Horizontal" Background="White" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
           Height="25" Width="Auto">
             <Button Content="W" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="0"/>
-                <Button Content="C" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="1"/>
+            <Button Content="C" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="1"/>
             <Button Content="D" Width="{Binding Height, ElementName=ViewMode}" Click="ViewModeClick" Tag="2"/>
         </StackPanel>
         <Grid x:Name="UpperWorkspace" Grid.Row="2" Margin="0,0,0,15" VerticalAlignment="Stretch" MouseDown="UpperWorkspace_MouseDown">
